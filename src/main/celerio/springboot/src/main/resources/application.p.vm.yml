@@ -1,0 +1,82 @@
+$output.resource("application.yml")##
+
+debug: false # enable a “debug” mode for logging
+    
+security:
+    basic:
+        enabled: false
+
+spring:
+    profiles:
+        active: dev
+    application:
+        admin:
+            enabled: false # Enable admin features for the application.
+    datasource: # primary datasource
+        driver-class-name: @jdbc.driver@
+        url: @jdbc.url@
+        name:
+        username: @jdbc.user@
+        password: @jdbc.password@
+    jpa:
+        open-in-view: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+
+        database-platform: @hibernate.dialect@
+        database: @database.type@
+        show_sql: true
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+    jta:
+        default-jta-timeout: 300000
+        max-timeout: 300000
+        atomikos:
+            datasource:
+                min-pool-size: 20
+                max-pool-size: 20
+# ORACLE seulement                test-query: select 1 from dual
+    data:
+        rest:
+            default-page-size: 10 # Default size of pages
+            max-page-size: 1000 # Maximum size of pages.
+            page-param-name: page
+            limit-param-name: size
+            sort-param-name: sort
+#basePath: /api
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
+                http:
+                  enabled: true             
+    mail:
+        host: localhost
+        port: 25
+        username: 
+        password: 
+    messages:
+        cache-seconds: 1
+    thymeleaf:
+        cache: false
+    management:
+        context-path: /manage
+
+server:
+    port: @application.port@
+    contextPath: @application.contextpath@
+
+
+# properties that belongs to the application itself	
+application:
+    async:
+        corePoolSize: 1
+    mail:
+        from: application@localhost.fr
+    
