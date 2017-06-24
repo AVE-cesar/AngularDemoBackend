@@ -3,7 +3,7 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template celerioLocal:springboot/src/main/java/Application.p.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/Application.p.vm.java
  */
 package com.jaxio.demo;
 

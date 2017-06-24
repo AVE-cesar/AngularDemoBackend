@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<celerio xmlns="http://www.jaxio.com/schema/celerio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.jaxio.com/schema/celerio.xsd">
+	
+	<configuration>
+		<celerioTemplateContext>
+		
+			<entityContextProperties>
+				<entityContextProperty property="rest"
+					subPackage="rest" suffix="Resource" />
+			</entityContextProperties>
+		</celerioTemplateContext>
+		
+		<packs>
+			<pack name="AngularDemoBackend" path="src/main/MyCelerioPack" enable="true" />
+		</packs>
+		
+	</configuration>
+</celerio>

@@ -65,11 +65,11 @@
         <!-- Version dependencies when used in multiple dependencies -->
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <celerio-maven-plugin.outputDir>${project.basedir}</celerio-maven-plugin.outputDir>
-        <!-- la dernière version de celerio est la 4.0.14. Mais dans cette version, le STEP 3 (gen) ne marche plus. -->
-        <celerio-maven-plugin.version>4.0.2</celerio-maven-plugin.version>
-        <celerio-maven-plugin.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-maven-plugin.xml</celerio-maven-plugin.configuration>
-        <celerio-maven-plugin.packs.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-template-packs.xml</celerio-maven-plugin.packs.configuration>
-
+        <!-- la dernière version de celerio est la 4.0.18 (4.0.2 marche). Mais dans cette version, le STEP 3 (gen) ne marche plus. -->
+        <celerio-maven-plugin.version>4.0.18</celerio-maven-plugin.version>
+        <!--celerio-maven-plugin.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-maven-plugin.xml</celerio-maven-plugin.configuration>
+        <celerio-maven-plugin.packs.configuration>${project.basedir}/src/main/config/celerio-maven-plugin/celerio-template-packs.xml</celerio-maven-plugin.packs.configuration-->
+        
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- Variables substituted in resources file at build time -->
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

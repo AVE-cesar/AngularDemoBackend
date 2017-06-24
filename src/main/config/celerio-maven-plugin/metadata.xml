@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.jaxio.com/schema/celerio">
+  <jdbcConnectivity driver="org.h2.Driver" url="jdbc:h2:/Users/avebertrand/git/AngularDemoBackend/target/db/AngularDemoBackend;MVCC=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE" user="CelerioDemoBackend" password="CelerioDemoBackend" schemaName="" oracleRetrieveRemarks="false" oracleRetrieveSynonyms="true" reverseIndexes="true" reverseOnlyUniqueIndexes="true" catalog="">
+    <tableNamePatterns/>
+    <tableTypes>
+      <tableType>TABLE</tableType>
+    </tableTypes>
+  </jdbcConnectivity>
+  <databaseInfo databaseMajorVersion="1" databaseMinorVersion="4" databaseProductName="H2" databaseProductVersion="1.4.194 (2017-03-10)" driverMajorVersion="1" driverMinorVersion="4" driverName="H2 JDBC Driver" driverVersion="1.4.194 (2017-03-10)" extraInfo=""/>
+  <tables>
+    <table name="APP_AUTHORITY" type="TABLE">
+      <columns>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_C0963009_4129_4B8E_B0DB_8C889788CD94)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_2" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="APP_PARAMETER" type="TABLE">
+      <columns>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_00E679CC_8416_4FA4_816D_D66FBA1D8D58)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="DOMAIN" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
+        <column name="KEY" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="1000" type="VARCHAR"/>
+        <column name="VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="4" size="4000" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_40" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="APP_TOKEN" type="TABLE">
+      <columns>
+        <column name="SERIES" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_2A78EA97_5AB7_4643_9818_EBF797D2A4C7)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="50" type="VARCHAR"/>
+        <column name="TOKEN_VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="2" size="50" type="VARCHAR"/>
+        <column name="TOKEN_CREATION_DATE" decimalDigits="10" autoIncrement="false" nullable="true" ordinalPosition="3" size="23" type="TIMESTAMP"/>
+        <column name="IP_ADDRESS" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="4" size="250" type="VARCHAR"/>
+        <column name="USER_AGENT" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="5" size="250" type="VARCHAR"/>
+        <column name="USER_LOGIN" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="6" size="250" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="SERIES" indexName="PRIMARY_KEY_4" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>SERIES</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="APP_TRANSLATION" type="TABLE">
+      <columns>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_8C1DE075_E09B_48B9_B863_06611E718AC9)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="LANGUAGE" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="10" type="VARCHAR"/>
+        <column name="KEY" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="1000" type="VARCHAR"/>
+        <column name="VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="4" size="4000" type="VARCHAR"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_D" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="APP_USER" type="TABLE">
+      <columns>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_38C6727B_5A75_43DE_A629_ACB24E2CA063)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="FIRST_NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
+        <column name="LAST_NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="250" type="VARCHAR"/>
+        <column name="EMAIL" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="4" size="250" type="VARCHAR"/>
+        <column name="LANGUAGE" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="5" size="10" type="VARCHAR"/>
+        <column name="LOGIN" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="6" size="250" type="VARCHAR"/>
+        <column name="PASSWORD" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="7" size="50" type="VARCHAR"/>
+        <column name="ENABLED" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="8" size="10" type="INTEGER"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_7" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="APP_USER_AUTHORITY" type="TABLE">
+      <columns>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_4CF0273F_78B3_4AAA_BF59_80941E6C03F2)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="APP_USER_ID" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="10" type="INTEGER"/>
+        <column name="APP_AUTHORITY_ID" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="10" type="INTEGER"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_B" nonUnique="false"/>
+      </indexes>
+      <importedKeys>
+        <importedKey fkColumnName="APP_AUTHORITY_ID" fkName="APP_USER_AUTHORITY_FK_2" pkColumnName="ID" pkTableName="APP_AUTHORITY"/>
+        <importedKey fkColumnName="APP_USER_ID" fkName="APP_USER_AUTHORITY_FK_1" pkColumnName="ID" pkTableName="APP_USER"/>
+      </importedKeys>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+    <table name="BOOK" type="TABLE">
+      <columns>
+        <column name="ID" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="1" size="36" type="CHAR"/>
+        <column name="TITLE" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="100" type="VARCHAR"/>
+        <column name="DESCRIPTION" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="255" type="VARCHAR"/>
+        <column name="PUBLICATION_DATE" decimalDigits="10" autoIncrement="false" nullable="true" ordinalPosition="4" size="23" type="TIMESTAMP"/>
+        <column name="AUTHOR_ID" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="5" size="10" type="INTEGER"/>
+        <column name="PRICE" decimalDigits="2" autoIncrement="false" nullable="false" ordinalPosition="6" size="20" type="DECIMAL"/>
+        <column name="BARCODEID" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="7" size="10" type="INTEGER"/>
+      </columns>
+      <indexes>
+        <indexe columnName="ID" indexName="PRIMARY_KEY_1" nonUnique="false"/>
+      </indexes>
+      <importedKeys/>
+      <primaryKeys>
+        <primaryKey>ID</primaryKey>
+      </primaryKeys>
+    </table>
+  </tables>
+</metadata>
