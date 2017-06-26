@@ -32,7 +32,7 @@ public class LoggingAspect {
     @Inject
     private Environment env;
 
-    @Pointcut("within(com.jaxio.demo.repository..*) || within(com.jaxio.demo.rest..*)")
+    @Pointcut("within(com.jaxio.demo.jpa.repository..*) || within(com.jaxio.demo.rest..*)")
     public void loggingPointcut() {
     }
 

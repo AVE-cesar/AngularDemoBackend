@@ -10,7 +10,7 @@
   <tables>
     <table name="APP_AUTHORITY" type="TABLE">
       <columns>
-        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_C0963009_4129_4B8E_B0DB_8C889788CD94)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_9BF20AC3_DE1E_40BF_BF08_564D126FC3BF)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
         <column name="NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
       </columns>
       <indexes>
@@ -23,7 +23,7 @@
     </table>
     <table name="APP_PARAMETER" type="TABLE">
       <columns>
-        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_00E679CC_8416_4FA4_816D_D66FBA1D8D58)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_3907CB89_BBDD_4EDC_B883_9B4BC5152DD2)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
         <column name="DOMAIN" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
         <column name="KEY" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="1000" type="VARCHAR"/>
         <column name="VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="4" size="4000" type="VARCHAR"/>
@@ -38,7 +38,7 @@
     </table>
     <table name="APP_TOKEN" type="TABLE">
       <columns>
-        <column name="SERIES" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_2A78EA97_5AB7_4643_9818_EBF797D2A4C7)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="50" type="VARCHAR"/>
+        <column name="SERIES" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_0FBD170D_4DF5_4B30_BAEF_D3E4BB1F9B4A)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="50" type="VARCHAR"/>
         <column name="TOKEN_VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="2" size="50" type="VARCHAR"/>
         <column name="TOKEN_CREATION_DATE" decimalDigits="10" autoIncrement="false" nullable="true" ordinalPosition="3" size="23" type="TIMESTAMP"/>
         <column name="IP_ADDRESS" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="4" size="250" type="VARCHAR"/>
@@ -55,7 +55,7 @@
     </table>
     <table name="APP_TRANSLATION" type="TABLE">
       <columns>
-        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_8C1DE075_E09B_48B9_B863_06611E718AC9)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_55E000C4_DAF0_4380_B23B_1A6058768556)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
         <column name="LANGUAGE" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="10" type="VARCHAR"/>
         <column name="KEY" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="1000" type="VARCHAR"/>
         <column name="VALUE" decimalDigits="0" autoIncrement="false" nullable="true" ordinalPosition="4" size="4000" type="VARCHAR"/>
@@ -70,7 +70,7 @@
     </table>
     <table name="APP_USER" type="TABLE">
       <columns>
-        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_38C6727B_5A75_43DE_A629_ACB24E2CA063)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_5634201C_2CF3_4B16_B093_49862B58D6B0)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
         <column name="FIRST_NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="250" type="VARCHAR"/>
         <column name="LAST_NAME" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="250" type="VARCHAR"/>
         <column name="EMAIL" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="4" size="250" type="VARCHAR"/>
@@ -89,7 +89,7 @@
     </table>
     <table name="APP_USER_AUTHORITY" type="TABLE">
       <columns>
-        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_4CF0273F_78B3_4AAA_BF59_80941E6C03F2)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
+        <column name="ID" columnDef="(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_B4563C6D_20F5_454A_A0EB_4A69CB1F8B92)" decimalDigits="0" autoIncrement="true" nullable="false" ordinalPosition="1" size="10" type="INTEGER"/>
         <column name="APP_USER_ID" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="2" size="10" type="INTEGER"/>
         <column name="APP_AUTHORITY_ID" decimalDigits="0" autoIncrement="false" nullable="false" ordinalPosition="3" size="10" type="INTEGER"/>
       </columns>

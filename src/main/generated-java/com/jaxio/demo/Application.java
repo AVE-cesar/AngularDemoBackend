@@ -19,8 +19,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.jaxio.demo.config.ApplicationProperties;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.jaxio.demo.repository")
-@EnableElasticsearchRepositories("com.jaxio.demo.searchrepository")
+@EnableJpaRepositories("com.jaxio.demo.jpa.repository")
+@EnableElasticsearchRepositories("com.jaxio.demo.elasticsearch.repository")
 @EnableConfigurationProperties({ ApplicationProperties.class })
 public class Application {
 
