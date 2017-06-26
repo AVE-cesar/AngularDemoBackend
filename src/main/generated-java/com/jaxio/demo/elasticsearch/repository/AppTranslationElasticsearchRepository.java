@@ -9,8 +9,8 @@ package com.jaxio.demo.elasticsearch.repository;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-import com.jaxio.demo.elasticsearch.model.Book;
+import com.jaxio.demo.elasticsearch.model.AppTranslation;
 
-public interface BookElasticsearchRepository extends ElasticsearchRepository<Book, String> {
+public interface AppTranslationElasticsearchRepository extends ElasticsearchRepository<AppTranslation, String> {
 
 }

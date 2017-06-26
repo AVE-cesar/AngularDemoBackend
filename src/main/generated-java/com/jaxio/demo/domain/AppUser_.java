@@ -3,9 +3,9 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template pack-MyCelerioPack:springboot/src/main/java/domain/EntityMeta_.e.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/jpa/model/EntityMeta_.e.vm.java
  */
-package com.jaxio.demo.jpa.model;
+package com.jaxio.demo.domain;
 
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;

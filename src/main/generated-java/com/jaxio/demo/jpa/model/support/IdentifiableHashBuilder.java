@@ -3,9 +3,9 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template pack-MyCelerioPack:springboot/src/main/java/domain/support/IdentifiableHashBuilder.p.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/jpa/model/support/IdentifiableHashBuilder.p.vm.java
  */
-package com.jaxio.demo.jpa.model;
+package com.jaxio.demo.jpa.model.support;
 
 import java.io.Serializable;
 import java.util.logging.Logger;

@@ -3,7 +3,7 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template pack-MyCelerioPack:springboot/src/main/java/rest/EntityResource.e.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/rest/controller/EntityController.e.vm.java
  */
 package com.jaxio.demo.rest.controller;
 
@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.jaxio.demo.elasticsearch.repository.BookElasticsearchRepository;
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.jpa.repository.BookJpaRepository;
-import com.jaxio.demo.utils.EntityUtils;
 
 @RestController
 @RequestMapping("/api/books")
@@ -68,7 +67,7 @@ public class BookController {
     public ResponseEntity<Book> create(@RequestBody Book book) throws URISyntaxException {
         log.debug("Create Book : {}", book);
         Book result = bookJpaRepository.save(book);
-        bookElasticsearchRepository.save(EntityUtils.convertToElasticsearchBook(book));
+        bookElasticsearchRepository.save(book);
         return ResponseEntity.created(new URI("/api/books/" + result.getId())).body(result);
     }
 
@@ -82,7 +81,7 @@ public class BookController {
             return create(book);
         }
         Book result = bookJpaRepository.save(book);
-        bookElasticsearchRepository.save(EntityUtils.convertToElasticsearchBook(book));
+        bookElasticsearchRepository.save(book);
         return ResponseEntity.ok().body(result);
     }
 
@@ -140,8 +139,8 @@ public class BookController {
     public ResponseEntity<Void> delete(@PathVariable String[] id) throws URISyntaxException {
         log.debug("Delete by id Books : {}.", (Object[]) id);
         Stream.of(id).forEach(item -> {
-        	bookJpaRepository.delete(item);
-            bookElasticsearchRepository.delete(item);
+            bookJpaRepository.delete(item);
+            bookSearchRepository.delete(item);
         });
 
         return ResponseEntity.ok().build();
@@ -154,15 +153,15 @@ public class BookController {
     @Async
     public void indexAllBooks() {
         log.debug("REST request to index all Books, START");
-        bookJpaRepository.findAll().forEach(book -> {
+        bookJpaRepository.findAll().forEach(p -> {
             log.debug("indexing");
-            bookElasticsearchRepository.index(EntityUtils.convertToElasticsearchBook(book));
+            bookSearchRepository.index(p);
         });
 
         PageRequest request = new PageRequest(0, 1000);
         try {
             Page<Book> page = findAllByPage(request);
-            page.forEach(book -> bookElasticsearchRepository.index(EntityUtils.convertToElasticsearchBook(book)));
+            page.forEach(p -> bookSearchRepository.index(p));
 
             while (page.hasNext()) {
                 request = new PageRequest(request.getPageNumber() + 1, 1000);
@@ -170,7 +169,7 @@ public class BookController {
                 log.debug("we are indexing page: " + (request.getPageNumber() + 1));
 
                 page = findAllByPage(request);
-                page.forEach(book -> bookElasticsearchRepository.index(EntityUtils.convertToElasticsearchBook(book)));
+                page.forEach(p -> bookElasticsearchRepository.index(p));
             }
         } catch (Exception e) {
             log.error("", e);
@@ -183,7 +182,7 @@ public class BookController {
      * Search with ElasticSearch.
      */
     @RequestMapping(value = "/esearch/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<com.jaxio.demo.elasticsearch.model.Book> searchBooks(@PathVariable String query) {
+    public List<Book> searchBooks(@PathVariable String query) {
         return StreamSupport.stream(bookElasticsearchRepository.search(queryStringQuery(query)).spliterator(), false).collect(Collectors.toList());
     }
 

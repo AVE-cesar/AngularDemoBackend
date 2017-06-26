@@ -3,7 +3,7 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template pack-MyCelerioPack:springboot/src/main/java/domain/Entity.e.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/jpa/model/Entity.e.vm.java
  */
 package com.jaxio.demo.jpa.model;
 
@@ -30,6 +30,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.google.common.base.MoreObjects;
+import com.jaxio.demo.jpa.model.support.IdentifiableHashBuilder;
 import com.jaxio.jpa.querybyexample.Identifiable;
 
 @Entity

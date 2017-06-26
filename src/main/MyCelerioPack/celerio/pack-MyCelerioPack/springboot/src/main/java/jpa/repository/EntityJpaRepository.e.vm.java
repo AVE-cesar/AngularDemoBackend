@@ -1,11 +1,4 @@
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS,
-## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-## See the License for the specific language governing permissions and
-## limitations under the License.
-##
-$output.java($entity.repository)##
+$output.java("${configuration.rootPackage}.jpa.repository", "${entity.model.type}JpaRepository")##
 
 #if ($entity.hasUniqueBigIntegerAttribute())
 $output.require("java.math.BigInteger")##
@@ -13,7 +6,7 @@ $output.require("java.math.BigInteger")##
 #if ($entity.hasUniqueDateAttribute() || $entity.root.hasDatePk())
 $output.require("java.util.Date")##
 #end
-$output.require($entity.model)##
+$output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 $output.require($entity.root.primaryKey)##
 #foreach ($enumAttribute in $entity.uniqueEnumAttributes.list)
 $output.require($enumAttribute)##

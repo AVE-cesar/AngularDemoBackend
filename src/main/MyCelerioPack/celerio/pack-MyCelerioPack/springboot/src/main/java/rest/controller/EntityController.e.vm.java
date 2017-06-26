@@ -1,4 +1,4 @@
-$output.java($entity.rest)##
+$output.java("${configuration.rootPackage}.rest.controller", "${entity.model.type}Controller")##
 
 #if($entity.hasUniqueBigIntegerAttribute())
 $output.require("java.math.BigInteger")##
@@ -6,15 +6,15 @@ $output.require("java.math.BigInteger")##
 #if($entity.hasUniqueDateAttribute() || $entity.root.hasDatePk() || !$entity.getCpkDateAttributes().isEmpty())
 $output.require("java.util.Date")##
 #end
-$output.require($entity.model)##
+$output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 $output.require($entity.root.primaryKey)##
 #foreach($enumAttribute in $entity.uniqueEnumAttributes.list)
 $output.require($enumAttribute)##
 #end
 
-$output.require($entity.repository)##
+$output.require("${configuration.rootPackage}.jpa.repository.${entity.model.type}JpaRepository")##
 #if (($entity.hasSimplePk()))
-$output.require("com.jaxio.demo.searchrepository.${entity.model.type}SearchRepository")##
+$output.require("${configuration.rootPackage}.elasticsearch.repository.${entity.model.type}ElasticsearchRepository")##
 #end
 $output.require("java.util.List")##
 $output.require("java.util.stream.Stream")##
@@ -59,14 +59,14 @@ public class $output.currentClass{
     private final Logger log=LoggerFactory.getLogger(${output.currentClass}.class);
 
     @Inject
-    private $entity.repository.type $entity.repository.var;
+    private ${entity.model.type}JpaRepository ${entity.model.var}JpaRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
 #if (($entity.hasSimplePk()))
     @Inject
-    private ${entity.model.type}SearchRepository ${entity.model.var}SearchRepository;
+    private ${entity.model.type}ElasticsearchRepository ${entity.model.var}ElasticsearchRepository;
 #end
     /**
      * Create a new $entity.model.type.
@@ -76,9 +76,9 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<$entity.model.type> create(@RequestBody $entity.model.type $entity.model.var) throws URISyntaxException {
         log.debug("Create $entity.model.varUp : {}",$entity.model.var);
-        $entity.model.type result = ${entity.repository.var}.save($entity.model.var);
+        $entity.model.type result = ${entity.model.var}JpaRepository.save($entity.model.var);
 #if (($entity.hasSimplePk()))        
-        ${entity.model.var}SearchRepository.save($entity.model.var);
+        ${entity.model.var}ElasticsearchRepository.save($entity.model.var);
 #end        
         return ResponseEntity.created(new URI("/api/${entity.model.vars}/"+result.getId()))
             .body(result);
@@ -95,9 +95,9 @@ public class $output.currentClass{
         if (${entity.model.var}.getId() == null) {
             return create(${entity.model.var});
         }
-        $entity.model.type result = ${entity.repository.var}.save($entity.model.var);
+        $entity.model.type result = ${entity.model.var}JpaRepository.save($entity.model.var);
 #if (($entity.hasSimplePk()))        
-        ${entity.model.var}SearchRepository.save($entity.model.var);
+        ${entity.model.var}ElasticsearchRepository.save($entity.model.var);
 #end        
         return ResponseEntity.ok()
             .body(result);
@@ -112,7 +112,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<$entity.model.type>> findAll() throws URISyntaxException {
         log.debug("Find all $entity.model.varsUp");
-        List<${entity.model.type}> list = ${entity.repository.var}.findAll();
+        List<${entity.model.type}> list = ${entity.model.var}JpaRepository.findAll();
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
     
@@ -124,7 +124,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<$entity.model.type> findAllByPage(Pageable pageable) throws URISyntaxException {
         log.debug("Find all by page $entity.model.varsUp, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
-        Page<${entity.model.type}> page = ${entity.repository.var}.findAll(pageable);
+        Page<${entity.model.type}> page = ${entity.model.var}JpaRepository.findAll(pageable);
         log.debug("There are " + page.getTotalElements() + " $entity.model.vars.");
         return page;
     }
@@ -151,7 +151,7 @@ public class $output.currentClass{
     public ResponseEntity<$entity.model.type> findById(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
-        $entity.model.type fullyLoaded${entity.model.type} = ${entity.repository.var}.findOne($entity.primaryKey.var);
+        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}JpaRepository.findOne($entity.primaryKey.var);
 #foreach ($relation in $entity.manyToMany.list)
 	#if ($velocityCount == 1)
         // force object loading from database because of lazy loading settings
@@ -177,7 +177,7 @@ public class $output.currentClass{
     	$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
-        $entity.model.type fullyLoaded${entity.model.type} = ${entity.repository.var}.findOne($entity.primaryKey.var);
+        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}JpaRepository.findOne($entity.primaryKey.var);
 #foreach ($relation in $entity.manyToMany.list)
 	#if ($velocityCount == 1)
         // force object loading from database because of lazy loading settings
@@ -202,8 +202,8 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
-        ${entity.repository.var}.delete($entity.primaryKey.var);
-        ${entity.model.var}SearchRepository.delete($entity.primaryKey.var);        
+        ${entity.model.var}JpaRepository.delete($entity.primaryKey.var);
+        ${entity.model.var}ElasticsearchRepository.delete($entity.primaryKey.var);        
         return ResponseEntity.ok().build();
     }
 #else
@@ -216,9 +216,9 @@ public class $output.currentClass{
     public ResponseEntity<Void> delete($str3) throws URISyntaxException {
 	    $entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
-        ${entity.repository.var}.delete($entity.primaryKey.var); 
+        ${entity.model.var}JpaRepository.delete($entity.primaryKey.var); 
 #if (($entity.hasSimplePk()))         
-        ${entity.model.var}SearchRepository.delete($entity.primaryKey.var);
+        ${entity.model.var}ElasticsearchRepository.delete($entity.primaryKey.var);
 #end        
         return ResponseEntity.ok().build();
     }
@@ -232,7 +232,7 @@ public class $output.currentClass{
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) throws URISyntaxException {
         log.debug("Delete by id $entity.model.varsUp : {}.", (Object[])id);
-        Stream.of(id).forEach(item -> {${entity.repository.var}.delete(item); #if (($entity.hasSimplePk()))${entity.model.var}SearchRepository.delete(item);#end}); 
+        Stream.of(id).forEach(item -> {${entity.model.var}JpaRepository.delete(item); #if (($entity.hasSimplePk()))${entity.model.var}ElasticsearchRepository.delete(item);#end}); 
         
         return ResponseEntity.ok().build();
     }
@@ -257,12 +257,12 @@ public class $output.currentClass{
     public void indexAll${entity.model.varsUp}() {
     	log.debug("REST request to index all $entity.model.varsUp, START");
 #if (($entity.hasSimplePk()))
-    	${entity.model.var}Repository.findAll().forEach(p -> {log.debug("indexing");${entity.model.var}SearchRepository.index(p);});
+    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing");${entity.model.var}ElasticsearchRepository.index(p);});
     	
     	PageRequest request = new PageRequest(0, 1000);
         try {
         	Page<$entity.model.type> page = findAllByPage(request);
-        	page.forEach(p -> ${entity.model.var}SearchRepository.index(p));
+        	page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(p));
                          
              while (page.hasNext()) {
                     request = new PageRequest(request.getPageNumber() + 1, 1000);
@@ -270,7 +270,7 @@ public class $output.currentClass{
                     log.debug("we are indexing page: " + (request.getPageNumber() + 1));
                     
                     page = findAllByPage(request);
-                    page.forEach(p -> ${entity.model.var}SearchRepository.index(p));
+                    page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(p));
               }
         } catch (Exception e) {
         	log.error("", e);
@@ -289,7 +289,7 @@ public class $output.currentClass{
     public List<$entity.model.type> search${entity.model.type}s(@PathVariable String query) {
 #if (($entity.hasSimplePk()))     	
         return StreamSupport
-            .stream(${entity.model.var}SearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(${entity.model.var}ElasticsearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
 #else
 		return null;
@@ -305,7 +305,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> count() throws URISyntaxException {
         log.debug("Count $entity.model.vars");
-        long count = ${entity.model.var}Repository.count();
+        long count = ${entity.model.var}JpaRepository.count();
         
         return new ResponseEntity<>(count, new HttpHeaders(), HttpStatus.OK);
     }
@@ -319,7 +319,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> exists(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
     	log.debug("Check $entity.model.var existence via its id: {}.", id);
-    	Boolean exists = ${entity.model.var}Repository.exists(id);
+    	Boolean exists = ${entity.model.var}JpaRepository.exists(id);
         
         return new ResponseEntity<>(exists, new HttpHeaders(), HttpStatus.OK);
     }
@@ -333,7 +333,7 @@ public class $output.currentClass{
     public ResponseEntity<Boolean> exists($str3) throws URISyntaxException {
 		$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
     	log.debug("Check $entity.model.var existence via its id: {}.", $entity.primaryKey.var);
-    	Boolean exists = ${entity.model.var}Repository.exists($entity.primaryKey.var);
+    	Boolean exists = ${entity.model.var}JpaRepository.exists($entity.primaryKey.var);
         
         return new ResponseEntity<>(exists, new HttpHeaders(), HttpStatus.OK);
     }
@@ -359,7 +359,7 @@ $!{MethodsHistoryMap.put("findBy${oneToOne.to.type}", "findBy${oneToOne.to.type}
         
         ${oneToOne.to.type} ${oneToOne.toEntity.model.var} = new ${oneToOne.to.type}();
         ${oneToOne.toEntity.model.var}.setId(id);
-        List<$entity.model.type> $entity.model.vars = ${entity.repository.var}.findBy${oneToOne.to.varUp}(${oneToOne.toEntity.model.var});
+        List<$entity.model.type> $entity.model.vars = ${entity.model.var}JpaRepository.findBy${oneToOne.to.varUp}(${oneToOne.toEntity.model.var});
         
         return new ResponseEntity<List<$entity.model.type>>($entity.model.vars, new HttpHeaders(), HttpStatus.OK);
 	}
@@ -385,7 +385,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         
         ${manyToOne.to.type} ${manyToOne.toEntity.model.var} = new ${manyToOne.to.type}();
         ${manyToOne.toEntity.model.var}.setId(id);
-        List<$entity.model.type> $entity.model.vars = ${entity.repository.var}.findBy${manyToOne.to.varUp}(${manyToOne.toEntity.model.var});
+        List<$entity.model.type> $entity.model.vars = ${entity.model.var}JpaRepository.findBy${manyToOne.to.varUp}(${manyToOne.toEntity.model.var});
         
         return new ResponseEntity<List<$entity.model.type>>($entity.model.vars, new HttpHeaders(), HttpStatus.OK);
 	}
@@ -401,7 +401,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         log.debug("Search $entity.model.vars, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
         log.debug("$entity.model.var: " + $entity.model.var);
         
-        long total = ${entity.model.var}Repository.count();
+        long total = ${entity.model.var}JpaRepository.count();
         
         String sqlMainPart = "select * from (select $str10 from $entity.getTableName() where 1=1"; 
         String sqlSecondaryPart = "";
@@ -446,7 +446,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
     public ResponseEntity<AppParameter> findById(@PathVariable String domain, @PathVariable String key) throws URISyntaxException {
         log.debug("Find by domain and key AppParameters : " + domain + ", " + key);
         
-        AppParameter appParameter = appParameterRepository.findByDomainAndKey(domain, key);
+        AppParameter appParameter = appParameterJpaRepository.findByDomainAndKey(domain, key);
         
         return new ResponseEntity<AppParameter>(appParameter, HttpStatus.OK);
     }

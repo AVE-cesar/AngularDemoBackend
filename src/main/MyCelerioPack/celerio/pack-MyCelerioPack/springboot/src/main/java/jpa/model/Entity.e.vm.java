@@ -1,4 +1,4 @@
-$output.java($entity.model)##
+$output.java("${configuration.rootPackage}.jpa.model", "${entity.model.type}")##
 
 $output.require("java.util.logging.Logger")##
 $output.require("com.google.common.base.MoreObjects")##
@@ -672,7 +672,7 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
     }
 
 #elseif($entity.isRoot())    
-$output.require($ModelSupport, "IdentifiableHashBuilder")##
+$output.require("${configuration.rootPackage}.jpa.model.support.IdentifiableHashBuilder")##
     private IdentifiableHashBuilder identifiableHashBuilder = new IdentifiableHashBuilder();
 
     @Override

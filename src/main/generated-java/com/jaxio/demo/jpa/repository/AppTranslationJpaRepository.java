@@ -3,7 +3,7 @@
  * Documentation: http://www.jaxio.com/documentation/celerio/
  * Follow us on twitter: @jaxiosoft
  * Need commercial support ? Contact us: info@jaxio.com
- * Template pack-MyCelerioPack:springboot/src/main/java/repository/EntityRepository.e.vm.java
+ * Template pack-MyCelerioPack:springboot/src/main/java/jpa/repository/EntityJpaRepository.e.vm.java
  */
 package com.jaxio.demo.jpa.repository;
 
