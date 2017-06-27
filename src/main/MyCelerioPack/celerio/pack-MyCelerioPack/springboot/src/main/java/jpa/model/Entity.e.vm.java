@@ -41,7 +41,7 @@ $output.require("com.jaxio.jpa.querybyexample.Identifiable")##
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "${entity.model.var.toLowerCase()}")
 public#if ($output.isAbstract()) abstract#{end} class ${output.currentClass}${entity.spaceAndExtendsStatement} implements Identifiable<$entity.primaryKey.type>${entity.commaAndImplementedInterfaces}, Serializable {
 #else
-$output.require($entity.parent.model)##
+$output.require("${configuration.rootPackage}.jpa.model.${entity.parent.model.type}")##
 public#if ($output.isAbstract()) abstract#{end} class $output.currentClass extends $entity.parent.model.type {
 #end
 
@@ -70,7 +70,7 @@ $output.require($attribute)##
 
     // Many to one
 #end
-$output.require($manyToOne.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${manyToOne.to.type}")##
     private $manyToOne.to.type $manyToOne.to.var;
 #end
 ## --------------- One to One
@@ -79,7 +79,7 @@ $output.require($manyToOne.to)##
 
     // One to one
 #end
-$output.require($oneToOne.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${oneToOne.to.type}")##
     private $oneToOne.to.type $oneToOne.to.var;
 #end
 ## --------------- One to Virtual One
@@ -90,7 +90,7 @@ $output.require($oneToOne.to)##
 #end
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
-$output.require($oneToVirtualOne.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${oneToVirtualOne.to.type}")##
     private ${entity.collectionType.type}<$oneToVirtualOne.to.type> $oneToVirtualOne.to.vars = new ${entity.collectionType.implementationType}<$oneToVirtualOne.to.type>();
 #end
 ## --------------- One to many
@@ -101,7 +101,7 @@ $output.require($oneToVirtualOne.to)##
 #end
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
-$output.require($oneToMany.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${$oneToMany.to.type}")##
     private ${entity.collectionType.type}<$oneToMany.to.type> $oneToMany.to.vars = new ${entity.collectionType.implementationType}<$oneToMany.to.type>();
 #end
 ## --------------- Many to many
@@ -112,7 +112,7 @@ $output.require($oneToMany.to)##
 #end
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
-$output.require($manyToMany.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${manyToMany.to.type}")##
     private ${entity.collectionType.type}<$manyToMany.to.type> $manyToMany.to.vars = new ${entity.collectionType.implementationType}<$manyToMany.to.type>();
 #end
 

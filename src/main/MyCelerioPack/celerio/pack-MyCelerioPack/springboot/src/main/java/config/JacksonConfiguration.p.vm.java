@@ -1,6 +1,7 @@
 $output.java("${configuration.rootPackage}.config", "JacksonConfiguration")##
 
-$output.require("${Model.packageName}.util.*")##
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310DateTimeSerializer")##
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310LocalDateDeserializer")##
 
 $output.require("com.fasterxml.jackson.databind.SerializationFeature")##
 $output.require("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule")##

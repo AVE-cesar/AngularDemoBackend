@@ -4,6 +4,6 @@ $output.require("org.springframework.data.elasticsearch.repository.Elasticsearch
 
 $output.require("com.jaxio.demo.elasticsearch.model.${entity.model.type}")##
 
-public interface ${entity.model.type}ElasticsearchRepository extends ElasticsearchRepository<${entity.model.type}, String> {
+public interface ${entity.model.type}ElasticsearchRepository extends ElasticsearchRepository<${entity.model.type}, $entity.root.primaryKey.type> {
 
 }

@@ -15,6 +15,7 @@ $output.require($enumAttribute)##
 $output.require("${configuration.rootPackage}.jpa.repository.${entity.model.type}JpaRepository")##
 #if (($entity.hasSimplePk()))
 $output.require("${configuration.rootPackage}.elasticsearch.repository.${entity.model.type}ElasticsearchRepository")##
+$output.require("${configuration.rootPackage}.utils.${entity.model.type}EntityUtils")##
 #end
 $output.require("java.util.List")##
 $output.require("java.util.stream.Stream")##
@@ -52,6 +53,7 @@ $output.require("org.springframework.beans.factory.annotation.Autowired")##
 $output.require("org.springframework.data.domain.PageImpl")##
 $output.require("org.springframework.data.domain.PageRequest")##
 
+
 @RestController
 @RequestMapping("/api/${entity.model.vars}")
 public class $output.currentClass{
@@ -78,7 +80,7 @@ public class $output.currentClass{
         log.debug("Create $entity.model.varUp : {}",$entity.model.var);
         $entity.model.type result = ${entity.model.var}JpaRepository.save($entity.model.var);
 #if (($entity.hasSimplePk()))        
-        ${entity.model.var}ElasticsearchRepository.save($entity.model.var);
+        ${entity.model.var}ElasticsearchRepository.save(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(${entity.model.var}));
 #end        
         return ResponseEntity.created(new URI("/api/${entity.model.vars}/"+result.getId()))
             .body(result);
@@ -97,7 +99,7 @@ public class $output.currentClass{
         }
         $entity.model.type result = ${entity.model.var}JpaRepository.save($entity.model.var);
 #if (($entity.hasSimplePk()))        
-        ${entity.model.var}ElasticsearchRepository.save($entity.model.var);
+        ${entity.model.var}ElasticsearchRepository.save(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(${entity.model.var}));
 #end        
         return ResponseEntity.ok()
             .body(result);
@@ -257,12 +259,12 @@ public class $output.currentClass{
     public void indexAll${entity.model.varsUp}() {
     	log.debug("REST request to index all $entity.model.varsUp, START");
 #if (($entity.hasSimplePk()))
-    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing");${entity.model.var}ElasticsearchRepository.index(p);});
+    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing");${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p));});
     	
     	PageRequest request = new PageRequest(0, 1000);
         try {
         	Page<$entity.model.type> page = findAllByPage(request);
-        	page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(p));
+        	page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p)));
                          
              while (page.hasNext()) {
                     request = new PageRequest(request.getPageNumber() + 1, 1000);
@@ -270,7 +272,7 @@ public class $output.currentClass{
                     log.debug("we are indexing page: " + (request.getPageNumber() + 1));
                     
                     page = findAllByPage(request);
-                    page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(p));
+                    page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p)));
               }
         } catch (Exception e) {
         	log.error("", e);
@@ -286,7 +288,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/esearch/{query}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<$entity.model.type> search${entity.model.type}s(@PathVariable String query) {
+    public List<${configuration.rootPackage}.elasticsearch.model.${entity.model.type}> search${entity.model.type}s(@PathVariable String query) {
 #if (($entity.hasSimplePk()))     	
         return StreamSupport
             .stream(${entity.model.var}ElasticsearchRepository.search(queryStringQuery(query)).spliterator(), false)

@@ -1,4 +1,4 @@
-$output.java($entity.model, "${entity.model.type}_")##
+$output.java("${configuration.rootPackage}.jpa.model", "${entity.model.type}_")##
 ##------------------------------------------------------------------------
 ## IMPORTANT: This template must be executed after the Entity.e.vm.java one
 ## because the Entity.e.vm.java also create the metamodel take over if needed.
@@ -8,7 +8,7 @@ $output.java($entity.model, "${entity.model.type}_")##
 
 $output.require("javax.persistence.metamodel.SingularAttribute")##
 $output.require("javax.persistence.metamodel.StaticMetamodel")##
-$output.require($entity.model)##
+$output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 
 @StaticMetamodel(${output.currentClassWithout_}.class)
 #if($entity.isRoot())
@@ -38,7 +38,7 @@ $output.require($attribute)##
 
     // Many to one
 #end
-$output.require($manyToOne.to)##    
+$output.require("${configuration.rootPackage}.jpa.model.${manyToOne.to.type}")##    
     public static volatile SingularAttribute<$entity.model.type, $manyToOne.to.type> $manyToOne.to.var;
 #end
 #foreach ($oneToOne in $entity.oneToOne.list)
@@ -46,7 +46,7 @@ $output.require($manyToOne.to)##
 
     // One to one
 #end
-$output.require($oneToOne.to)##    
+$output.require("${configuration.rootPackage}.jpa.model.${oneToOne.to.type}")##    
     public static volatile SingularAttribute<$entity.model.type, $oneToOne.to.type> $oneToOne.to.var;
 #end
 #foreach ($oneToVirtualOne in $entity.oneToVirtualOne.list)
@@ -55,7 +55,7 @@ $output.require($oneToOne.to)##
     // One to virtual one
 $output.require("$entity.collectionType.metaModelFullType")##    
 #end
-$output.require($oneToVirtualOne.to)##    
+$output.require("${configuration.rootPackage}.jpa.model.${oneToVirtualOne.to.type}")##    
     public static volatile ${entity.collectionType.metaModelType}<$entity.model.type, $oneToVirtualOne.to.type> $oneToVirtualOne.to.vars;
 #end
 #foreach ($oneToMany in $entity.oneToMany.list)
@@ -64,7 +64,7 @@ $output.require($oneToVirtualOne.to)##
     // One to many
 $output.require("$entity.collectionType.metaModelFullType")##
 #end
-$output.require($oneToMany.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${oneToMany.to.type}")##
     public static volatile ${entity.collectionType.metaModelType}<$entity.model.type, $oneToMany.to.type> $oneToMany.to.vars;
 #end
 #foreach ($manyToMany in $entity.manyToMany.list)
@@ -73,7 +73,7 @@ $output.require($oneToMany.to)##
     // Many to many
 $output.require("$entity.collectionType.metaModelFullType")##
 #end
-$output.require($manyToMany.to)##
+$output.require("${configuration.rootPackage}.jpa.model.${manyToMany.to.type}")##
     public static volatile ${entity.collectionType.metaModelType}<$entity.model.type, $manyToMany.to.type> $manyToMany.to.vars;
 #end
 }

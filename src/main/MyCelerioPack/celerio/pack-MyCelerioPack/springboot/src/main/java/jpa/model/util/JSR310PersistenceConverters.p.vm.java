@@ -1,26 +1,18 @@
-## Copyright 2015 JAXIO http://www.jaxio.com
-##
-## Licensed under the Apache License, Version 2.0 (the "License");
-## you may not use this file except in compliance with the License.
-## You may obtain a copy of the License at
-##
-##    http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS,
-## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-## See the License for the specific language governing permissions and
-## limitations under the License.
-##
 $output.java("${configuration.rootPackage}.jpa.model.util", "JSR310PersistenceConverters")##
 
-import ${Model.packageName}.util.JSR310DateConverters.*;
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310DateConverters.DateToLocalDateTimeConverter")##
 
-import java.time.*;
-import java.util.Date;
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310DateConverters.DateToZonedDateTimeConverter")##
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310DateConverters.LocalDateTimeToDateConverter")##
+$output.require("${configuration.rootPackage}.jpa.model.util.JSR310DateConverters.ZonedDateTimeToDateConverter")##
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+$output.require("java.time.LocalDate")##
+$output.require("java.time.LocalDateTime")##
+$output.require("java.time.ZonedDateTime")##
+$output.require("java.util.Date")##
+
+$output.require("javax.persistence.AttributeConverter")##
+$output.require("javax.persistence.Converter")##
 
 public final class JSR310PersistenceConverters {
 
