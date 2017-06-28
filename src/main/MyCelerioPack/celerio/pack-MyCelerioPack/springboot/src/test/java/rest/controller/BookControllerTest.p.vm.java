@@ -1,4 +1,4 @@
-package ave.bertrand.rest.controller;
+$output.javaTest("${configuration.rootPackage}.rest.controller", "BookControllerTest")##
 
 import static org.hamcrest.Matchers.containsString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +32,7 @@ import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.rest.controller.BookController;
 import com.jaxio.demo.utils.BookEntityUtils;
 
-import ave.bertrand.utils.JsonUtils;
+import com.jaxio.demo.utils.JsonUtils;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc

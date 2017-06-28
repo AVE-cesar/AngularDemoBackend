@@ -1,4 +1,4 @@
-package ave.bertrand.jpa.repository;
+$output.javaTest("${configuration.rootPackage}.jpa.repository", "BookJpaRepositoryTest")##
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package ave.bertrand.elasticsearch.repository;
+$output.javaTest("${configuration.rootPackage}.elasticsearch.repository", "BookElasticsearchRepositoryTest")##
 
 import static org.assertj.core.api.Assertions.assertThat;
 

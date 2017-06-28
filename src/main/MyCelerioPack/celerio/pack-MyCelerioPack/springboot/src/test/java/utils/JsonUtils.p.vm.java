@@ -1,4 +1,4 @@
-package ave.bertrand.utils;
+$output.javaTest("${configuration.rootPackage}.utils", "JsonUtils")##
 
 import java.io.IOException;
 
