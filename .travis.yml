@@ -1,0 +1,12 @@
+language: java
+addons:
+  sonarcloud:
+    organization: "ave-cesar-github"
+    token:
+      secure: "fd58d58af0497452b3feec549eaf67a6a16ced18"
+jdk:
+  - oraclejdk8
+script: 
+  - mvn -Pdb,metadata,gen
+#  - mvn test
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
