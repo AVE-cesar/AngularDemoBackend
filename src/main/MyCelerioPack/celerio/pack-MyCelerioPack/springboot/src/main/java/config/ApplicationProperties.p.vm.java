@@ -1,5 +1,6 @@
 $output.java("${configuration.rootPackage}.config", "ApplicationProperties")##
 
+$output.require("org.springframework.context.annotation.Configuration")##
 $output.require("org.springframework.boot.context.properties.ConfigurationProperties")##
 
 /**
@@ -9,6 +10,7 @@ $output.require("org.springframework.boot.context.properties.ConfigurationProper
  *     Properties are configured in the application.yml file.
  * </p>
  */
+@Configuration
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 

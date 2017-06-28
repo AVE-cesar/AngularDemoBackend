@@ -13,7 +13,7 @@ $output.require("org.springframework.scheduling.concurrent.ThreadPoolTaskExecuto
 
 $output.require("java.util.concurrent.Executor")##
 
-$output.require("javax.inject.Inject")##
+$output.require("org.springframework.beans.factory.annotation.Autowired")##
 
 /**
  * Configures asynchronous execution. 
@@ -28,7 +28,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
 
     private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
 
-    @Inject
+    @Autowired
     private ApplicationProperties applicationProperties;
 
     @Override

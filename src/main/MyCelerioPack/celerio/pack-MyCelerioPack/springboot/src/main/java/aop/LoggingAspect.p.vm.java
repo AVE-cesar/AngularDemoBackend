@@ -10,7 +10,7 @@ $output.require("org.slf4j.Logger")##
 $output.require("org.slf4j.LoggerFactory")##
 $output.require("org.springframework.core.env.Environment")##
 
-$output.require("javax.inject.Inject")##
+$output.require("org.springframework.beans.factory.annotation.Autowired")##
 $output.require("java.util.Arrays")##
 
 /**
@@ -21,7 +21,7 @@ public class LoggingAspect {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Inject
+	@Autowired
     private Environment env;
 
     @Pointcut("within(${configuration.rootPackage}.repository..*) || within(${configuration.rootPackage}.rest..*)")

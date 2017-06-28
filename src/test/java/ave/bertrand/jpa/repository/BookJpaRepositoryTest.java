@@ -15,7 +15,7 @@ import com.jaxio.demo.Application;
 import com.jaxio.demo.elasticsearch.repository.BookElasticsearchRepository;
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.jpa.repository.BookJpaRepository;
-import com.jaxio.demo.utils.EntityUtils;
+import com.jaxio.demo.utils.BookEntityUtils;
 
 
 @RunWith(SpringRunner.class)
@@ -30,7 +30,7 @@ public class BookJpaRepositoryTest {
 
 	@Test
 	public void testSave() {
-		repository.save(EntityUtils.createNewBook("1"));
+		repository.save(BookEntityUtils.createNewBook("1"));
 	}
 /*
 	@Test

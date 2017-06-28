@@ -8,11 +8,12 @@ public class ${entity.model.type}EntityUtils {
 
 	public static ${entity.model.type} createNew${entity.model.type}(String id) {
 		${entity.model.type} ${entity.model.var} = new ${entity.model.type}();
-		
+// FIXME à terminer		
+/*		
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 		${entity.model.var}.${attribute.setter}("Toto");
 #end		
-
+*/
 		return ${entity.model.var};
 	}
 	

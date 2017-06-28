@@ -10,7 +10,6 @@ $output.require("org.springframework.cache.CacheManager")##
 $output.require("org.springframework.cache.ehcache.EhCacheCacheManager")##
 
 $output.require("javax.annotation.PreDestroy")##
-$output.require("javax.inject.Inject")##
 $output.require("javax.persistence.EntityManager")##
 $output.require("javax.persistence.PersistenceContext")##
 $output.require("javax.persistence.metamodel.EntityType")##
