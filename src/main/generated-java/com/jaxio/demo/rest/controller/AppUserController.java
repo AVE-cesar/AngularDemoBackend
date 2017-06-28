@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -52,13 +51,13 @@ public class AppUserController {
 
     private final Logger log = LoggerFactory.getLogger(AppUserController.class);
 
-    @Inject
+    @Autowired
     private AppUserJpaRepository appUserJpaRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Inject
+    @Autowired
     private AppUserElasticsearchRepository appUserElasticsearchRepository;
 
     /**

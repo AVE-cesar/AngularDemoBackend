@@ -23,7 +23,6 @@ $output.require("java.net.URISyntaxException")##
 $output.require("java.net.URI")##
 $output.require("java.util.Optional")##
 
-$output.require("javax.inject.Inject")##
 $output.require("javax.transaction.Transactional")##
 
 $output.require("org.slf4j.LoggerFactory")##
@@ -60,14 +59,14 @@ public class $output.currentClass{
 
     private final Logger log=LoggerFactory.getLogger(${output.currentClass}.class);
 
-    @Inject
+    @Autowired
     private ${entity.model.type}JpaRepository ${entity.model.var}JpaRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
 #if (($entity.hasSimplePk()))
-    @Inject
+	@Autowired
     private ${entity.model.type}ElasticsearchRepository ${entity.model.var}ElasticsearchRepository;
 #end
     /**
