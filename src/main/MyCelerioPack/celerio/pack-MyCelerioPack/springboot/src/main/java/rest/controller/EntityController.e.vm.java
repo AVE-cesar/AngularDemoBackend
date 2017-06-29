@@ -426,7 +426,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         sqlSecondaryPart += ") where rownum <= ?";
         values.add(pageable.getPageSize());
         
-        log.debug("SQL: " + sqlMainPart + " " + sqlSecondaryPart);
+        log.debug("SQL: %s %s", sqlMainPart, sqlSecondaryPart);
         List<$entity.model.type> $entity.model.vars = jdbcTemplate.query(sqlMainPart + " " + sqlSecondaryPart, 
         		values.toArray(), 
         		new BeanPropertyRowMapper<$entity.model.type>(${entity.model.type}.class));
@@ -445,11 +445,11 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppParameter> findById(@PathVariable String domain, @PathVariable String key) throws URISyntaxException {
-        log.debug("Find by domain and key AppParameters : " + domain + ", " + key);
+        log.debug("Find by domain and key AppParameters : %s %s", domain, key);
         
         AppParameter appParameter = appParameterJpaRepository.findByDomainAndKey(domain, key);
         
-        return new ResponseEntity<AppParameter>(appParameter, HttpStatus.OK);
+        return new ResponseEntity<>(appParameter, HttpStatus.OK);
     }
 #end
 }
