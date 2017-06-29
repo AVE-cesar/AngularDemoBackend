@@ -2,5 +2,8 @@
 /.classpath
 /.project
 /.settings/
+/.celerio/
 /.DS_Store
 /bin/
+/src/main/generated-java
+/src/test/generated-java
