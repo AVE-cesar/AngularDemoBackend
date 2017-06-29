@@ -111,7 +111,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<$entity.model.type>> findAll() throws URISyntaxException {
+    public ResponseEntity<List<$entity.model.type>> findAll() {
         log.debug("Find all $entity.model.varsUp");
         List<${entity.model.type}> list = ${entity.model.var}JpaRepository.findAll();
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
@@ -123,7 +123,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/bypage",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<$entity.model.type> findAllByPage(Pageable pageable) throws URISyntaxException {
+    public Page<$entity.model.type> findAllByPage(Pageable pageable) {
         log.debug("Find all by page $entity.model.varsUp, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
         Page<${entity.model.type}> page = ${entity.model.var}JpaRepository.findAll(pageable);
         log.debug("There are " + page.getTotalElements() + " $entity.model.vars.");
@@ -149,7 +149,7 @@ public class $output.currentClass{
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<$entity.model.type> findById(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
+    public ResponseEntity<$entity.model.type> findById(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) {
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
         $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}JpaRepository.findOne($entity.primaryKey.var);
@@ -174,7 +174,7 @@ public class $output.currentClass{
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<$entity.model.type> findById($str3) throws URISyntaxException {
+    public ResponseEntity<$entity.model.type> findById($str3) {
     	$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
@@ -201,7 +201,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/{id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
+    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) {
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         ${entity.model.var}JpaRepository.delete($entity.primaryKey.var);
         ${entity.model.var}ElasticsearchRepository.delete($entity.primaryKey.var);        
@@ -214,7 +214,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/$str1",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete($str3) throws URISyntaxException {
+    public ResponseEntity<Void> delete($str3) {
 	    $entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         ${entity.model.var}JpaRepository.delete($entity.primaryKey.var); 
@@ -304,7 +304,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/count",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> count() throws URISyntaxException {
+    public ResponseEntity<Long> count() {
         log.debug("Count $entity.model.vars");
         long count = ${entity.model.var}JpaRepository.count();
         
@@ -318,7 +318,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/exists/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> exists(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) throws URISyntaxException {
+    public ResponseEntity<Boolean> exists(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) {
     	log.debug("Check $entity.model.var existence via its id: {}.", id);
     	Boolean exists = ${entity.model.var}JpaRepository.exists(id);
         
@@ -331,7 +331,7 @@ public class $output.currentClass{
     @RequestMapping(value = "/exists/$str1",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> exists($str3) throws URISyntaxException {
+    public ResponseEntity<Boolean> exists($str3) {
 		$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
     	log.debug("Check $entity.model.var existence via its id: {}.", $entity.primaryKey.var);
     	Boolean exists = ${entity.model.var}JpaRepository.exists($entity.primaryKey.var);
@@ -398,16 +398,16 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
     @RequestMapping(value = "/search",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<$entity.model.type> search(@RequestBody $entity.model.type $entity.model.var, Pageable pageable) throws URISyntaxException {
+    public Page<$entity.model.type> search(@RequestBody $entity.model.type $entity.model.var, Pageable pageable) {
         log.debug("Search $entity.model.vars, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
-        log.debug("$entity.model.var: " + $entity.model.var);
+        log.debug("$entity.model.var: %s",  $entity.model.var);
         
         long total = ${entity.model.var}JpaRepository.count();
         
         String sqlMainPart = "select * from (select $str10 from $entity.getTableName() where 1=1"; 
         String sqlSecondaryPart = "";
         
-        List<Object> values = new ArrayList<Object>();
+        List<Object> values = new ArrayList<>();
         
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk())
