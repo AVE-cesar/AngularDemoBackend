@@ -23,6 +23,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
+		<start-class>com.jaxio.demo.Application</start-class>
+
 		<!-- h2 jdbc driver (same as wildfly) -->
 		<jdbc.groupId>com.h2database</jdbc.groupId>
 		<jdbc.artifactId>h2</jdbc.artifactId>
