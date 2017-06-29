@@ -64,9 +64,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>1279</size>
+      <size>1332</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\AppUser_.java</path>
-      <lastMod>1498745417239</lastMod>
+      <lastMod>1498748514336</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -84,9 +84,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\Application.p.vm.java</template>
-      <size>907</size>
+      <size>890</size>
       <path>src\main\generated-java\com\jaxio\demo\Application.java</path>
-      <lastMod>1498745416222</lastMod>
+      <lastMod>1498748376354</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -1144,9 +1144,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>1028</size>
+      <size>1082</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\AppToken_.java</path>
-      <lastMod>1498745417210</lastMod>
+      <lastMod>1498748514303</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -1414,9 +1414,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>857</size>
+      <size>915</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\AppParameter_.java</path>
-      <lastMod>1498745417197</lastMod>
+      <lastMod>1498748514288</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -1664,9 +1664,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>871</size>
+      <size>931</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\AppTranslation_.java</path>
-      <lastMod>1498745417225</lastMod>
+      <lastMod>1498748514320</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -1706,7 +1706,7 @@
       <template>.gitignore</template>
       <size>11</size>
       <path>target\celerio-maven-plugin\collisions\.gitignore</path>
-      <lastMod>1498745417748</lastMod>
+      <lastMod>1498748514737</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -2224,9 +2224,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>707</size>
+      <size>765</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\AppAuthority_.java</path>
-      <lastMod>1498745417183</lastMod>
+      <lastMod>1498748514269</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>
@@ -2924,9 +2924,9 @@
     <com.jaxio.celerio.output.FileMetaData>
       <pack>pack-MyCelerioPack</pack>
       <template>springboot\src\main\java\jpa\model\EntityMeta_.e.vm.java</template>
-      <size>1093</size>
+      <size>1143</size>
       <path>src\main\generated-java\com\jaxio\demo\jpa\model\Book_.java</path>
-      <lastMod>1498745417256</lastMod>
+      <lastMod>1498748514350</lastMod>
     </com.jaxio.celerio.output.FileMetaData>
   </entry>
   <entry>

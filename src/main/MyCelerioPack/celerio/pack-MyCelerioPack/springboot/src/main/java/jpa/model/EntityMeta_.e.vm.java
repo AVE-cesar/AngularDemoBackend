@@ -17,6 +17,11 @@ public abstract class $output.currentClass {
 $output.require("${entity.parent.model.fullType}_")##
 public abstract class $output.currentClass extends ${entity.parent.model.type}_ {
 #end
+
+	private $output.currentClass () {
+		super();
+	}
+	
 #if ($entity.isRoot() && $entity.primaryKey.isComposite())
     // Composite primary key
     public static volatile SingularAttribute<$entity.model.type, $entity.primaryKey.type> $entity.primaryKey.var;
