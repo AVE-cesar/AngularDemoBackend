@@ -92,7 +92,6 @@ public class BookControllerTest {
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
 		this.mockMvc.perform(post("/api/books/")
 			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-			/* add a request parameter */
 			.content(JsonUtils.convertObjectToJsonBytes(book)))
 			.andDo(print())
 			.andExpect(status().isCreated())
