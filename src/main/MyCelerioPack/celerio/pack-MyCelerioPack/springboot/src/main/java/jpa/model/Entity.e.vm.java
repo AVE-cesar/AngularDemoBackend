@@ -37,8 +37,6 @@ $annotation
 #if($entity.isRoot())
 $output.require("java.io.Serializable")##
 $output.require("com.jaxio.jpa.querybyexample.Identifiable")##
-// elastic search index must be lowercase
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "${entity.model.var.toLowerCase()}")
 public#if ($output.isAbstract()) abstract#{end} class ${output.currentClass}${entity.spaceAndExtendsStatement} implements Identifiable<$entity.primaryKey.type>${entity.commaAndImplementedInterfaces}, Serializable {
 #else
 $output.require("${configuration.rootPackage}.jpa.model.${entity.parent.model.type}")##
