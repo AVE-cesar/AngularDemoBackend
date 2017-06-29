@@ -9,4 +9,4 @@ jdk:
 script: 
   - mvn -Pdb,metadata,gen
 #  - mvn test
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile sonar:sonar
