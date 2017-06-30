@@ -38,6 +38,8 @@
 		<jdbc.user>${project.name}</jdbc.user>
         <jdbc.password>${project.name}</jdbc.password>
 		
+		<!-- Sonar properties -->
+		<sonar.exclusions>**/*_.java</sonar.exclusions>
 	</properties>
 
 	<dependencies>
