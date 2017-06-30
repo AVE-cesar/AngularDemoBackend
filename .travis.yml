@@ -1,3 +1,4 @@
+# codecov key : 69b49f55-e2d8-4198-9171-d039c688d8c8
 language: java
 sudo: false # faster builds
 addons:
@@ -9,6 +10,8 @@ jdk:
   - oraclejdk8
 script: 
   - mvn -Pdb,metadata,gen
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile cobertura:cobertura sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile sonar:sonar
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)  -t 69b49f55-e2d8-4198-9171-d039c688d8c8
   
