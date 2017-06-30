@@ -6,3 +6,6 @@ https://travis-ci.org/AVE-cesar/AngularDemoBackend.
 
 https://sonarcloud.io/organizations/ave-cesar-github/projects
 
+[![codecov](https://codecov.io/gh/AVE-cesar/AngularDemoBackend/branch/master/graph/badge.svg)](https://codecov.io/gh/AVE-cesar/AngularDemoBackend)
+
+
