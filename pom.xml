@@ -80,6 +80,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Swagger part 1/2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -87,12 +88,22 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Swagger part 2/2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Random beans: tool to auto-fill Java POJOs with data (see https://github.com/benas/random-beans) -->
+		<dependency>
+			<groupId>io.github.benas</groupId>
+			<artifactId>random-beans</artifactId>
+			<version>3.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -143,7 +154,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- for code coverage -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
