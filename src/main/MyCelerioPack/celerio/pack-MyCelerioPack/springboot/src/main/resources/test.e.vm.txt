@@ -1,0 +1,80 @@
+$output.resource("${entity.model.var}.txt")##
+
+Entity courante: $entity
+
+-- les relations du projet pour chacunes des entites
+#foreach ($entityP in $project.getEntities().list)
+Entity pour laquelle on recherche les relations: $entityP.name
+	#foreach ($rel in $entityP.getRelations().list)
+        toEntity: $rel.getToEntity(), kind: $rel.getKind()
+		#if ($entity == $rel.getToEntity())
+			#if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many")
+				-- on a une relation (MTO,MTM) vers notre entite $entity, il faudra faire une table HTML contenant la liste des $entityP.name liés avec des liens pour y descendre
+				-- il faudra un REST sur les $entityP.name pour lister les $entityP.name liés à $entity
+				-- Exemple: get${entityP.name}By${entity}ID
+			#end
+		#end
+	#end
+------------------------------------------------------------------------	
+#end
+
+-- les attributs d'une entité
+#foreach ($attribute in $entity.attributes.list)
+	$attribute.var, $attribute.type
+#end
+------------------------------------------------------------------------	
+-- les attributs d'une entité
+#foreach ($attribute in $entity.attributes.list)
+$attribute.isNotNullable()
+	#if ($attribute.isNotNullable() == true)
+		attribut obligatoire
+	#else
+		attribut NON obligatoire
+	#end
+
+	$attribute
+	
+	PARTIE JPA: $attribute.jpa
+	
+	##foreach ($annotation in $attribute.jpa.annotations)
+		
+	##end
+#end
+
+-- macro
+#set ($ckey = "")
+#macro(myMacro $ckey)
+	#foreach ($attribute in $entity.attributes.list)
+		#if ($attribute.isInCpk() == true)
+			#if ($ckey == "")
+				#set ($ckey = "{$attribute.name}")
+			#else
+				#set ($ckey = "$ckey,{$attribute.name}")
+			#end
+		#end
+	#end
+#end
+#myMacro($ckey)
+résultat de la macro: $ckey
+
+
+#foreach ($attribute in $entity.getAttributes().list)
+	$attribute
+#end
+
+-- cle composite ou simple
+#set ($ckey = "")
+#foreach ($attribute in $entity.attributes.list)
+	#if ($attribute.isInCpk() == true)
+		#if ($ckey == "")
+			#set ($ckey = "{$attribute.name}")
+		#else
+			#set ($ckey = "$ckey,{$attribute.name}")
+		#end
+	#end
+#end
+#if ($ckey == "")
+	clé simple: {id}
+#else
+	clé composite: $ckey 
+#end	

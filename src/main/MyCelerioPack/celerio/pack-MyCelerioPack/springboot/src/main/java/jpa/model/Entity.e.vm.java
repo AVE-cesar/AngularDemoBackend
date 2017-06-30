@@ -1,6 +1,5 @@
 $output.java("${configuration.rootPackage}.jpa.model", "${entity.model.type}")##
 
-$output.require("java.util.logging.Logger")##
 $output.require("com.google.common.base.MoreObjects")##
 
 #if($entity.hasComment())
@@ -45,7 +44,6 @@ public#if ($output.isAbstract()) abstract#{end} class $output.currentClass exten
 
 	private static final long serialVersionUID = 1L;
 
-    private static final Logger log = Logger.getLogger(${output.currentClass}.class.getName());
 #if ($entity.isRoot() && $entity.primaryKey.isComposite())
 
     // Composite primary key
@@ -633,13 +631,32 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
         return ${output.currentRootCast}this;
     }
 
-    /**
-     * Equals implementation using a business key.
-     */
-    @Override
-    public boolean equals(Object other) {
-        return ${output.currentRootCast}this == other || (other instanceof $output.currentClass && hashCode() == other.hashCode());
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		${entity.model.type} other = (${entity.model.type}) obj;
+		
+		#foreach ($attribute in $entity.nonCpkAttributes.list)
+		if ($attribute.var == null) {
+			if (other.${attribute.var} != null) {
+				return false;
+			}
+		} else if (!${attribute.var}.equals(other.${attribute.var})) {
+			return false;
+		}
+		#end		
+		
+		return true;
+	}
 
 #if($entity.useBusinessKey())
 
@@ -670,12 +687,19 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
     }
 
 #elseif($entity.isRoot())    
-$output.require("${configuration.rootPackage}.jpa.model.support.IdentifiableHashBuilder")##
-    private IdentifiableHashBuilder identifiableHashBuilder = new IdentifiableHashBuilder();
+$output.require("java.util.Objects")##
 
     @Override
     public int hashCode() {
-        return identifiableHashBuilder.hash(log, this);
+        return Objects.hash(
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+#if ($velocityCount == $entity.nonCpkAttributes.list.size())
+	this.$attribute.var
+#else
+	this.$attribute.var,
+#end	
+#end        		
+        		);
     }
 
 #end
