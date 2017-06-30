@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Random;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import static org.hamcrest.Matchers.is;
@@ -62,11 +60,12 @@ public class BookControllerTest {
 			.andExpect(content().string(containsString("")));
 	}
 /*	
+    // ne marche pas à cause du champ price (son format et sa conversion dans Celerio) de la table Book
 	@Test
 	public void testFindAllByPage() throws Exception {
 		int size = 20;
 		for (int i = 0; i < 3 * size; i++) {
-			testCreate();
+			createABook();
 		}
 				
 		int firstPage = 0;
@@ -86,8 +85,11 @@ public class BookControllerTest {
 	
 	@Test
 	public void testCreate() throws Exception {
-		Random rand = new Random();
-		Book book = BookEntityUtils.createNewBook("" + rand.nextInt());
+		createABook();
+	}
+*/	
+	private void createABook () throws Exception {
+		Book book = BookEntityUtils.createNewBook();
 		
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
 		this.mockMvc.perform(post("/api/books/")
@@ -99,5 +101,4 @@ public class BookControllerTest {
 			// FIXME: marche plus
 			//.andExpect(jsonPath("$.price", is(book.getPrice())));
 	}
-*/
 }

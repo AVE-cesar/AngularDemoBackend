@@ -34,8 +34,10 @@
 		<celerio-maven-plugin.version>4.0.18</celerio-maven-plugin.version>
 		<database.type>H2</database.type>
 		<jdbc.driver>org.h2.Driver</jdbc.driver>
-		<jdbc.url>jdbc:h2:${project.build.directory}/db/AngularDemoBackend;MVCC=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE</jdbc.url><!-- 
-			for runtime -->
+		<jdbc.url>jdbc:h2:${project.build.directory}/db/AngularDemoBackend;MVCC=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE</jdbc.url>
+		<jdbc.user>${project.name}</jdbc.user>
+        <jdbc.password>${project.name}</jdbc.password>
+		
 	</properties>
 
 	<dependencies>

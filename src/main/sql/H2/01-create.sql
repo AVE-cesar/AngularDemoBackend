@@ -14,7 +14,7 @@ CREATE TABLE BOOK (
     DESCRIPTION                 varchar(255) not null,
     PUBLICATION_DATE            timestamp,
     AUTHOR_ID                   int,
-    PRICE                       decimal(20, 2) not null,
+    PRICE                       double not null,
 --	previousBookId				char(36),  ce champ génère un pb, il ajoute un tag @FixedLength qu'on ne sait pas où trouver
 	BARCODEID					int,
 	

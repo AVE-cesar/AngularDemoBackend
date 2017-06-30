@@ -22,22 +22,22 @@ public class BookJpaRepositoryTest {
 
 	@Test
 	public void testSave() {
-		repository.save(BookEntityUtils.createNewBook("1"));
+		repository.save(BookEntityUtils.createNewBook());
 	}
-/*
+
 	@Test
 	public void testUpdate() {
-		Book book = EntityUtils.createNewBook("1");
+		Book book = BookEntityUtils.createNewBook();
 		Book book1 = repository.save(book);
 		
 		Book book2 = repository.save(book1);
 		
 		assertThat(book2).isNotEqualTo(book);
 	}
-	
+/*
 	@Test
 	public void testDelete() {
-		Book book = EntityUtils.createNewBook("1");
+		Book book = BookEntityUtils.createNewBook();
 		repository.save(book);
 		assertThat(repository.findOne(book.getId())).isEqualTo(book);
 		
@@ -49,21 +49,21 @@ public class BookJpaRepositoryTest {
 	
 	@Test
 	public void should_store_a_customer() {
-		Book book = EntityUtils.createNewBook("1");
+		Book book = BookEntityUtils.createNewBook();
 
 		Book savedBook = repository.save(book);
 
-		assertThat(savedBook).hasFieldOrPropertyWithValue("title", "Title 1");
-		assertThat(savedBook).hasFieldOrPropertyWithValue("author", "Author 1");
+		assertThat(savedBook).hasFieldOrPropertyWithValue("title", book.getTitle());
+		assertThat(savedBook).hasFieldOrPropertyWithValue("authorId", book.getAuthorId());
 	}
 
 	@Test
 	public void should_delete_all_customer() {
-		Book book1 = EntityUtils.createNewBook("1");
+		Book book1 = BookEntityUtils.createNewBook();
 
 		repository.save(book1);
 
-		Book book2 = EntityUtils.createNewBook("2");
+		Book book2 = BookEntityUtils.createNewBook();
 
 		repository.save(book2);
 
@@ -74,15 +74,15 @@ public class BookJpaRepositoryTest {
 
 	@Test
 	public void should_find_all_customers() {
-		Book book1 = EntityUtils.createNewBook("1");
+		Book book1 = BookEntityUtils.createNewBook();
 
 		repository.save(book1);
 
-		Book book2 = EntityUtils.createNewBook("2");
+		Book book2 = BookEntityUtils.createNewBook();
 
 		repository.save(book2);
 		
-		Book book3 = EntityUtils.createNewBook("3");
+		Book book3 = BookEntityUtils.createNewBook();
 
 		repository.save(book3);
 
@@ -93,14 +93,13 @@ public class BookJpaRepositoryTest {
 
 	@Test
 	public void should_find_Book_by_id() {
-		Book book = EntityUtils.createNewBook("2");
+		Book book = BookEntityUtils.createNewBook();
 
 		repository.save(book);
 
-		Book foundBook = repository.findOne("2");
+		Book foundBook = repository.findOne(book.getId());
 
-		System.out.println(foundBook);
 		assertThat(foundBook).isEqualTo(book);
 	}
-	*/
+*/
 }

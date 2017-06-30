@@ -3,6 +3,8 @@ $output.javaTest("${configuration.rootPackage}.jpa.model", "BookTest")##
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.utils.BookEntityUtils;
@@ -35,5 +37,16 @@ public class BookTest {
         assertTrue(book1.equals(book2));
         assertTrue(book1.hashCode() == book2.hashCode());
         
+    }
+    
+    @Test 
+    public void testSetters() {
+    		Book book = new Book();
+    		
+    		Double value = new Double(12.2564789);
+    		book.setPrice(value);
+    		
+    		assertTrue(value.equals(book.getPrice()));
+    		assertNotNull(book.getPrice());
     }
 }

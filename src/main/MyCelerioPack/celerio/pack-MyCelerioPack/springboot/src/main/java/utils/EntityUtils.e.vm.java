@@ -31,6 +31,8 @@ $output.require("java.math.BigDecimal")##
 #elseif ("Date" == $attribute.type)
 $output.require("java.util.Date")##
 		${entity.model.var}.${attribute.setter}(new Date());
+#elseif ("Double" == $attribute.type)
+		${entity.model.var}.${attribute.setter}(new Double(1));
 #elseif ("String" == $attribute.type)
 		${entity.model.var}.${attribute.setter}("Todo");
 #else
