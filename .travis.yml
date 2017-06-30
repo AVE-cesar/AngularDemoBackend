@@ -1,4 +1,5 @@
 language: java
+sudo: false # faster builds
 addons:
   sonarcloud:
     organization: "ave-cesar-github"
@@ -8,5 +9,6 @@ jdk:
   - oraclejdk8
 script: 
   - mvn -Pdb,metadata,gen
-#  - mvn test
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile cobertura:cobertura sonar:sonar
+
+  
