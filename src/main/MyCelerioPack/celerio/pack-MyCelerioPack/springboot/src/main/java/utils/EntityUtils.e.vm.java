@@ -6,6 +6,10 @@ $output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 
 public class ${entity.model.type}EntityUtils {
 
+	private ${entity.model.type}EntityUtils() {
+		super();
+	}
+	
 	public static ${entity.model.type} createNew${entity.model.type}(String id) {
 		${entity.model.type} ${entity.model.var} = new ${entity.model.type}();
 // FIXME à terminer		
