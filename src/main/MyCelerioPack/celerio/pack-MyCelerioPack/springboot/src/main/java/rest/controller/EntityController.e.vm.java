@@ -231,7 +231,7 @@ public class $output.currentClass{
      */
     @RequestMapping(value = "/mass/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) throws URISyntaxException {
+    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) {
         log.debug("Delete by id $entity.model.varsUp : {}.", (Object[])id);
         Stream.of(id).forEach(item -> {${entity.model.var}JpaRepository.delete(item); #if (($entity.hasSimplePk()))${entity.model.var}ElasticsearchRepository.delete(item);#end}); 
         
@@ -243,7 +243,7 @@ public class $output.currentClass{
      */
     @RequestMapping(value = "/mass/$str1", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) throws URISyntaxException {
+    public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) {
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 #end
@@ -431,9 +431,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         		values.toArray(), 
         		new BeanPropertyRowMapper<$entity.model.type>(${entity.model.type}.class));
         
-        Page<$entity.model.type> page = new PageImpl<$entity.model.type>($entity.model.vars, pageable, total);
-        
-        return page;
+        return new PageImpl<>($entity.model.vars, pageable, total);
     }
 
 ## dedicated method for system entities
