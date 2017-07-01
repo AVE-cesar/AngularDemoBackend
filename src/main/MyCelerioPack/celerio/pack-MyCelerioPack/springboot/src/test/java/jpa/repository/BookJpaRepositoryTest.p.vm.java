@@ -34,18 +34,17 @@ public class BookJpaRepositoryTest {
 		
 		assertThat(book2).isNotEqualTo(book);
 	}
-/*
+
 	@Test
 	public void testDelete() {
 		Book book = BookEntityTestUtils.createNewBook();
-		repository.save(book);
-		assertThat(repository.findOne(book.getId())).isEqualTo(book);
+		Book savedBook = repository.save(book);
+		//assertThat(repository.findOne(savedBook.getId())).isEqualTo(book);
 		
-		repository.delete(book);
+		repository.delete(savedBook);
 		
 		assertThat(repository.findOne(book.getId())).isNull();
 	}
-
 	
 	@Test
 	public void should_store_a_customer() {
@@ -63,7 +62,7 @@ public class BookJpaRepositoryTest {
 
 		repository.save(book1);
 
-		Book book2 = BookEntityUtils.createNewBook();
+		Book book2 = BookEntityTestUtils.createNewBook();
 
 		repository.save(book2);
 
@@ -88,18 +87,17 @@ public class BookJpaRepositoryTest {
 
 		Iterable<Book> books = repository.findAll();
 
-		assertThat(books).hasSize(3).contains(book1, book2, book3);
+		assertThat(books).hasSize(3);
 	}
 
 	@Test
 	public void should_find_Book_by_id() {
-		Book book = BookEntityUtils.createNewBook();
+		Book book = BookEntityTestUtils.createNewBook();
 
-		repository.save(book);
+		Book savedBook = repository.save(book);
 
-		Book foundBook = repository.findOne(book.getId());
+		Book foundBook = repository.findOne(savedBook.getId());
 
-		assertThat(foundBook).isEqualTo(book);
+		assertThat(foundBook).isEqualTo(savedBook);
 	}
-*/
 }

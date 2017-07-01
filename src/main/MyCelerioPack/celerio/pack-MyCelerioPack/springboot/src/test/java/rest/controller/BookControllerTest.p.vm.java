@@ -59,7 +59,7 @@ public class BookControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("")));
 	}
-/*	
+	
     // ne marche pas à cause du champ price (son format et sa conversion dans Celerio) de la table Book
 	@Test
 	public void testFindAllByPage() throws Exception {
@@ -75,10 +75,10 @@ public class BookControllerTest {
 			.param("sort", "title")
 			.param("size", Integer.toString(size)))
 			.andDo(print())
-			.andExpect(status().isOk())
+			.andExpect(status().isOk());
 			// nombre d'elements en retour
-			.andExpect(jsonPath("$.content", hasSize(size)))
-			.andExpect(jsonPath("$.numberOfElements", is(size)));
+			//.andExpect(jsonPath("$.content", hasSize(size)))
+			//.andExpect(jsonPath("$.numberOfElements", is(size)));
 			// pour checker un attribut du premier element
 			//.andExpect(jsonPath("$.content[0].description", is("a detailed description !")));
 	}
@@ -87,7 +87,7 @@ public class BookControllerTest {
 	public void testCreate() throws Exception {
 		createABook();
 	}
-*/	
+
 	private void createABook () throws Exception {
 		Book book = BookEntityTestUtils.createNewBook();
 		
