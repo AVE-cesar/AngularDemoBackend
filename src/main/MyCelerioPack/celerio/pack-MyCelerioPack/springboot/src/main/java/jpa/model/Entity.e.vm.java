@@ -1,6 +1,7 @@
 $output.java("${configuration.rootPackage}.jpa.model", "${entity.model.type}")##
 
 $output.require("com.google.common.base.MoreObjects")##
+$output.require("${configuration.rootPackage}.utils.${entity.model.type}EntityUtils")##
 
 #if($entity.hasComment())
 /**
@@ -644,18 +645,16 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
 		}
 		
 		${entity.model.type} other = (${entity.model.type}) obj;
-		
-		#foreach ($attribute in $entity.nonCpkAttributes.list)
-		if ($attribute.var == null) {
-			if (other.${attribute.var} != null) {
-				return false;
-			}
-		} else if (!${attribute.var}.equals(other.${attribute.var})) {
-			return false;
-		}
-		#end		
-		
-		return true;
+	
+#foreach ($attribute in $entity.nonCpkAttributes.list)		
+#if ($velocityCount == 1)
+	    boolean result = ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+#else	    
+	    result = result && ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+#end	    
+#end
+
+	    return result;
 	}
 
 #if($entity.useBusinessKey())

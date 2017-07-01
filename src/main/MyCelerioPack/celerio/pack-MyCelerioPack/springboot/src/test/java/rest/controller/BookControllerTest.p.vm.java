@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.jaxio.demo.Application;
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.rest.controller.BookController;
-import com.jaxio.demo.utils.BookEntityUtils;
+import com.jaxio.demo.utils.BookEntityTestUtils;
 
 import com.jaxio.demo.utils.JsonUtils;
 
@@ -89,7 +89,7 @@ public class BookControllerTest {
 	}
 */	
 	private void createABook () throws Exception {
-		Book book = BookEntityUtils.createNewBook();
+		Book book = BookEntityTestUtils.createNewBook();
 		
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
 		this.mockMvc.perform(post("/api/books/")

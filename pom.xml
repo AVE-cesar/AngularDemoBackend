@@ -102,6 +102,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!--  Pour avoir la console H2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- Random beans: tool to auto-fill Java POJOs with data (see https://github.com/benas/random-beans) -->
 		<dependency>
 			<groupId>io.github.benas</groupId>

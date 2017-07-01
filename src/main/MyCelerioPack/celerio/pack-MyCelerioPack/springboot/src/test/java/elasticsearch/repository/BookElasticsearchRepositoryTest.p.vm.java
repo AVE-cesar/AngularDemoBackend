@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jaxio.demo.Application;
 import com.jaxio.demo.elasticsearch.model.Book;
-import com.jaxio.demo.utils.BookEntityUtils;
+import com.jaxio.demo.utils.BookEntityTestUtils;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles(profiles = "TEST")
@@ -46,7 +46,7 @@ public class BookElasticsearchRepositoryTest {
 	
 	@Test
 	public void testFind() {
-		Book book = BookEntityUtils.createNewElasticsearchBook("1");
+		Book book = BookEntityTestUtils.createNewElasticsearchBook("1");
 		Book savedBook = bookElasticsearchRepository.save(book);
 		
 		assertThat(savedBook).isEqualTo(book);

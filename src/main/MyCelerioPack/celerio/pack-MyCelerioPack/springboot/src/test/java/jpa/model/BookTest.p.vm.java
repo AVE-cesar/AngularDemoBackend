@@ -17,7 +17,7 @@ import static org.junit.Assert.assertFalse;
 
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.jpa.model.BookTest;
-import com.jaxio.demo.utils.BookEntityUtils;
+import com.jaxio.demo.utils.BookEntityTestUtils;
 
 public class BookTest {
 
@@ -25,8 +25,8 @@ public class BookTest {
 	
     @Test
     public void testEquals() {
-        Book book1 = BookEntityUtils.createNewBook();
-        Book book2 = BookEntityUtils.createNewBook();
+        Book book1 = BookEntityTestUtils.createNewBook();
+        Book book2 = BookEntityTestUtils.createNewBook();
         
         assertTrue(book1.equals(book1));
         assertFalse(book1.equals(book2));
@@ -35,8 +35,8 @@ public class BookTest {
     
     @Test
     public void testHashCode() {
-        Book book1 = BookEntityUtils.createNewBook();
-        Book book2 = BookEntityUtils.createNewBook();
+        Book book1 = BookEntityTestUtils.createNewBook();
+        Book book2 = BookEntityTestUtils.createNewBook();
         
         book2.setId(book1.getId());
         book2.setTitle(book1.getTitle());
@@ -53,7 +53,7 @@ public class BookTest {
     
     @Test
     public void testBeanValidation() {
-        Book book = BookEntityUtils.createNewBook();
+        Book book = BookEntityTestUtils.createNewBook();
         // FIXME: il faut enlever la ligne suivante et trouver pourquoi cette méthode plante
         //book.setPrice(new Double(1));
         book.setPrice(Integer.valueOf(1));
