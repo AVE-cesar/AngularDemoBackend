@@ -36,10 +36,12 @@
 		<jdbc.driver>org.h2.Driver</jdbc.driver>
 		<jdbc.url>jdbc:h2:${project.build.directory}/db/AngularDemoBackend;MVCC=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE</jdbc.url>
 		<jdbc.user>${project.name}</jdbc.user>
-        <jdbc.password>${project.name}</jdbc.password>
-		
+		<jdbc.password>${project.name}</jdbc.password>
+
 		<!-- Sonar properties -->
 		<sonar.exclusions>**/*_.java</sonar.exclusions>
+		<sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+		<sonar.cobertura.reportPath>target/site/cobertura/coverage.xml</sonar.cobertura.reportPath>
 	</properties>
 
 	<dependencies>
@@ -106,7 +108,7 @@
 			<artifactId>random-beans</artifactId>
 			<version>3.7.0</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
