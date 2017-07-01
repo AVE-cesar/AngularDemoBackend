@@ -55,7 +55,8 @@ public class BookTest {
     public void testBeanValidation() {
         Book book = BookEntityUtils.createNewBook();
         // FIXME: il faut enlever la ligne suivante et trouver pourquoi cette méthode plante
-        book.setPrice(new Double(1));
+        //book.setPrice(new Double(1));
+        book.setPrice(Integer.valueOf(1));
         
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
