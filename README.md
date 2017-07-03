@@ -4,8 +4,9 @@ Travis CI Status [![Build Status](https://travis-ci.org/AVE-cesar/AngularDemoBac
 
 https://travis-ci.org/AVE-cesar/AngularDemoBackend.
 
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=test:AngularDemoBackend)](https://sonarqube.com/dashboard/index/AngularDemoBackend)
+
 https://sonarcloud.io/organizations/ave-cesar-github/projects
 
 [![codecov](https://codecov.io/gh/AVE-cesar/AngularDemoBackend/branch/master/graph/badge.svg)](https://codecov.io/gh/AVE-cesar/AngularDemoBackend)
-
 

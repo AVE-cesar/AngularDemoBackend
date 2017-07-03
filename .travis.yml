@@ -3,7 +3,8 @@ language: java
 sudo: false # faster builds
 cache:
   directories:
-    - $HOME/.m2
+    - '$HOME/.m2'
+    - '$HOME/.sonar/cache'
 addons:
   sonarcloud:
     organization: "ave-cesar-github"
