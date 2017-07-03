@@ -9,11 +9,7 @@ addons:
 jdk:
   - oraclejdk8
 script: 
-  - mvn clean 
-  - mvn -Pdb,metadata,gen 
-  - mvn compile
-#  - mvn cobertura:cobertura
-  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent -Pdb,metadata,gen compile sonar:sonar
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) 
