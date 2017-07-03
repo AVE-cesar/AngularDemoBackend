@@ -1,6 +1,8 @@
 $output.java("${configuration.rootPackage}.elasticsearch.model", "${entity.model.type}")##
 
+$output.require("com.google.common.base.MoreObjects")##
 $output.require("org.springframework.data.elasticsearch.annotations.Document")##
+$output.require("${configuration.rootPackage}.utils.Elasticsearch${entity.model.type}EntityUtils")##
 
 /**
  * entity ${entity.model.type} for Elasticsearch.
@@ -23,6 +25,9 @@ $output.require($attribute)##
 		super();
 	}
 	
+	/**
+	 * Constructor with all attributes.
+	 */
 	public ${entity.model.type}(
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 #if ($velocityCount == $entity.nonCpkAttributes.list.size())
@@ -38,6 +43,18 @@ $output.require($attribute)##
 	}
 
 #foreach ($attribute in $entity.nonCpkAttributes.list)
+	/**
+	 * Getter for $attribute.var.
+	 */
+public $attribute.type ${attribute.getter}() {
+	return this.$attribute.var;
+}
+#end
+
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+	/**
+	 * Setter for $attribute.var.
+	 */
 public void ${attribute.setter}($attribute.type $attribute.var) {
 this.$attribute.var = $attribute.var;
 }
@@ -45,15 +62,15 @@ this.$attribute.var = $attribute.var;
 
 	@Override
 	public String toString() {
-		return "${entity.model.type}{" + 
+    	return #if ($entity.hasParent())super.toString() + #{end}MoreObjects.toStringHelper(this) //
 #foreach ($attribute in $entity.nonCpkAttributes.list)
-#if ($velocityCount == 1)
-## first time, no starting comma
-"$attribute.var='" + $attribute.var + '\'' +
+#if(!$attribute.isInFk() || $attribute.isSimplePk())
+#if(!$attribute.isPassword())
+     .add("${attribute.var}", ${attribute.var}) //
+#end       
 #end
-", $attribute.var='" + $attribute.var + '\'' +
 #end
-				'}';
+        .toString();
 	}
 
 	@Override
@@ -81,16 +98,14 @@ result = prime * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashC
 		
 		${entity.model.type} other = (${entity.model.type}) obj;
 		
-		#foreach ($attribute in $entity.nonCpkAttributes.list)
-		if ($attribute.var == null) {
-			if (other.${attribute.var} != null) {
-				return false;
-			}
-		} else if (!${attribute.var}.equals(other.${attribute.var})) {
-			return false;
-		}
-		#end		
-		
-		return true;
+		#foreach ($attribute in $entity.nonCpkAttributes.list)		
+		#if ($velocityCount == 1)
+			    boolean result = Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+		#else	    
+			    result = result && Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+		#end	    
+		#end
+
+			    return result;
 	}
 }
