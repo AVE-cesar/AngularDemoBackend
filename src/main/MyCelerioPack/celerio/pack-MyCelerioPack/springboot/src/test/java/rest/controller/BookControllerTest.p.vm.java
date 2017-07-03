@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,7 +89,27 @@ public class BookControllerTest {
 		createABook();
 	}
 
-	private void createABook () throws Exception {
+    @Test
+    public void testUpdate() throws Exception {
+    	// real update
+    	Book book = createABook();
+    	
+    	this.mockMvc.perform(put("/api/books/")
+    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+    		.content(JsonUtils.convertObjectToJsonBytes(book)))
+			.andDo(print()).andExpect(status().isOk());
+    	
+    	// update becomes a creation because the ID is not set 
+    	Book bookwithoutId = createABook();
+    	bookwithoutId.setId(null);
+    	
+    	this.mockMvc.perform(put("/api/books/")
+    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+    		.content(JsonUtils.convertObjectToJsonBytes(bookwithoutId)))
+			.andDo(print()).andExpect(status().isCreated());
+    }
+	
+	private Book createABook () throws Exception {
 		Book book = BookEntityTestUtils.createNewBook();
 		
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
@@ -100,5 +121,7 @@ public class BookControllerTest {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 			// FIXME: marche plus
 			//.andExpect(jsonPath("$.price", is(book.getPrice())));
+		
+		return book;
 	}
 }
