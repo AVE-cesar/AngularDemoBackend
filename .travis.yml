@@ -1,6 +1,9 @@
 # codecov key : 69b49f55-e2d8-4198-9171-d039c688d8c8
 language: java
 sudo: false # faster builds
+cache:
+  directories:
+    - $HOME/.m2
 addons:
   sonarcloud:
     organization: "ave-cesar-github"
