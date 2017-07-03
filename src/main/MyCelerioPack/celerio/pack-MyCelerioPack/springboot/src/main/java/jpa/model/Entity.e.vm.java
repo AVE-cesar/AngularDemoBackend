@@ -737,7 +737,9 @@ $output.require("com.jaxio.jpa.querybyexample.LocaleHolder")##
         return #if ($entity.hasParent())super.toString() + #{end}MoreObjects.toStringHelper(this) //
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 #if(!$attribute.isInFk() || $attribute.isSimplePk())
-            .add("${attribute.var}", #if($attribute.isPassword())"XXXX"#else${attribute.getter}()#end) //
+	#if(!$attribute.isPassword())
+         .add("${attribute.var}", ${attribute.getter}()) //
+    #end       
 #end
 #end
             .toString();
