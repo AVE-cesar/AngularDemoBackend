@@ -442,7 +442,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
     @RequestMapping(value = "/finder/{domain},{key}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppParameter> findById(@PathVariable String domain, @PathVariable String key) throws URISyntaxException {
+    public ResponseEntity<AppParameter> findById(@PathVariable String domain, @PathVariable String key) {
         log.debug("Find by domain and key AppParameters : %s %s", domain, key);
         
         AppParameter appParameter = appParameterJpaRepository.findByDomainAndKey(domain, key);

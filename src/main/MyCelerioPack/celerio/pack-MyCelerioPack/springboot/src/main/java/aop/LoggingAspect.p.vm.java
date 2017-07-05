@@ -26,6 +26,7 @@ public class LoggingAspect {
 
     @Pointcut("within(${configuration.rootPackage}.jpa.repository..*) || within(${configuration.rootPackage}.rest..*)")
     public void loggingPointcut() {
+    		// this method acts as a hook for methods we want to log.
     }
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")

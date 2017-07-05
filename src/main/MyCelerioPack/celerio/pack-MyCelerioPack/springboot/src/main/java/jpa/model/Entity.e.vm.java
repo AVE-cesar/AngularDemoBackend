@@ -88,7 +88,7 @@ $output.require("${configuration.rootPackage}.jpa.model.${oneToOne.to.type}")##
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
 $output.require("${configuration.rootPackage}.jpa.model.${oneToVirtualOne.to.type}")##
-    private ${entity.collectionType.type}<$oneToVirtualOne.to.type> $oneToVirtualOne.to.vars = new ${entity.collectionType.implementationType}<$oneToVirtualOne.to.type>();
+    private ${entity.collectionType.type}<$oneToVirtualOne.to.type> $oneToVirtualOne.to.vars = new ${entity.collectionType.implementationType}<>();
 #end
 ## --------------- One to many
 #foreach ($oneToMany in $entity.oneToMany.list)
@@ -99,7 +99,7 @@ $output.require("${configuration.rootPackage}.jpa.model.${oneToVirtualOne.to.typ
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
 $output.require("${configuration.rootPackage}.jpa.model.${$oneToMany.to.type}")##
-    private ${entity.collectionType.type}<$oneToMany.to.type> $oneToMany.to.vars = new ${entity.collectionType.implementationType}<$oneToMany.to.type>();
+    private ${entity.collectionType.type}<$oneToMany.to.type> $oneToMany.to.vars = new ${entity.collectionType.implementationType}<>();
 #end
 ## --------------- Many to many
 #foreach ($manyToMany in $entity.manyToMany.list)
@@ -110,7 +110,7 @@ $output.require("${configuration.rootPackage}.jpa.model.${$oneToMany.to.type}")#
 $output.require($entity.collectionType.fullType)##
 $output.require($entity.collectionType.implementationFullType)##
 $output.require("${configuration.rootPackage}.jpa.model.${manyToMany.to.type}")##
-    private ${entity.collectionType.type}<$manyToMany.to.type> $manyToMany.to.vars = new ${entity.collectionType.implementationType}<$manyToMany.to.type>();
+    private ${entity.collectionType.type}<$manyToMany.to.type> $manyToMany.to.vars = new ${entity.collectionType.implementationType}<>();
 #end
 
     @Override
@@ -180,7 +180,7 @@ $output.require("$entity.collectionType.implementationFullType")##
     $output.dynamicAnnotation("javax.persistence.Transient")
     $output.dynamicAnnotation("javax.xml.bind.annotation.XmlTransient")
     public ${entity.collectionType.type}<String> getRoleNames() {
-        ${entity.collectionType.type}<String> roleNames = new ${entity.collectionType.implementationType}<String>();
+        ${entity.collectionType.type}<String> roleNames = new ${entity.collectionType.implementationType}<>();
 
         for ($roleRelation.to.type $roleRelation.to.var : ${roleRelation.to.getters}()) {
             roleNames.add(${roleRelation.to.var}.${roleRelation.toEntity.roleAttributes.roleName.getter}());
@@ -197,7 +197,7 @@ $output.require("$entity.collectionType.implementationFullType")##
     $output.dynamicAnnotation("javax.persistence.Transient")
     $output.dynamicAnnotation("javax.xml.bind.annotation.XmlTransient")
     public ${entity.collectionType.type}<String> getRoleNames() {
-        ${entity.collectionType.type}<String> roleNames = new ${entity.collectionType.implementationType}<String>();
+        ${entity.collectionType.type}<String> roleNames = new ${entity.collectionType.implementationType}<>();
         if ("user".equalsIgnoreCase(${entity.accountAttributes.username.getter}())) {
             roleNames.add("ROLE_USER");
         } else if ("admin".equalsIgnoreCase(${entity.accountAttributes.username.getter}())) {
