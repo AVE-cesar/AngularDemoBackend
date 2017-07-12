@@ -59,4 +59,11 @@ $output.require("java.util.List")##
 	// FIXME this code is hard coded !
     AppParameter findByDomainAndKey(String domain, String key);	
 #end
+#if ($entity.model.type == "AppUser")
+    /**
+     * Find by login.
+     */
+	// Needed for authentication mechanism.
+	public AppUser findByLogin(String login);
+#end
 }
