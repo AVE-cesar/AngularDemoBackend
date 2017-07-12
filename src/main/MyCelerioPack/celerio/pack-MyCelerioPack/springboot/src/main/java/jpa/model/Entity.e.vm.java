@@ -547,7 +547,12 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
      * Returns the {@link #$relation.to.vars} list.
      */
 #foreach ($annotation in $relation.jpa.annotations)
+#if ("@ManyToMany" == $annotation)
+	$output.require("javax.persistence.FetchType")##
+	@ManyToMany(fetch = FetchType.EAGER)
+#else	
     $annotation
+#end    
 #end
 $output.require("org.hibernate.annotations.NotFound")##
 $output.require("org.hibernate.annotations.NotFoundAction")##
