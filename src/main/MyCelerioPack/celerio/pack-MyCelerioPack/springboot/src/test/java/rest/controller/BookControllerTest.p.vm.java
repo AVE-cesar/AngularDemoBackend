@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,6 +55,7 @@ public class BookControllerTest {
 	}
 
 	@Test
+	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testFindAll() throws Exception {
 		this.mockMvc.perform(get("/api/books/"))
 			.andDo(print())
@@ -63,6 +65,7 @@ public class BookControllerTest {
 	
     // ne marche pas à cause du champ price (son format et sa conversion dans Celerio) de la table Book
 	@Test
+	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testFindAllByPage() throws Exception {
 		int size = 20;
 		for (int i = 0; i < 3 * size; i++) {
@@ -85,11 +88,13 @@ public class BookControllerTest {
 	}
 	
 	@Test
+	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testCreate() throws Exception {
 		createABook();
 	}
 
     @Test
+    @WithMockUser(username="admin",roles={"USER","ADMIN"})
     public void testUpdate() throws Exception {
     	// real update
     	Book book = createABook();
