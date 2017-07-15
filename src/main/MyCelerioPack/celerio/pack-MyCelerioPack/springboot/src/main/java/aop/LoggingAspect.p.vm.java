@@ -57,7 +57,7 @@ public class LoggingAspect {
             // track excessive durations
             // value 5000 should be updatable via JMX
             if (t2-t1 > 5000) {
-            	log.warn("\r\n\r\nPerformance issue in {}.{}()\r\ntook {} s\r\n\r\n", joinPoint.getSignature().getDeclaringTypeName(),
+            		log.warn("\r\n\r\nPerformance issue in {}.{}()\r\ntook {} s\r\n\r\n", joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(), (t2-t1)/1000); 
             }
             return result;

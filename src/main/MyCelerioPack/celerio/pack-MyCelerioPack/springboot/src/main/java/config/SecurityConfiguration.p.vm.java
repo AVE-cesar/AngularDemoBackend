@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	 * pages or URL excluded from security mechanism
     	 */
         web.ignoring().antMatchers("/assets/**", "/bower_components/**", "/index.html", "/login.html",
-                "/partials/**", "/template/**", "/", "/error/**", "/h2-console/**");
+                "/partials/**", "/template/**", "/", "/error/**");
     }
 
     @Override
@@ -75,7 +75,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 /* you must be a member of admin group to go to pages below */
                 .antMatchers("/v2/api-docs").hasAnyAuthority("admin")
                 .antMatchers("/users/**").hasAnyAuthority("admin")
-                /*.antMatchers("/h2-console/**").hasAnyAuthority("admin")*/
+                /* h2 console reserved to admin users*/
+                .antMatchers("/h2-console/**").hasAnyAuthority("admin")
                 /* you must be authenticated for other pages */
                 .anyRequest().authenticated()
             .and()
