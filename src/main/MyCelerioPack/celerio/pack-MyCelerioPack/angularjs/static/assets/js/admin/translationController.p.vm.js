@@ -1,0 +1,1 @@
+$output.resource("static/assets/js/admin", "translationController.js")##

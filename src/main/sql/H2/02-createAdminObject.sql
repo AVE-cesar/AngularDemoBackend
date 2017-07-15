@@ -44,7 +44,7 @@ INSERT INTO APP_USER_AUTHORITY  VALUES (-1, -1, -1);
 -- Security tokens
 --
 CREATE TABLE APP_TOKEN (
-	SERIES					varchar(50) not null  IDENTITY,
+	SERIES					varchar(50) not null,
 	TOKEN_VALUE				varchar(50),
 	TOKEN_CREATION_DATE		timestamp,
 	IP_ADDRESS				varchar(250) not null,
