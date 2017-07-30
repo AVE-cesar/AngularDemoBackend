@@ -1,0 +1,207 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}.html")##
+
+<div class="row">
+	<!-- Breadcrumb -->
+	<ul class="breadcrumb">
+  		<li class="active">${entity.model.type} search & result</li>
+	</ul>
+</div>
+
+<!-- ElasticSearch form -->	
+<div class="panel-group">
+<form class="form-floating" ng-submit="startElasticSearch(savedSearch)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#${entity.model.var}ElasticSearchForm">${entity.model.type} Elastic Search Form</a>
+      </h4>
+    </div>
+    <div id="${entity.model.var}ElasticSearchForm" class="panel-collapse collapse">
+      <div class="panel-body">
+          <div class="form-group filled">
+            <label class="control-label">{{ 'QUERY' | translate }}</label>
+            <input type="text" class="form-control input-sm" ng-model="savedSearch.query" required>
+          </div>
+      </div> <!-- panel body end -->
+      <div class="panel-footer">
+      	<div class="form-group">
+      			<button type="submit" class="btn btn-sm btn-primary" >{{ 'ELASTIC_SEARCH' | translate }}</button>
+        </div>
+    </div> <!-- panel footer end -->
+  </div>
+</form>
+</div>
+</div>
+
+<!-- Entity search form -->
+<div class="panel-group">
+<form class="form-floating" ng-submit="startSearch(savedSearch)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#${entity.model.var}SearchForm">${entity.model.type} Search Form</a>
+	  </h4>
+    </div>
+    <div id="${entity.model.var}SearchForm" class="panel-collapse collapse">
+      <div class="panel-body">
+
+#foreach ($attribute in $entity.attributes.list)
+	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+		#if ($attribute.type == "Date") 
+			  	<div class="form-group filled">
+			    	<label class="control-label">$attribute.varUp</label>
+	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var" data-autoclose="1" placeholder="{{ '$attribute.var' | translate }}" bs-datepicker>
+	            </div>
+	    #else  
+	    			<div class="form-group filled">
+			    	<label class="control-label">$attribute.varUp</label>
+	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var">
+	            </div> 
+	   #end     
+	#end
+#end		
+
+		</div> <!-- panel body end -->
+		<div class="panel-footer">
+				<!-- Form buttons: begin -->
+                  <div class="form-group">
+                      <button type="button" ng-click="clearSavedSearch()" class="btn btn-sm btn-default">{{ 'CLEAR' | translate }}</button>
+                      <button type="submit" class="btn btn-sm btn-primary">{{ 'SEARCH' | translate }}</button>
+                  </div>
+                  <!-- Form buttons: end -->
+                  
+         </div> <!-- panel footer end -->
+  </div>
+</form>
+</div>
+</div>
+					
+									
+									
+									
+									
+									
+									
+						
+				
+    	<!-- Tables
+      ================================================== -->
+		<div class="bs-docs-section">
+		
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="page-header">
+						<h4 id="tables">{{data.length}} of {{pagination.totalElements}} {{settings.plural}} available</h4>
+					</div>
+				</div>
+		
+			</div> <!-- row -->
+		
+			<div class="row">
+				<div class="col-lg-8">
+				</div>
+				<div class="col-lg-4">
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="Add a new ${entity.model.type}" data-original-title="Add a new ${entity.model.type}" ui-sref="create${entity.model.type}()"><i class="material-icons md-18">note_add</i></button>
+									
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="{{ 'INFO' | translate }}" data-original-title="{{ 'INFO' | translate }}" ng-click="showInfo()"><i class="material-icons md-18">info_outline</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="{{ 'SEARCH' | translate }}" data-original-title="{{ 'SEARCH' | translate }}" ng-click="searchItem()"><i class="material-icons md-18">search</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="Refresh the ${entity.model.var} grid" data-original-title="Tooltip on top" ng-click="refresh()"><i class="material-icons md-18">cached</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="right" title="{{ 'CLEAR_GRID' | translate }}" data-original-title="{{ 'CLEAR_GRID' | translate }}" ng-click="clear()"><i class="material-icons md-18">clear</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="right" title="Index all ${entity.model.var} via ElasticSearch" data-original-title="{{ 'CLEAR_GRID' | translate }}" ng-click="index()"><i class="material-icons md-18">find_in_page</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="right" title="Go to screen settings" data-original-title="Tooltip on right" ui-sref="config${entity.model.type}()"><i class="material-icons md-18">settings</i></button>
+					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="right" title="Download ${entity.model.vars} into a CSV file" data-original-title="Tooltip on right" ng-csv="getCSVData()" field-separator=";" lazy-load="true" charset="utf-8" filename="${entity.model.var}Data.csv" csv-label="true"><i class="material-icons md-18">file_download</i></button>
+				</div>
+
+
+ 			</div>
+		
+			<div class="row">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th><input type="checkbox" class="relative" ng-model="selectAll" ng-click="checkAll()" /></th>
+
+#if (($entity.hasSimplePk()))
+		<th fsm-sort="$entity.getPrimaryKey().getAttribute().var">$entity.getPrimaryKey().getAttribute().varUp</th>
+#else
+		<th>Id composite</th>
+#end			
+#foreach ($attribute in $entity.attributes.list)
+	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+		  <th fsm-sort="$attribute.var" ng-show="configValue.${attribute.var}">$attribute.varUp</th>
+	#end
+#end
+
+## --------------- One to one: header in the table
+#foreach ($relation in $entity.oneToOne.list)
+		  <th fsm-sort="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
+#end
+## --------------- Many to one
+#foreach ($relation in $entity.manyToOne.list)
+		  <th fsm-sort="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
+#end
+          <th class="text-right">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+          <tr ng-show="data.length == 0">
+            <td colspan="100" align="center"><a ng-click="searchItem()">{{ 'NO_DATA' | translate }}</a></td>
+          </tr>        
+        
+          <tr ng-repeat="(key, item) in data" ng-click="item.selected=!item.selected"  ng-dblclick="editItem(item)">
+            <td><input type="checkbox" class="relative" ng-model="item.selected" ng-click="${dollar}event.stopPropagation()" /></td>
+
+#if (($entity.hasSimplePk()))
+			<td>{{item.${entity.getPrimaryKey().getAttribute().var}}}</td>
+#else
+		<td>$str7</td>
+#end	            
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+		#if ($attribute.type == "Date")
+			<td ng-show="configValue.${attribute.var}">{{item.${attribute.var} | date:"dd/MM/yyyy"}}</td>
+		#elseif ($attribute.mappedType == "M_CLOB")
+			<td ng-show="configValue.${attribute.var}"><div ng-init="limit = 50; moreShown = false; lessShown = false;">
+    			{{item.${attribute.var} | limitTo: limit}}
+    			<a ng-show="item.${attribute.var}.length > limit" href ng-click="limit=item.${attribute.var}.length; moreShown = true; lessShown = true;" data-title="{{ 'MORE_TOOLTIP' | translate }}" bs-tooltip>...  <b>{{ 'MORE' | translate }}</b></a>    			
+    			<a ng-show="lessShown == true" href ng-click="limit=50; moreShown = false; lessShown = false">  <b>{{ 'LESS' | translate }}</b></a>
+				</div></td>			
+		#else
+		    <td ng-show="configValue.${attribute.var}">{{item.${attribute.var}}}</td>
+		#end
+	#end	    
+#end
+## --------------- One to one: value inside the table
+#foreach ($relation in $entity.oneToOne.list)
+		  <td><a ui-sref="edit${relation.to.type}(#if ((${relation.toEntity.hasSimplePk()})) {id:item.${relation.to.var}.${relation.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">{{item.${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()}}</a></td>
+#end
+## --------------- Many to one
+#foreach ($relation in $entity.manyToOne.list)
+		  <td><a ui-sref="edit${relation.to.type}(#if ((${relation.toEntity.hasSimplePk()})) {id:item.${relation.to.var}.${relation.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">{{item.${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()}}</a></td>
+#end	
+
+			<td class="text-right">			            
+			            <button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="{{ 'EDIT_ITEM' | translate }}" ui-sref="edit${entity.model.type}( {id:item.id} )"><i class="material-icons md-18">mode_edit</i></button>
+              			<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="{{ 'VIEW_ITEM' | translate }}" ui-sref="view${entity.model.type}( {id:item.id} )"><i class="material-icons md-18">description</i></button>
+						<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="{{ 'DELETE_ITEM' | translate }}" ng-click="remove(item)"><i class="material-icons md-18">delete_forever</i></button>
+			</td>
+          </tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-12">
+					<div>
+						<ul class="pagination pagination-sm">
+							<li class="disabled"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to first page" ng-click="first()">|&laquo; First</a></li>
+							<li class="active"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to previous page" ng-click="prev()">&laquo; Previous</a></li>
+							<li><a href="#" data-toggle="tooltip" data-placement="top" title="Go to next page" ng-click="next()">Next &raquo;</a></li>
+							<li><a href="#" data-toggle="tooltip" data-placement="top" title="Go to last page" ng-click="last()">Last &raquo;|</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+		</div> <!-- bs-docs-section -->

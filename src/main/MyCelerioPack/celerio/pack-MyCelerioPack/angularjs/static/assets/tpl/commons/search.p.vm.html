@@ -1,0 +1,61 @@
+$output.resource("/static/assets/tpl/commons/search.html")##
+
+<strong>TODO:</strong> formulaire de recherche dans un bandeau rétractable ou un aside<br><br>
+
+<script>
+/* on ouvre le drawer de gauche dès l'ouverture de la page */
+${dollar}('#drawerExample').drawer("show"); 
+</script>
+
+<!-- Forms
+      ================================================== -->
+      <div id="demo" class="bs-docs-section collapse in">
+
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="well">
+              <form class="form-horizontal">
+                <fieldset>
+                  <!-- Titre du formulaire -->
+                  <legend>Entity Search Form</legend>
+
+                  <!-- input: email  -->
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                    <div class="col-lg-4">
+                      <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+                    </div>
+
+
+                  <!-- input: password  -->
+                    <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                    <div class="col-lg-4">
+                      <input type="text" class="form-control" id="inputPassword" placeholder="Password">
+                    </div>
+                  </div> <!-- fin du groupe contenant deux input-->
+
+                  <!-- input: date  plus long que les autres -->
+                  <div class="form-group">
+                    <label for="inputDate" class="col-lg-2 control-label">Birth date</label>
+                    <div class="col-lg-8">
+                      <input type="text" class="form-control" id="inputDate" placeholder="Birth date">
+                    </div>
+                   </div> <!-- fin du groupe -->
+
+                  <!-- boutons du formulaire -->
+                  <div class="form-group">
+                    <!-- on utilise un offset de 2 pour décaler un peu sur la droite les boutons -->
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button type="reset" class="btn btn-default">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+
+                </fieldset>
+              </form>
+            </div> <!-- fin du div well -->
+          </div> <!-- fin du div -->
+         
+        </div> <!-- fin du div row -->
+      </div> <!-- fin du div demo pour le collapse -->

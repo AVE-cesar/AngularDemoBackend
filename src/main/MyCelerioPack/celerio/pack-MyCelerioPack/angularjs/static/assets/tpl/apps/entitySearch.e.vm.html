@@ -1,0 +1,99 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}Search.html")##
+
+<div class="row">
+	<!-- Breadcrumb -->
+	<ul class="breadcrumb">
+  		<li class="active">Book search & result</li>
+	</ul>
+</div>
+
+<!-- ElasticSearch form -->	
+<div class="panel-group">
+<form class="form-floating" ng-submit="startElasticSearch(savedSearch)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#bookElasticSearchForm">Book Elastic Search Form</a>
+      </h4>
+    </div>
+    <div id="bookElasticSearchForm" class="panel-collapse collapse">
+      <div class="panel-body">
+          <div class="form-group filled">
+            <label class="control-label">{{ 'QUERY' | translate }}</label>
+            <input type="text" class="form-control input-sm" ng-model="savedSearch.query" required>
+          </div>
+      </div> <!-- panel body end -->
+      <div class="panel-footer">
+      	<div class="form-group">
+      			<button type="submit" class="btn btn-sm btn-primary" >{{ 'ELASTIC_SEARCH' | translate }}</button>
+        </div>
+    </div> <!-- panel footer end -->
+  </div>
+</form>
+</div>
+</div>
+
+<!-- Entity search form -->
+<div class="panel-group">
+<form class="form-floating" ng-submit="startSearch(item)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#bookSearchForm">Book Search Form</a>
+	  </h4>
+    </div>
+    <div id="bookSearchForm" class="panel-collapse collapse">
+      <div class="panel-body">
+
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">Title</label>
+                    <input type="text" class="form-control input-sm" ng-model="savedSearch.title">
+                </div>
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">Description</label>
+                    <input type="text" class="form-control input-sm" ng-model="savedSearch.description">
+                </div>
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">PublicationDate</label>
+                	<input type="text" class="form-control input-sm" ng-model="savedSearch.publicationDate" data-autoclose="1" placeholder="{{ 'publicationDate' | translate }}" bs-datepicker>
+                </div>
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">AuthorId</label>
+                	<input type="text" class="form-control input-sm" ng-model="savedSearch.authorId">
+    	        </div>
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">Price</label>
+                	<input type="text" class="form-control input-sm" ng-model="savedSearch.price">
+    	        </div>
+		
+		
+			<div class="form-group filled">
+		    <label class="control-label">Barcodeid</label>
+                	<input type="text" class="form-control input-sm" ng-model="savedSearch.barcodeid">
+    	        </div>
+		
+		
+		</div> <!-- panel body end -->
+		<div class="panel-footer">
+				<!-- Form buttons: begin -->
+                  <div class="form-group">
+                      <button type="button" ng-click="clearSavedSearch()" class="btn btn-sm btn-default">{{ 'CLEAR' | translate }}</button>
+                      <button type="submit" class="btn btn-sm btn-primary">{{ 'SEARCH' | translate }}</button>
+                  </div>
+                  <!-- Form buttons: end -->
+                  
+         </div> <!-- panel footer end -->
+  </div>
+</form>
+</div>
+</div>

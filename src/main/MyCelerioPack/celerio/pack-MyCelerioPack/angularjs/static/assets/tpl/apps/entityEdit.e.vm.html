@@ -1,0 +1,150 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}Edit.html")##
+
+<div class="row">
+	<!-- Breadcrumb -->
+	<ul class="breadcrumb">
+	  <li><a ui-sref="${entity.model.var}">${entity.model.type} search & result</a></li>
+	  <li class="active">${entity.model.type} detail</li>
+	</ul>
+</div>
+
+<section class="forms-basic">
+  <div class="page-header">
+    <h1>
+      <i class="md md-input"></i>
+      ${entity.model.type} form
+    </h1>
+    <p class="lead">
+      You can edit ${entity.model.type} entity and see linked entities.
+    </p>
+  </div>
+
+<div class="row m-b-40">
+
+    <div class="col-md-3 col-md-push-9">
+      <h5>Mode</h5>
+      <p>mode: {{mode}}</p>
+    </div>
+    <div class="col-md-8 col-md-pull-3">
+      <div class="well">
+        <form class="form-horizontal">
+          <fieldset>
+            <legend>Main entity</legend>          
+            <span class="help-block m-b-20">Please fill out the following form below.</span>
+
+
+		
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label"><b>Title</b></label>
+                          <div class="col-lg-10">
+																
+				               		<input type="text" class="form-control" id="title" ng-model="item.title" required ng-disabled="mode == 'VIEW'">
+               	            		        	</div>
+           </div>
+    
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label"><b>Description</b></label>
+                          <div class="col-lg-10">
+																
+				               		<input type="text" class="form-control" id="description" ng-model="item.description" required ng-disabled="mode == 'VIEW'">
+               	            		        	</div>
+           </div>
+    
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label">PublicationDate</label>
+                          <div class="col-lg-10">
+					<input type="text" class="form-control" id="publicationDate" ng-model="item.publicationDate" data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
+		        	</div>
+           </div>
+    
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label">AuthorId</label>
+                          <div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="authorId" ng-model="item.authorId"  ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
+				            		        	</div>
+           </div>
+    
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label"><b>Price</b></label>
+                          <div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="price" ng-model="item.price" required ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
+				            		        	</div>
+           </div>
+    
+			
+										
+			<div class="form-group">
+			            	<label for="name" class="col-lg-2 control-label">Barcodeid</label>
+                          <div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="barcodeid" ng-model="item.barcodeid"  ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
+				            		        	</div>
+           </div>
+    
+
+
+          <div class="form-group">
+              <label for="id" class="col-lg-2 control-label"><b> Id</b></label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" id="id"  ng-disabled="true"  ng-model="item.id">
+              </div>
+         </div>
+            
+
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+              	<button type="submit" class="btn btn-primary" ui-sref="${entity.model.var}">back to List</button>
+                <button type="reset" class="btn btn-default" ng-click="remove(item)" ng-show="mode != 'VIEW'">Delete</button>
+                <button type="submit" class="btn btn-primary" ng-click="saveItem(item)" ng-show="mode != 'VIEW'">Save</button>
+              </div>
+            </div>
+
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+<section class="tables-data">
+
+  <div class="page-header">
+    <h1>
+      <i class="md md-list"></i>
+      Linked entities
+    </h1>
+    <p class="lead">
+      Todo
+    </p>
+  </div>
+
+
+<section class="tables-data">
+
+  <div class="page-header">
+    <h1>
+      <i class="md md-list"></i>
+      Linked entities (inverse relation)
+    </h1>
+    <p class="lead">
+      Todo
+    </p>
+  </div>
+	 	 	 	 	 				 	  
+</section>
+
+
+

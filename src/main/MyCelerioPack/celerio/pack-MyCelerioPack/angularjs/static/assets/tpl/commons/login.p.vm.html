@@ -1,0 +1,59 @@
+$output.resource("/static/assets/tpl/commons/login.html")##
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="page-header">
+      <h1 id="forms">Login</h1>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-danger" ng-show="authenticationError">
+    Please check your credentials and try again !
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="well">
+      <form class="form-horizontal" ng-cloak class="ng-cloak" ng-submit="doLogin()">
+        <fieldset>
+<!-- legend -->
+          <legend>Login:</legend>
+
+<!-- login input -->
+          <div class="form-group">
+            <label for="login" class="col-lg-2 control-label">Login</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="inputLogin" placeholder="Login" ng-model="username" value="admin" required="true">
+            </div>
+          </div>
+
+<!-- password input --> 
+          <div class="form-group">
+            <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+            <div class="col-lg-10">
+              <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="password" required="true">
+            </div>
+          </div>
+          
+<!-- remember me input -->          
+          <div class="form-group">
+          	<div class="checkbox">
+          		<label>
+            		<input type="checkbox" id="inputRememberMe" ng-model="rememberMe"> Remember Me
+            	</label>
+          	</div>
+          </div>
+          
+<!-- form buttons -->          
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+              <button type="reset" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

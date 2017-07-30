@@ -1,0 +1,148 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}Config.html")##
+
+<section>
+  <div class="page-header">
+    <div class="actions" >
+    </div>
+
+    <h1>
+      <i class="md md-camera"></i>
+      Book entity
+    </h1>
+    <p class="lead">
+      You can customize this entity...
+    </p>
+  </div>
+</section>
+
+<div>
+
+
+    <div class="table-responsive well no-padding white no-margin">
+      <h3 class="table-title"></h3>
+<form>
+      <table class="table table-full m-b-60" id="table-area-1" fsm-big-data="data of data take 30">
+        <thead>
+        <tr fsm-sticky-header scroll-body="'#table-area-1'" scroll-stop="64">
+          <th>Field</th>
+          <th>Translation</th>
+          <th>Key</th>
+          <th>Composite Key</th>
+          <th>Foreign Key</th>
+          <th>Inv. relation</th>
+          <th>Required</th>
+          <th>Indexed</th>
+          <th>Main</th>
+          <th>EDIT</th>
+         </tr>
+        </thead>
+        <tbody>
+		  <tr>
+          	<td><b>Id</b></td>
+          	<td>{{ 'Id' | translate }}</td>
+          	          		<td>true</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>true</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.id"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.id"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>Title</b></td>
+          	<td>{{ 'Title' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>true</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.title"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.title"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>Description</b></td>
+          	<td>{{ 'Description' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>true</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.description"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.description"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>PublicationDate</b></td>
+          	<td>{{ 'PublicationDate' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.publicationDate"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.publicationDate"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>AuthorId</b></td>
+          	<td>{{ 'AuthorId' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.authorId"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.authorId"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>Price</b></td>
+          	<td>{{ 'Price' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>true</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.price"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.price"/></td>
+          </tr>
+		  
+		  <tr>
+          	<td><b>Barcodeid</b></td>
+          	<td>{{ 'Barcodeid' | translate }}</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	          	<td>TODO: inverse relation</td>
+          	          		<td>&nbsp;</td>
+          	          	          		<td>&nbsp;</td>
+          	            <td><input type="checkbox" class="relative" ng-model="configValue.barcodeid"/></td>
+            <td><input type="checkbox" class="relative" ng-model="configValue.barcodeid"/></td>
+          </tr>
+		  
+        </tbody>
+      </table>
+      
+      <div class="form-group">
+      	<div class="col-lg-20 col-lg-offset-2">
+        	<button type="submit" class="btn btn-primary" ng-click="saveConfig(configValue)">Save</button>
+        </div>
+      </div>
+      </form>      
+    </div>
+
+<div class="footer-buttons">
+    <div class="btn btn-primary btn-round btn-lg m-r-10 btn-footer" ng-show="(data|filter:{selected: true}).length" ng-click="remove()"  data-title="Remove {{(data|filter:{selected: true}).length}} item(s)" bs-tooltip><i class="md md-delete"></i></div>
+    <div class="btn btn-default btn-round btn-lg m-r-10 btn-footer" scroll-to="top" ng-hide="scroll<100" data-title="{{ 'SCROLL_TO_TOP' | translate }}" bs-tooltip><i class="md md-arrow-drop-up"></i></div>
+    <div class="btn btn-primary btn-round btn-lg" ui-sref="createBook()" data-title="New {{settings.singular}}" bs-tooltip><i class="md md-add"></i></div>
+  </div>
+
+</div>
