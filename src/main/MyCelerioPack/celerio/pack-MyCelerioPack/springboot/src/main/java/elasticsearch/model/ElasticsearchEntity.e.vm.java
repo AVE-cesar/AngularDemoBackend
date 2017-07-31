@@ -75,11 +75,11 @@ this.$attribute.var = $attribute.var;
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int PRIME = 31;
 		int result = 1;
 
 #foreach ($attribute in $entity.nonCpkAttributes.list)
-result = prime * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashCode()); 
+result = PRIME * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashCode()); 
 #end		
 		return result;
 	}

@@ -43,7 +43,7 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UserNotEnabledException("User " + login + " was not enabled");
         }
 
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (AppAuthority appAuthority : appUser.getAppAuthorities()) {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(appAuthority.getName());
             grantedAuthorities.add(grantedAuthority);
