@@ -114,9 +114,7 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
       				return {title: "a", query: "test"}; 
 			} 
 	    	},
-			views: {
-            	/*"searchView": {templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Search.html",
-            		controller: "BookController"},*/     
+			views: {    
 				"mainView": {templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}.html",
 					controller: "${entity.name}Controller"},
 				"footerView": {templateUrl: "assets/tpl/commons/footer.html"}

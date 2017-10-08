@@ -8,7 +8,7 @@ app.config(['${dollar}translateProvider', function (${dollar}translateProvider) 
 		  '$entity.name.toUpperCase()_MENU': '$entity.name',
 #end
 	
-    	'ENTITY_DESCRIPTION': 'Use this page to manage book entities. You will be able to search, view, edit and delete items.',
+    	'ENTITY_DESCRIPTION': 'Use this page to manage an entity. You will be able to search, view, edit and delete items.',
     
       	'ID': 'Id',
       	'TITLE': 'Title',
