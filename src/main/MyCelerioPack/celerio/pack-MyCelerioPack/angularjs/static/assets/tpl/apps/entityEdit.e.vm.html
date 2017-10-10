@@ -8,6 +8,17 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	</ul>
 </div>
 
+<!-- ALerte success or error -->
+<div class="alert alert-success alert-dismissable fade in" style="display:none;" id="successAlert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Success!</strong> This entity has been successfully updated.
+</div>
+
+<div class="alert alert-danger alert-dismissable fade in" style="display:none;" id="errorAlert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Danger!</strong> This entity has NOT been updated ! Something goes wrong during this action.
+</div>
+
 <section class="forms-basic">
   <div class="page-header">
     <h1>

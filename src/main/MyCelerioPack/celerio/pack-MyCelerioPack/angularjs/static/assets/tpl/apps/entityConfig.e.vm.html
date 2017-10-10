@@ -7,7 +7,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 
     <h1>
       <i class="md md-camera"></i>
-      Book entity
+      ${entity.model.type} entity
     </h1>
     <p class="lead">
       You can customize this entity...
@@ -142,7 +142,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 <div class="footer-buttons">
     <div class="btn btn-primary btn-round btn-lg m-r-10 btn-footer" ng-show="(data|filter:{selected: true}).length" ng-click="remove()"  data-title="Remove {{(data|filter:{selected: true}).length}} item(s)" bs-tooltip><i class="md md-delete"></i></div>
     <div class="btn btn-default btn-round btn-lg m-r-10 btn-footer" scroll-to="top" ng-hide="scroll<100" data-title="{{ 'SCROLL_TO_TOP' | translate }}" bs-tooltip><i class="md md-arrow-drop-up"></i></div>
-    <div class="btn btn-primary btn-round btn-lg" ui-sref="createBook()" data-title="New {{settings.singular}}" bs-tooltip><i class="md md-add"></i></div>
+    <div class="btn btn-primary btn-round btn-lg" ui-sref="create${entity.model.type}()" data-title="New {{settings.singular}}" bs-tooltip><i class="md md-add"></i></div>
   </div>
 
 </div>

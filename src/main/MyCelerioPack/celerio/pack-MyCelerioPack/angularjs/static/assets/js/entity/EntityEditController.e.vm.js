@@ -90,49 +90,22 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 	scope.saveItem = function() {
 		log.info("Creating or updating an item");
 		
-		// defines the success behavior inside a methode
+		// defines the success behavior inside a method
 		var onSaveSuccess = function success(data) {
 			console.log('success, got data: ', data);
-		
-			window.showAlert = function(){
-				
-				var userALert = alertService({
-		                    title: "SUCCESS:",
-		                    content: '<BR>Your ${entity.model.var} have been <i>created or updated</i>. You can find it in the result table. See <a href="#"><B>older messages</B></a> !',
-		                    placement: "top-right",
-		                    type: "theme",
-		                    container: ".alert-container-top-right",
-		                    show: !1,
-		                    animation: "mat-grow-top-right"
-		                    });
-		    
-				timeoutService(function() {
-					userALert.show()
-		        	}, 1 /* timeout duration */);
-			};
 			
-			window.showAlert();
-			};
+			${dollar}("#successAlert").fadeTo(2000, 500).slideUp(500, function(){
+				${dollar}("#successAlert").hide();
+			});
+		};
 		
-			// defines the error behavior inside a methode
-			var onSaveError = function (result) {
-				window.showAlert = function(){
-					var userALert = alertService({
-			                    title: "ERROR:",
-			                    content: "<BR>Your ${entity.model.var} haven't been created. Try again !",
-			                    placement: "top-right",
-			                    type: "theme",
-			                    container: ".alert-container-top-right",
-			                    show: !1,
-			                    animation: "mat-grow-top-right"
-			                    });
-			    
-					timeoutService(function() {
-						userALert.show()
-			        	}, 1 /* timeout duration */);
-				};
-				window.showAlert();
-			};
+		// defines the error behavior inside a method
+		var onSaveError = function (result) {
+			console.log('error from the server');
+			${dollar}("#errorAlert").fadeTo(2000, 500).slideUp(500, function(){
+				${dollar}("#errorAlert").hide();
+			});
+		};
 		
 		if (scope.item.id != null) {
 			// update mode
