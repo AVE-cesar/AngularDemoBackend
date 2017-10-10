@@ -33,67 +33,27 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
             <span class="help-block m-b-20">Please fill out the following form below.</span>
 
 
-		
-			
-										
+#foreach ($attribute in $entity.attributes.list)
+	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+		#if ($attribute.type == "Date") 
 			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label"><b>Title</b></label>
-                          <div class="col-lg-10">
-																
-				               		<input type="text" class="form-control" id="title" ng-model="item.title" required ng-disabled="mode == 'VIEW'">
-               	            		        	</div>
-           </div>
-    
+			<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
 			
-										
-			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label"><b>Description</b></label>
-                          <div class="col-lg-10">
-																
-				               		<input type="text" class="form-control" id="description" ng-model="item.description" required ng-disabled="mode == 'VIEW'">
-               	            		        	</div>
-           </div>
-    
-			
-										
-			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label">PublicationDate</label>
-                          <div class="col-lg-10">
-					<input type="text" class="form-control" id="publicationDate" ng-model="item.publicationDate" data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
-		        	</div>
-           </div>
-    
-			
-										
-			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label">AuthorId</label>
-                          <div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="authorId" ng-model="item.authorId"  ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
-				            		        	</div>
-           </div>
-    
-			
-										
-			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label"><b>Price</b></label>
-                          <div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="price" ng-model="item.price" required ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
-				            		        	</div>
-           </div>
-    
-			
-										
-			<div class="form-group">
-			            	<label for="name" class="col-lg-2 control-label">Barcodeid</label>
-                          <div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="barcodeid" ng-model="item.barcodeid"  ng-pattern="/^\d{0,18}(\.\d{1,2})?${dollar}/" ng-disabled="mode == 'VIEW'">  
-				            		        	</div>
-           </div>
-    
-
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
+		   	</div>
+           	</div>
+	    #else  
+	    		<div class="form-group">
+	    		<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
+	    		
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" required ng-disabled="mode == 'VIEW'">
+            	</div> 
+            	</div>
+	   #end     
+	#end
+#end			
 
           <div class="form-group">
               <label for="id" class="col-lg-2 control-label"><b> Id</b></label>

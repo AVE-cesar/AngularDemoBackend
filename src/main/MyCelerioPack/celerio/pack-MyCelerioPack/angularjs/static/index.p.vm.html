@@ -211,7 +211,7 @@ $output.resource("/static/index.html")##
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="configuration">Configuration<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="configuration">
 #foreach ($entity in $project.entities.list)
-                <li><a ui-sref="configuration${entity.model.var}">${entity.model.type} configuration</a></li>
+                <li><a ui-sref="config${entity.name}">${entity.model.type} configuration</a></li>
 #end	
               </ul>
             </li>
