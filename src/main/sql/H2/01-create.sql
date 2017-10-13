@@ -6,7 +6,13 @@ DROP ALL OBJECTS;
 
 CREATE SEQUENCE hibernate_sequence START WITH 1000;
 
-
+-- many to one relation from Author to Book
+CREATE TABLE AUTHOR (
+    ID                  int not null IDENTITY,
+    NAME                varchar(100),
+    BIRTH_DATE          timestamp,
+    primary key (ID)
+);
 
 CREATE TABLE BOOK (
     ID                          char(36) not null,
@@ -19,8 +25,24 @@ CREATE TABLE BOOK (
 --	previousBookId				char(36),  ce champ génère un pb, il ajoute un tag @FixedLength qu'on ne sait pas où trouver
 	BARCODEID					int,
 	
+	constraint book_fk_1 foreign key (AUTHOR_ID) references AUTHOR,
     primary key (ID)
 );
+
+INSERT INTO AUTHOR  VALUES (1, 'John Doe',null);
+INSERT INTO AUTHOR  VALUES (2, 'Camus albert',null);
+INSERT INTO AUTHOR  VALUES (3, 'Hugo victor',null);
+INSERT INTO AUTHOR  VALUES (4, 'Proust marcel',null);
+INSERT INTO AUTHOR  VALUES (5, 'Zola émile',null);
+INSERT INTO AUTHOR  VALUES (6, 'Baudelaire charles',null);
+INSERT INTO AUTHOR  VALUES (7, 'Sartre jean paul',null);
+INSERT INTO AUTHOR  VALUES (8, 'Flaubert gustave',null);
+INSERT INTO AUTHOR  VALUES (9, 'Rousseau jean-jacques',null);
+INSERT INTO AUTHOR  VALUES (10, 'Racine jean',null);
+INSERT INTO AUTHOR  VALUES (11, 'Daudet alphonse',null);
+INSERT INTO AUTHOR  VALUES (12, 'Diderot denis',null);
+INSERT INTO AUTHOR  VALUES (13, 'Aragon louis',null);
+INSERT INTO AUTHOR  VALUES (14, 'jk Rowling',null);
 
 INSERT INTO BOOK  VALUES ('serial_1', 'Les misérables', 'histoire de cozette', null, 3, 12, /*null,*/ null);
 INSERT INTO BOOK  VALUES ('serial_2', 'A la recherche de temps perdu', '...', null, 4, 12, /*null,*/ null);

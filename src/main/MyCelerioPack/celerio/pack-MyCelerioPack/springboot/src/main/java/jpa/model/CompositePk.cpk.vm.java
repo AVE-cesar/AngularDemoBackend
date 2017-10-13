@@ -36,22 +36,11 @@ $output.require($attribute)##
      */
     public ${output.currentClass}() {
     }
-
-#set ($str1 = "")
-#set ($str2 = "")
-#set ($str3 = "")
-#set ($str4 = "")
-#set ($str5 = "")
-#set ($str6 = "")
-#set ($str7 = "")
-#set ($str8 = "")
-#set ($str9 = "")
-#set ($str10 = "")
-#generateSimpleOrCompositeKeyForURL($str1 $str2 $str3 $str4 $str5 $str6 $str7 $str8 $str9 $str10 $primaryKey.entity.attributes.list)    
+   
     /**
      * Constructor with each part of the composite key as a parameter.
      */
-    public ${output.currentClass}($str5) {
+    public ${output.currentClass}($entity.extended.getCpkAttributesListJavaStyle()) {
 #foreach ($attribute in $primaryKey.attributes)
         this.$attribute.var = $attribute.var;
 #end

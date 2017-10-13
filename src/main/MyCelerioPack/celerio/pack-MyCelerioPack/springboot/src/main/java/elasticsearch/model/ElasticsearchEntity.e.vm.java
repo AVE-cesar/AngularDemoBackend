@@ -98,13 +98,21 @@ result = PRIME * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashC
 		
 		${entity.model.type} other = (${entity.model.type}) obj;
 		
-		#foreach ($attribute in $entity.nonCpkAttributes.list)		
-		#if ($velocityCount == 1)
-			    boolean result = Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
-		#else	    
-			    result = result && Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
-		#end	    
+	#foreach ($attribute in $entity.nonCpkAttributes.list)	
+		#if(!$attribute.isInFk())
+			#if ($velocityCount == 1)
+				    boolean result = Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+			#else	    
+				    result = result && Elasticsearch${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+			#end	
 		#end
+	#end
+
+	// Many to one relations
+	## generates a comparison method for all Many to one relations
+	#foreach ($manyToOne in $entity.manyToOne.list)
+		result = result && Elasticsearch${entity.model.type}EntityUtils.compare${manyToOne.to.varUp}(this, other);
+	#end
 
 			    return result;
 	}

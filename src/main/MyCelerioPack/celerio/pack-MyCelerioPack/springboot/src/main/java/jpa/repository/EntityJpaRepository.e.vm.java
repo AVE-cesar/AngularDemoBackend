@@ -24,7 +24,7 @@ public interface $output.currentClass extends JpaRepository<$entity.model.type, 
 ## --------------- One to One
 #foreach ($oneToOne in $entity.oneToOne.list)
 $output.require("java.util.List")##
-$output.require("${oneToOne.to.getPackageName()}.$oneToOne.to.type")##
+$output.require("${configuration.rootPackage}.jpa.model.$oneToOne.to.type")##
 	/**
 	 * Find by $oneToOne.to.varUp (One To One relation).
 	 */
@@ -35,7 +35,7 @@ $output.require("${oneToOne.to.getPackageName()}.$oneToOne.to.type")##
 ## --------------- Many to One
 #foreach ($manyToOne in $entity.manyToOne.list)
 $output.require("java.util.List")##
-$output.require("${manyToOne.to.getPackageName()}.$manyToOne.to.type")##
+$output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
 	/**
 	 * Find by $manyToOne.to.varUp (Many To One relation).
 	 */

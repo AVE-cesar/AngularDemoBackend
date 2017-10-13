@@ -1,17 +1,5 @@
 $output.resource("static/assets/js/entity", "${entity.model.var}EditController.js")##
 
-#set ($str1 = "")
-#set ($str2 = "")
-#set ($str3 = "")
-#set ($str4 = "")
-#set ($str5 = "")
-#set ($str6 = "")
-#set ($str7 = "")
-#set ($str8 = "")
-#set ($str9 = "")
-#set ($str10 = "")
-#generateSimpleOrCompositeKeyForURL($str1 $str2 $str3 $str4 $str5 $str6 $str7 $str8 $str9 $str10 $entity.attributes.list)
-
 app.controller("${entity.model.type}EditController", ["${dollar}scope", "${dollar}window", "${dollar}aside", 
 "${dollar}log", "${entity.model.type}RestService", 
 #foreach ($attribute in $entity.allAttributes.list)
@@ -136,7 +124,7 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 				// one item deletion mode
 				#set ($key = "{id: item.id}")
 				#if (!$entity.hasSimplePk())
-					#set ($key = $str8)
+					#set ($key = $entity.extended.getCpkAttributesListJsonStyleItemId())
 					#foreach ($attribute in $entity.getPrimaryKey().getAttributes())
 						console.log("cpk: " + item.id.$attribute.var);
 					#end

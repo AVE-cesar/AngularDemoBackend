@@ -155,7 +155,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 #if (($entity.hasSimplePk()))
 			<td>{{item.${entity.getPrimaryKey().getAttribute().var}}}</td>
 #else
-		<td>$str7</td>
+		<td>$entity.extended.getCpkAttributesListAngularJsStyle()</td>
 #end	            
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())

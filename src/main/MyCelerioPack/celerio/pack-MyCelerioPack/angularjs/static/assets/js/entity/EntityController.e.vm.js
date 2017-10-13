@@ -1,25 +1,5 @@
 $output.resource("static/assets/js/entity", "${entity.model.var}Controller.js")##
 
-#########################################################################################
-## macro that can generate an AngularJS composite key for an URL:  
-## sample: :id 				ou bien 		:keyPart1,:keyPart2
-#########################################################################################
-#macro(generateSimpleOrCompositeKeyForURL2 $ckey	$list)
-	#foreach ($attribute in $list)
-		#if ($attribute.isInCpk() == true)
-			#if ($ckey == "")
-				#set ($ckey = ":$attribute.name")
-			#else
-				#set ($ckey = "$ckey,:$attribute.name")
-			#end
-		#end
-	#end
-	
-	#if ($ckey == "")
-		#set ($ckey = ":id") 
-	#end		
-#end
-
 app.controller("${entity.model.type}Controller", ["${dollar}scope", "${dollar}window", "${dollar}aside", 
 "${dollar}log", "${entity.model.type}RestService", "${entity.model.type}RestSearchService", 
 		"${entity.model.type}RestIndexService", "${entity.model.type}RestMassDeleteService",
@@ -459,17 +439,6 @@ scope.${dollar}on("${dollar}destroy", function() {
 	})
 }]);
 
-#set ($str1 = "")
-#set ($str2 = "")
-#set ($str3 = "")
-#set ($str4 = "")
-#set ($str5 = "")
-#set ($str6 = "")
-#set ($str7 = "")
-#set ($str8 = "")
-#set ($str9 = "")
-#set ($str10 = "")
-#generateSimpleOrCompositeKeyForURL($str1 $str2 $str3 $str4 $str5 $str6 $str7 $str8 $str9 $str10 $entity.attributes.list)
 /** main REST client for managing (4 CRUD calls) ${entity.model.type} entity */
 app.factory('${entity.model.type}RestService', function (${dollar}resource) {
 	return ${dollar}resource('api/${entity.model.vars}/bypage/?page=:page&size=:size', {}, {
@@ -477,7 +446,7 @@ app.factory('${entity.model.type}RestService', function (${dollar}resource) {
 		'query': { method: 'GET', isArray: false},
 		'get': {
 			method: 'GET',
-			url: 'api/${entity.model.vars}/$str6',
+			url: 'api/${entity.model.vars}/$entity.extended.getCpkAttributesListForAngularUrl()',
 			transformResponse: function (data) {
 				try {
 					data = angular.fromJson(data);
@@ -485,9 +454,9 @@ app.factory('${entity.model.type}RestService', function (${dollar}resource) {
 				return data;
 			}
 		},
-		'create': { method:'POST', url: 'api/${entity.model.vars}/$str6'},
-		'update': { method:'PUT', url: 'api/${entity.model.vars}/$str6'},
-		'delete': { method:'DELETE', url: 'api/${entity.model.vars}/$str6' },
+		'create': { method:'POST', url: 'api/${entity.model.vars}/$entity.extended.getCpkAttributesListForAngularUrl()'},
+		'update': { method:'PUT', url: 'api/${entity.model.vars}/$entity.extended.getCpkAttributesListForAngularUrl()'},
+		'delete': { method:'DELETE', url: 'api/${entity.model.vars}/$entity.extended.getCpkAttributesListForAngularUrl()' },
 		'search': { method: 'POST', url: 'api/${entity.model.vars}/search/', isArray: false}
 ## dedicated method for system entities
 #if ($entity.model.type == "AppParameter")

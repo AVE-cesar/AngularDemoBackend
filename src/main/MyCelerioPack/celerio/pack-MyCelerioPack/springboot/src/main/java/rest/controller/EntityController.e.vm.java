@@ -130,17 +130,6 @@ public class $output.currentClass{
         return page;
     }
 
-#set ($str1 = "")
-#set ($str2 = "")
-#set ($str3 = "")
-#set ($str4 = "")
-#set ($str5 = "")
-#set ($str6 = "")
-#set ($str7 = "")
-#set ($str8 = "")
-#set ($str9 = "")
-#set ($str10 = "")
-#generateSimpleOrCompositeKeyForURL($str1 $str2 $str3 $str4 $str5 $str6 $str7 $str8 $str9 $str10 $entity.attributes.list)
 #if (($entity.hasSimplePk()))
     /**
      * Find by id $entity.model.type (for simple key).
@@ -170,12 +159,12 @@ public class $output.currentClass{
     /**
      * Find by id $entity.model.type (for composite key).
      */
-    @RequestMapping(value = "/$str1",
+    @RequestMapping(value = "/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<$entity.model.type> findById($str3) {
-    	$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
+    public ResponseEntity<$entity.model.type> findById($entity.extended.getCpkAttributesListRestStyle()) {
+    	$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($entity.extended.getCpkAttributesListConstructorStyle());
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
         $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}JpaRepository.findOne($entity.primaryKey.var);
@@ -211,11 +200,11 @@ public class $output.currentClass{
 	/**
      * Delete by id $entity.model.type (for composite key).
      */
-    @RequestMapping(value = "/$str1",
+    @RequestMapping(value = "/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete($str3) {
-	    $entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
+    public ResponseEntity<Void> delete($entity.extended.getCpkAttributesListRestStyle()) {
+	    $entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($entity.extended.getCpkAttributesListConstructorStyle());
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         ${entity.model.var}JpaRepository.delete($entity.primaryKey.var); 
 #if (($entity.hasSimplePk()))         
@@ -241,7 +230,7 @@ public class $output.currentClass{
 	/**
      * Mass deletion (for composite key).
      */
-    @RequestMapping(value = "/mass/$str1", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/mass/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) {
         return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
@@ -328,11 +317,11 @@ public class $output.currentClass{
 	/**
      * Check if a $entity.model.type exists via its composite id.
      */
-    @RequestMapping(value = "/exists/$str1",
+    @RequestMapping(value = "/exists/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> exists($str3) {
-		$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($str4);
+    public ResponseEntity<Boolean> exists($entity.extended.getCpkAttributesListRestStyle()) {
+		$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($entity.extended.getCpkAttributesListConstructorStyle());
     	log.debug("Check $entity.model.var existence via its id: {}.", $entity.primaryKey.var);
     	Boolean exists = ${entity.model.var}JpaRepository.exists($entity.primaryKey.var);
         
@@ -343,7 +332,7 @@ public class $output.currentClass{
 ## --------------- One to One
 #set( $MethodsHistoryMap = {}) ## Map
 #foreach ($oneToOne in $entity.oneToOne.list)
-$output.require("${oneToOne.to.getPackageName()}.$oneToOne.to.type")##
+$output.require("${configuration.rootPackage}.jpa.model.$oneToOne.to.type")##
     /**
      * Finder to fill relation between this entity and ${oneToOne.to.varUp}.
      * 
@@ -368,7 +357,7 @@ $!{MethodsHistoryMap.put("findBy${oneToOne.to.type}", "findBy${oneToOne.to.type}
 
 ## --------------- Many to One
 #foreach ($manyToOne in $entity.manyToOne.list)
-$output.require("${manyToOne.to.getPackageName()}.$manyToOne.to.type")##
+$output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
     /**
      * Finder to fill relation between this entity and ${manyToOne.to.varUp}.
      * 
@@ -404,7 +393,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         
         long total = ${entity.model.var}JpaRepository.count();
         
-        String sqlMainPart = "select * from (select $str10 from $entity.getTableName() where 1=1"; 
+        String sqlMainPart = "select * from (select $entity.extended.getAttributesListAsSqlColumn() from $entity.getTableName() where 1=1"; 
         String sqlSecondaryPart = "";
         
         List<Object> values = new ArrayList<>();

@@ -651,12 +651,20 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
 		
 		${entity.model.type} other = (${entity.model.type}) obj;
 	
-#foreach ($attribute in $entity.nonCpkAttributes.list)		
-#if ($velocityCount == 1)
-	    boolean result = ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
-#else	    
-	    result = result && ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
-#end	    
+#foreach ($attribute in $entity.nonCpkAttributes.list)	
+	#if(!$attribute.isInFk())
+		#if ($velocityCount == 1)
+			    boolean result = ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+		#else	    
+			    result = result && ${entity.model.type}EntityUtils.compare${attribute.varUp}(this, other);
+		#end	
+	#end
+#end
+
+// Many to one relations
+## generates a comparison method for all Many to one relations
+#foreach ($manyToOne in $entity.manyToOne.list)
+	result = result && ${entity.model.type}EntityUtils.compare${manyToOne.to.varUp}(this, other);
 #end
 
 	    return result;
@@ -695,15 +703,9 @@ $output.require("java.util.Objects")##
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-#foreach ($attribute in $entity.nonCpkAttributes.list)
-#if ($velocityCount == $entity.nonCpkAttributes.list.size())
-	this.$attribute.var
-#else
-	this.$attribute.var,
-#end	
-#end        		
-        		);
+        return Objects.hash( 
+        		$entity.extended.getAttributesList()
+        	);
     }
 
 #end
