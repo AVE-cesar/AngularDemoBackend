@@ -66,7 +66,7 @@ scope.refresh = function () {
 /** Gets data page per page */
 scope.refreshByPage = function (page, size, addMode) {
 	log.info("call method refreshByPage inside ${entity.model.type}Controller");
-	${entity.model.var}RestService.query({page: page, size: size}, function(result) {
+	${entity.model.var}RestService.queryByPage({page: page, size: size}, function(result) {
 		log.info("receiving info from server side in page mode");
 		
 		log.info("result: " + result);
@@ -215,16 +215,6 @@ scope.loadOneItem = function(id) {
 /* fill the result grid by default (first page only) */
 scope.refreshByPage(0, scope.totalElementsPerPage);
 
-/** defines the CRUD aside */
-var crudAside = c({
-	scope: scope,
-	template: "assets/tpl/apps/crud-${entity.model.var}.html",
-	show: !1,
-	placement: "left",
-	backdrop: !1,
-	animation: "am-slide-left"
-	});
-
 /** defines the search aside */
 var searchAside = c({
 	scope: scope,
@@ -253,97 +243,6 @@ scope.checkAll = function() {
 	log.info(scope.selectAll);
 	scope.selectAll = !scope.selectAll;
 	log.info(scope.selectAll);
-};
-
-/** Opens and fills the CRUD aside with an item in EDIT mode */
-scope.editItem = function(item) {
-	//scope.loadOneItem(item.id);
-	${entity.model.var}RestService.get({id: item.id}, function success(result) {
-		scope.item = result;
-		
-		item && (item.editing = !0, scope.item = item, scope.settings.cmd = "Edit", showForm(crudAside));
-		
-		log.info("item loaded: " + result);
-	});
-};
-
-/** Opens and fills the CRUD aside with an item in VIEW mode */
-/* deprecated
-scope.viewItem = function(b) {
-	scope.loadOneItem(b.id);
-	
-	b && (b.editing = !1, scope.item = b, scope.settings.cmd = "View", showForm(crudAside))
-};
-*/
-
-/** Opens the CRUD aside in CREATION mode */
-scope.createItem = function() {
-	var b = {
-			editing: !0
-	};
-	scope.item = b, scope.settings.cmd = "New";
-	showForm(crudAside);
-};
-	
-/** Creates or updates an item */
-scope.saveItem = function() {
-	log.info("Creating or updating an item");
-	
-	// defines the success behavior inside a methode
-	var onSaveSuccess = function success(data) {
-		console.log('success, got data: ', data);
-	
-		"New" == scope.settings.cmd, hideForm(crudAside);
-	
-		scope.refresh();
-	
-		window.showAlert = function(){
-			
-			var userALert = alertService({
-	                    title: "SUCCESS:",
-	                    content: '<BR>Your ${entity.model.var} have been <i>created or updated</i>. You can find it int the result table. See <a href="#"><B>older messages</B></a> !',
-	                    placement: "top-right",
-	                    type: "theme",
-	                    container: ".alert-container-top-right",
-	                    show: !1,
-	                    animation: "mat-grow-top-right"
-	                    });
-	    
-			timeoutService(function() {
-				userALert.show()
-	        	}, 1 /* timeout duration */);
-		};
-		
-		window.showAlert();
-		};
-	
-		// defines the error behavior inside a methode
-	var onSaveError = function (result) {
-			window.showAlert = function(){
-				var userALert = alertService({
-		                    title: "ERROR:",
-		                    content: "<BR>Your ${entity.model.var} haven't been created. Try again !",
-		                    placement: "top-right",
-		                    type: "theme",
-		                    container: ".alert-container-top-right",
-		                    show: !1,
-		                    animation: "mat-grow-top-right"
-		                    });
-		    
-				timeoutService(function() {
-					userALert.show()
-		        	}, 1 /* timeout duration */);
-			};
-			window.showAlert();
-		};
-	
-	if (scope.item.id != null) {
-		// update mode
-		${entity.model.var}RestService.update(scope.item, onSaveSuccess, onSaveError);
-	} else {
-		// creation mode
-		${entity.model.var}RestService.save(scope.item, onSaveSuccess, onSaveError);
-	}
 };
 
 /** Removes one item or a list of items (selected ones) */
@@ -434,7 +333,7 @@ hideForm = function(aside) {
 
 /** Closes all asides */
 scope.${dollar}on("${dollar}destroy", function() {
-	hideForm(crudAside);
+	
 	hideForm(searchAside);
 	})
 }]);
@@ -443,7 +342,12 @@ scope.${dollar}on("${dollar}destroy", function() {
 app.factory('${entity.model.type}RestService', function (${dollar}resource) {
 	return ${dollar}resource('api/${entity.model.vars}/bypage/?page=:page&size=:size', {}, {
 			/* sorting sample: &sort=aColumnName,desc&sort=anotherColumnName,asc */
-		'query': { method: 'GET', isArray: false},
+		'queryByPage': { method: 'GET', isArray: false},
+		'query': {
+			method: 'GET',
+			url: 'api/${entity.model.vars}/',
+			isArray: true
+		},
 		'get': {
 			method: 'GET',
 			url: 'api/${entity.model.vars}/$entity.extended.getCpkAttributesListForAngularUrl()',
