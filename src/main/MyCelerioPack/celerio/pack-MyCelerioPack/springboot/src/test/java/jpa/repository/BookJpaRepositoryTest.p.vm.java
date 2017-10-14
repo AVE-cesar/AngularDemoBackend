@@ -53,7 +53,7 @@ public class BookJpaRepositoryTest {
 		Book savedBook = repository.save(book);
 
 		assertThat(savedBook).hasFieldOrPropertyWithValue("title", book.getTitle());
-		assertThat(savedBook).hasFieldOrPropertyWithValue("authorId", book.getAuthorId());
+		assertThat(savedBook).hasFieldOrPropertyWithValue("author", book.getAuthor());
 	}
 
 	@Test

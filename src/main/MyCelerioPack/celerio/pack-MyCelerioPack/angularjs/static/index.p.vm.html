@@ -7,15 +7,22 @@ $output.resource("/static/index.html")##
     <title>Your application name</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="./assets/css/bootstrap.css" media="screen">
+    
+    <!-- override of bootstrap css -->
+    <!--link rel="stylesheet" href="./assets/css/bootstrap.css" media="screen"-->
+    
+    <!-- Bootstrap official css file (font also) -->
+    <link href="./bower_components/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="http://mgcrea.github.io/angular-strap/styles/libs.min.css">
     <!--link rel="stylesheet" href="http://mgcrea.github.io/angular-strap/styles/docs.min.css"-->
     
     <link rel="stylesheet" href="./assets/css/bootstrap-drawer.css"/>
     <link rel="stylesheet" href="./assets/css/custom.min.css">
+	
 	<!-- my style customization -->
     <link rel="stylesheet" href="./assets/css/mystyle.css">
+    
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="./bower_components/html5shiv/dist/html5shiv.js"></script>
@@ -40,12 +47,13 @@ $output.resource("/static/index.html")##
   </head>
   <body class="has-drawer">
      <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+    
+    <!-- Bootstrap official js file -->
     <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    
     <script src="./assets/js/drawer.js"></script>
     <script src="./assets/js/custom.js"></script>
-	
-	
-	<!--script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script-->
+
 	<script src="./bower_components/angular/angular.min.js"></script>
 	
 	<!-- 5 librairies suivantes pour MGCREA -->
@@ -58,6 +66,10 @@ $output.resource("/static/index.html")##
 	<script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 	
 	<script src="./bower_components/angular-http-auth/dist/http-auth-interceptor.min.js"></script>
+	
+	<!-- for advanced combo box (see: https://angular-ui.github.io/ui-select/) -->
+	<script src="./bower_components/angular-ui-select/dist/select.js"></script>
+	<link href="./bower_components/angular-ui-select/dist/select.css" rel="stylesheet">
 	
 	<!-- material icons from google matertial design http://google.github.io/material-design-icons/#icon-font-for-the-web -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -86,6 +98,8 @@ $output.resource("/static/index.html")##
 	<script src="assets/js/testAlertController.js"></script>
 	<!-- controller to test aside -->
 	<script src="assets/js/testAsideController.js"></script>
+	<!-- controller to test comboBox -->
+	<script src="assets/js/testComboBoxController.js"></script>
 	
 	<!-- logging controller (generated) -->
 	<script src="assets/js/admin/logsController.js"></script>
@@ -187,7 +201,11 @@ $output.resource("/static/index.html")##
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Entities<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
 #foreach ($entity in $project.entities.list)
+#if (${entity.model.type.startsWith("App")})
                 <li><a ui-sref="${entity.model.var}">${entity.model.type}</a></li>
+#else
+                <li><a ui-sref="${entity.model.var}"><b>${entity.model.type}</b></a></li>
+#end
 #end
               </ul>
             </li>
@@ -202,6 +220,7 @@ $output.resource("/static/index.html")##
 				<li><a ui-sref="testAlert">Alert</a></li>
 				<li><a ui-sref="testAside">Aside</a></li>
 				<li><a ui-sref="testModal">Modal</a></li>
+				<li><a ui-sref="testComboBox">Combo box</a></li>
 				<li class="divider"></li>
 				<li><a ui-sref="testIcon">Icons</a></li>
               </ul>

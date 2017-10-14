@@ -312,6 +312,15 @@
 								</goals>
 							</execution>
 						</executions>
+						
+						<dependencies>
+							<!-- add a dependency to my custom celerio extension -->
+							<dependency>
+								<groupId>ave.bertrand</groupId>
+								<artifactId>CelerioCustomSPI</artifactId>
+								<version>1.0.0</version>
+							</dependency>
+						</dependencies>
 					</plugin>
 				</plugins>
 			</build>

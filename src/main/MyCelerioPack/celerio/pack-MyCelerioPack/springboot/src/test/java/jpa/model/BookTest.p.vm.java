@@ -42,9 +42,11 @@ public class BookTest {
         book2.setTitle(book1.getTitle());
         book2.setDescription(book1.getDescription());
         book2.setPrice(book1.getPrice());
-        book2.setAuthorId(book1.getAuthorId());
         book2.setBarcodeid(book1.getBarcodeid());
         book2.setPublicationDate(book1.getPublicationDate());
+        
+        // Many to one relation
+        book2.setAuthor(book1.getAuthor());
         
         assertTrue(book1.equals(book2));
         assertTrue(book1.hashCode() == book2.hashCode());

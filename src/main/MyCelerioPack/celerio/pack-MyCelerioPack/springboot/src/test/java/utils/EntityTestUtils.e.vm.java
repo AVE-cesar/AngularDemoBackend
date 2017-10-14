@@ -23,6 +23,7 @@ public class ${entity.model.type}EntityTestUtils {
 		// pk
 		${entity.model.var}.${attribute.setter}(id);
 #else
+	#if (!$attribute.isInFk())
 #if ("Integer" == $attribute.type)	
 		${entity.model.var}.${attribute.setter}(new Integer(1));
 #elseif ("BigDecimal" == $attribute.type)
@@ -40,6 +41,7 @@ $output.require("java.util.Date")##
 		${entity.model.var}.${attribute.setter}(null);
 #end
 #end		
+#end
 #end		
 
 		return ${entity.model.var};

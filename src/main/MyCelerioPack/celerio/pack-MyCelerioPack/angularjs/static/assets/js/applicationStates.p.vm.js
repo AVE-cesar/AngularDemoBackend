@@ -185,11 +185,21 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				}
             })
         .state('testModal', {
-            url: "/tesModal",
+            url: "/testModal",
             views: {
 				"mainView": {
 					templateUrl: "assets/tpl/commons/testModal.html",
 					controller: "TestModalController"
+				},
+				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
+				}
+            })
+         .state('testComboBox', {
+            url: "/testComboBox",
+            views: {
+				"mainView": {
+					templateUrl: "assets/tpl/commons/testComboBox.html",
+					controller: "TestComboBoxController"
 				},
 				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
 				}

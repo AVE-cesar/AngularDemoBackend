@@ -43,7 +43,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
             <legend>Main entity</legend>          
             <span class="help-block m-b-20">Please fill out the following form below.</span>
 
-
+## manage simple attribute
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
 		#if ($attribute.type == "Date") 
@@ -65,6 +65,35 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	   #end     
 	#end
 #end			
+
+## ManyToOne attributes (displayed as combo); WARNING: this code is a copy of the one above for oneToOne relations
+#foreach ($manyToOne in $entity.manyToOne.list)
+			<div class="form-group">
+			<label for="name" class="col-lg-2 control-label"><a ui-sref="edit${manyToOne.to.type}(#if ((${manyToOne.toEntity.hasSimplePk()})) {id:item.${manyToOne.to.var}.${manyToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${manyToOne.to.type}</a></label>
+			
+			<div class="col-lg-10">
+			<ui-select ng-model="item.$manyToOne.to.var" theme="select2" title="Choose an $manyToOne.to.var" search-enabled="false">
+#foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)  
+	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
+                <ui-select-match placeholder="Choose an $manyToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
+     	#break           
+     #end
+#end                
+                <ui-select-choices repeat="itemA in ${manyToOne.to.type.substring(0,1).toLowerCase()}${manyToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
+#foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)
+                #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
+                  	<div ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></div>
+                  	#break
+                #end
+#end
+#foreach ($toPk in $manyToOne.getToEntity().getInPkAttributes().list)
+                  		<small ng-bind-html="itemA.$toPk.name | highlight: ${dollar}select.search"></small>
+#end                  	
+                </ui-select-choices>
+             </ui-select>
+             </div>
+			</div>
+#end
 
           <div class="form-group">
               <label for="id" class="col-lg-2 control-label"><b> Id</b></label>
@@ -114,6 +143,51 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
       Todo
     </p>
   </div>
+
+#foreach ($entityP in $project.getEntities().list)
+	#foreach ($rel in $entityP.getRelations().list)
+		#if ($entity == $rel.getToEntity())
+			#if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many" || $rel.getKind() == "one-to-one")
+				-- on a une relation $rel.getKind() (MTO/OTO/MTM) vers notre entite $entity, il faudra faire une table HTML contenant la liste des $entityP.name lies avec des liens pour y descendre
+				-- il faudra un REST sur les $entityP.name pour lister les $entityP.name lies a $entity
+				-- Exemple: ${entityP.name}.findBy${entity}ID
+  <div class="card">
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="table-title p-20">${entityP.name} table:: inverse relation to: ${rel}</h3>
+      </div>
+      <div class="col-md-6">
+        <div class="table-search">
+          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive white">
+
+      <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+## --------------- Inverse relation     
+        <tr ng-repeat="row in find${entityP.model.type}By${entity}">
+#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)
+	#if ($velocityCount == 1)
+	## add a link on the first column
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${entityP.model.type}({id:row.id})">{{row.${attribute.var}}}</a></td>
+	#else
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var}}}</td>	
+	#end	  
+#end ## end foreach on attribute
+        </tr>		        
+      </table>
+
+    </div>
+
+  </div>		
+			#end
+		#end
+	#end ## end foreach relation
+#end ## end foreach entity
+
 	 	 	 	 	 				 	  
 </section>
 

@@ -58,6 +58,10 @@
 	
 	<script src="./bower_components/angular-http-auth/dist/http-auth-interceptor.min.js"></script>
 	
+	<!-- for advanced combo box (see: https://angular-ui.github.io/ui-select/) -->
+	<script src="./bower_components/angular-ui-select/dist/select.js"></script>
+	<link href="./bower_components/angular-ui-select/dist/select.css" rel="stylesheet">
+	
 	<!-- material icons from google matertial design http://google.github.io/material-design-icons/#icon-font-for-the-web -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -85,6 +89,8 @@
 	<script src="assets/js/testAlertController.js"></script>
 	<!-- controller to test aside -->
 	<script src="assets/js/testAsideController.js"></script>
+	<!-- controller to test comboBox -->
+	<script src="assets/js/testComboBoxController.js"></script>
 	
 	<!-- logging controller (generated) -->
 	<script src="assets/js/admin/logsController.js"></script>
@@ -134,6 +140,11 @@
 	<script src="assets/js/entity/appUserAuthorityEditController.js"></script>
 	<script src="assets/js/entity/appUserAuthorityCreateController.js"></script>
 	<script src="assets/js/entity/appUserAuthorityConfigController.js"></script>
+	<!-- for Author entity --> 	
+	<script src="assets/js/entity/authorController.js"></script>
+	<script src="assets/js/entity/authorEditController.js"></script>
+	<script src="assets/js/entity/authorCreateController.js"></script>
+	<script src="assets/js/entity/authorConfigController.js"></script>
 	<!-- for Book entity --> 	
 	<script src="assets/js/entity/bookController.js"></script>
 	<script src="assets/js/entity/bookEditController.js"></script>
@@ -218,7 +229,8 @@
                 <li><a ui-sref="appTranslation">AppTranslation</a></li>
                 <li><a ui-sref="appUser">AppUser</a></li>
                 <li><a ui-sref="appUserAuthority">AppUserAuthority</a></li>
-                <li><a ui-sref="book">Book</a></li>
+                <li><a ui-sref="author"><b>Author</b></a></li>
+                <li><a ui-sref="book"><b>Book</b></a></li>
               </ul>
             </li>
 <!-- Menu for demonstration -->            
@@ -232,6 +244,7 @@
 				<li><a ui-sref="testAlert">Alert</a></li>
 				<li><a ui-sref="testAside">Aside</a></li>
 				<li><a ui-sref="testModal">Modal</a></li>
+				<li><a ui-sref="testComboBox">Combo box</a></li>
 				<li class="divider"></li>
 				<li><a ui-sref="testIcon">Icons</a></li>
               </ul>
@@ -240,13 +253,14 @@
             <li ng-show="authenticated">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="configuration">Configuration<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="configuration">
-                <li><a ui-sref="configurationappAuthority">AppAuthority configuration</a></li>
-                <li><a ui-sref="configurationappParameter">AppParameter configuration</a></li>
-                <li><a ui-sref="configurationappToken">AppToken configuration</a></li>
-                <li><a ui-sref="configurationappTranslation">AppTranslation configuration</a></li>
-                <li><a ui-sref="configurationappUser">AppUser configuration</a></li>
-                <li><a ui-sref="configurationappUserAuthority">AppUserAuthority configuration</a></li>
-                <li><a ui-sref="configurationbook">Book configuration</a></li>
+                <li><a ui-sref="configAppAuthority">AppAuthority configuration</a></li>
+                <li><a ui-sref="configAppParameter">AppParameter configuration</a></li>
+                <li><a ui-sref="configAppToken">AppToken configuration</a></li>
+                <li><a ui-sref="configAppTranslation">AppTranslation configuration</a></li>
+                <li><a ui-sref="configAppUser">AppUser configuration</a></li>
+                <li><a ui-sref="configAppUserAuthority">AppUserAuthority configuration</a></li>
+                <li><a ui-sref="configAuthor">Author configuration</a></li>
+                <li><a ui-sref="configBook">Book configuration</a></li>
               </ul>
             </li>
 <!-- Menu for site administration -->            
