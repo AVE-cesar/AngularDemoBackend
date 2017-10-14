@@ -11,13 +11,24 @@ $output.require("${configuration.rootPackage}.utils.Elasticsearch${entity.model.
 @Document(indexName = "${entity.model.var.toLowerCase()}_index", type = "${entity.model.vars}")
 public class ${entity.model.type} {
 	
+	// simple attributes
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 #if(!$attribute.isInFk() || $attribute.isSimplePk())
 $output.require($attribute)##
     private $attribute.type $attribute.var;
 #end
 #end
-	
+
+## --------------- Many to One
+#foreach ($manyToOne in $entity.manyToOne.list)
+#if ($velocityCount == 1)
+
+    // Many to one
+#end
+$output.require("${configuration.rootPackage}.elasticsearch.model.${manyToOne.to.type}")##
+    private $manyToOne.to.type $manyToOne.to.var;
+#end
+
 	/**
 	 * Default constructor.
 	 */
@@ -28,36 +39,55 @@ $output.require($attribute)##
 	/**
 	 * Constructor with all attributes.
 	 */
-	public ${entity.model.type}(
+	public ${entity.model.type}($entity.extended.getAttributesListJavaStyle()) {
 #foreach ($attribute in $entity.nonCpkAttributes.list)
-#if ($velocityCount == $entity.nonCpkAttributes.list.size())
-    $attribute.type $attribute.var
-#else
-    $attribute.type $attribute.var,
-#end
-#end
-			) {
-#foreach ($attribute in $entity.nonCpkAttributes.list)
+	#if(!$attribute.isInFk())
 	    this.$attribute.var = $attribute.var;
+	#end
+#end
+// Many to one relations
+#foreach ($manyToOne in $entity.manyToOne.list)
+	this.${manyToOne.to.var} = ${manyToOne.to.var};
 #end
 	}
 
 #foreach ($attribute in $entity.nonCpkAttributes.list)
+	#if(!$attribute.isInFk())
 	/**
 	 * Getter for $attribute.var.
 	 */
 public $attribute.type ${attribute.getter}() {
 	return this.$attribute.var;
 }
+	#end
 #end
 
 #foreach ($attribute in $entity.nonCpkAttributes.list)
+	#if(!$attribute.isInFk())
 	/**
 	 * Setter for $attribute.var.
 	 */
 public void ${attribute.setter}($attribute.type $attribute.var) {
 this.$attribute.var = $attribute.var;
 }
+	#end
+#end
+
+## --------------- Many to one: getters and setters
+#foreach ($relation in $entity.manyToOne.list)
+	/**
+	 * Getter for $relation.to.var (Many to one attribute).
+	 */
+	public $relation.to.type ${relation.to.getter}() {
+		return $relation.to.var;
+	}
+	
+	/**
+	 * setter for $relation.to.var (Many to one attribute).
+	 */
+	public void ${relation.to.setter}($relation.to.type $relation.to.var) {
+        this.$relation.to.var = $relation.to.var;
+	}
 #end
 
 	@Override
@@ -78,9 +108,18 @@ this.$attribute.var = $attribute.var;
 		final int PRIME = 31;
 		int result = 1;
 
+## simple attribute		
 #foreach ($attribute in $entity.nonCpkAttributes.list)
-result = PRIME * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashCode()); 
-#end		
+	#if(!$attribute.isInFk())
+		result = PRIME * result + (($attribute.var == null) ? 0 : ${attribute.var}.hashCode());
+	#end
+#end	
+
+## Many to one relations
+#foreach ($manyToOne in $entity.manyToOne.list)
+		result = PRIME * result + (($manyToOne.to.var == null) ? 0 : ${manyToOne.to.var}.hashCode());
+#end
+
 		return result;
 	}
 

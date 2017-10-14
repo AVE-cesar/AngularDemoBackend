@@ -60,7 +60,7 @@ public static boolean compare${manyToOne.to.varUp} (${entity.model.type} ${entit
 
 	// Many to one relations
 #foreach ($manyToOne in $entity.manyToOne.list)
-	elasticsearch${entity.model.type}.${manyToOne.to.setter}(${entity.model.var}.${manyToOne.to.getter}());
+	elasticsearch${entity.model.type}.${manyToOne.to.setter}(${manyToOne.to.type}EntityUtils.convertToElasticsearch${manyToOne.to.type}(${entity.model.var}.${manyToOne.to.getter}()));
 #end
 
 		return elasticsearch${entity.model.type};
