@@ -52,6 +52,11 @@ public static boolean compare${manyToOne.to.varUp} (${entity.model.type} ${entit
 	public static ${configuration.rootPackage}.elasticsearch.model.${entity.model.type} convertToElasticsearch${entity.model.type} (${entity.model.type} ${entity.model.var}) {
 		${configuration.rootPackage}.elasticsearch.model.${entity.model.type} elasticsearch${entity.model.type} = new ${configuration.rootPackage}.elasticsearch.model.${entity.model.type}();
 		
+		// sanity check
+		if (${entity.model.var} == null) {
+			return null;
+		}
+		
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 	#if(!$attribute.isInFk())
 		elasticsearch${entity.model.type}.${attribute.setter}(${entity.model.var}.${attribute.getter}());

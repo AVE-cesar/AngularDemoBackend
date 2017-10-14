@@ -46,22 +46,44 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 ## manage simple attribute
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
-		#if ($attribute.type == "Date") 
-			<div class="form-group">
-			<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
-			
-			<div class="col-lg-10">
-				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
+	
+		## is a mandatory field ?
+		#if ($attribute.isNotNullable() == true)
+			#set($requiredTag = "required")
+		#else
+			#set($requiredTag = "")
+		#end
+	
+		<div class="form-group">
+		#if ($requiredTag == "required")
+		<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
+		#else
+		<label for="name" class="col-lg-2 control-label">$attribute.varUp</label>
+		#end
+		
+		<div class="col-lg-10">
+		#if ($attribute.type == "BigDecimal" || $attribute.type == "Boolean" || $attribute.type == "Double" || $attribute.type == "Integer" || $attribute.type == "BigInteger" || $attribute.type == "String")
+			## we have to deal with LOB field
+			#if ($attribute.mappedType == "M_CLOB")
+				<textarea class="form-control vertical" rows="3" id="${attribute.var}" ng-model="item.${attribute.var}" $requiredTag></textarea>
+			#else
+				## we have to deal with simple field: dedicated pattern for numbers 
+				
+				#if ($attribute.type == "BigDecimal" || $attribute.type == "Integer" || $attribute.type == "BigInteger")
+					<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag ng-pattern="/^\d{0,18}(\.\d{1,2})?$/" ng-disabled="mode == 'VIEW'">
+				#else
+					<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag ng-disabled="mode == 'VIEW'">
+				#end
+            	</div> 
+            	</div>
+            	#end
+		#elseif ($attribute.type == "Date") 
+
+				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
 		   	</div>
            	</div>
 	    #else  
-	    		<div class="form-group">
-	    		<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
-	    		
-			<div class="col-lg-10">
-				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" required ng-disabled="mode == 'VIEW'">
-            	</div> 
-            	</div>
+			<p>Type [$attribute.type] not implemented yet !!!!</p>
 	   #end     
 	#end
 #end			
@@ -72,7 +94,9 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			<label for="name" class="col-lg-2 control-label"><a ui-sref="edit${manyToOne.to.type}(#if ((${manyToOne.toEntity.hasSimplePk()})) {id:item.${manyToOne.to.var}.${manyToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${manyToOne.to.type}</a></label>
 			
 			<div class="col-lg-10">
-			<ui-select ng-model="item.$manyToOne.to.var" theme="select2" title="Choose an $manyToOne.to.var" search-enabled="false">
+			<!-- div to associate the select and its delete button -->
+          	<div class="input-group">
+			<ui-select title="Choose an $manyToOne.to.var" allow-clear ng-model="item.$manyToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
 #foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)  
 	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
                 <ui-select-match placeholder="Choose an $manyToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
@@ -82,7 +106,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
                 <ui-select-choices repeat="itemA in ${manyToOne.to.type.substring(0,1).toLowerCase()}${manyToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
 #foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)
                 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
-                  	<div ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></div>
+                  	<span ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></span>
                   	#break
                 #end
 #end
@@ -91,18 +115,35 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 #end                  	
                 </ui-select-choices>
              </ui-select>
+             
+                <span class="input-group-btn">
+              		<button type="button" ng-click="item.$manyToOne.to.var = undefined" class="btn btn-default" ng-disabled="mode == 'VIEW'">
+                		<span class="glyphicon glyphicon-trash"></span>
+              		</button>
+            		</span>
+             </div>
              </div>
 			</div>
 #end
 
+##---------------------------------------------
+## We end with the entity key
+##---------------------------------------------
+## pk are not updatable unless there are not auto generated
+#foreach ($attribute in $entity.inPkAttributes.list)
+#if ($attribute.isInCpk() == true && $attribute.isSimpleFk() == true)
+## this attribut is already on FK part of the page, so don't put it twice
+#else
           <div class="form-group">
-              <label for="id" class="col-lg-2 control-label"><b> Id</b></label>
+              <label for="id" class="col-lg-2 control-label"><b>#if (!$attribute.isSimplePk())Id#end $attribute.varUp</b></label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" id="id"  ng-disabled="true"  ng-model="item.id">
+                <input type="text" class="form-control" id="${attribute.var}" #if ($attribute.getJpa().hasIdGeneratorByConvention()) ng-disabled="true" #end ng-model="item#if(!$attribute.isSimplePk()).id#end.${attribute.var}">
               </div>
          </div>
+#end         
+#end 
             
-
+			<!-- form buttons -->
             <div class="form-group">
               <div class="col-lg-10 col-lg-offset-2">
               	<button type="submit" class="btn btn-primary" ui-sref="${entity.model.var}">back to List</button>
