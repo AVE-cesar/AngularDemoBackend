@@ -4,33 +4,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jaxio.demo.jpa.model.Book;
+import com.jaxio.demo.jpa.model.Author;
 import com.jaxio.demo.jpa.repository.BookJpaRepository;
+import com.jaxio.demo.jpa.repository.AuthorJpaRepository;
 import com.jaxio.demo.utils.BookEntityTestUtils;
-
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class BookJpaRepositoryTest {
 
+	private final Logger log = LoggerFactory.getLogger(BookJpaRepositoryTest.class);
+	
 	@Autowired
-	private BookJpaRepository repository;
+	private BookJpaRepository bookRepository;
+	
+	// Many to one
+	@Autowired
+	private AuthorJpaRepository authorRepository;
 
 	@Test
 	public void testSave() {
-		repository.save(BookEntityTestUtils.createNewBook());
+		bookRepository.save(BookEntityTestUtils.createNewBook());
 	}
 
 	@Test
 	public void testUpdate() {
 		Book book = BookEntityTestUtils.createNewBook();
-		Book book1 = repository.save(book);
+		Book book1 = bookRepository.save(book);
 		
-		Book book2 = repository.save(book1);
+		Book book2 = bookRepository.save(book1);
 		
 		assertThat(book2).isNotEqualTo(book);
 	}
@@ -38,65 +47,75 @@ public class BookJpaRepositoryTest {
 	@Test
 	public void testDelete() {
 		Book book = BookEntityTestUtils.createNewBook();
-		Book savedBook = repository.save(book);
-		//assertThat(repository.findOne(savedBook.getId())).isEqualTo(book);
+		Book savedBook = bookRepository.save(book);
+		//assertThat(bookRepository.findOne(savedBook.getId())).isEqualTo(book);
 		
-		repository.delete(savedBook);
+		bookRepository.delete(savedBook);
 		
-		assertThat(repository.findOne(book.getId())).isNull();
+		assertThat(bookRepository.findOne(book.getId())).isNull();
 	}
 	
 	@Test
-	public void should_store_a_customer() {
+	public void should_store_a_book() {
 		Book book = BookEntityTestUtils.createNewBook();
 
-		Book savedBook = repository.save(book);
+		// we must create the author before the book
+		Author savedAuthor = authorRepository.save(book.getAuthor());
+		assertThat(savedAuthor).hasFieldOrPropertyWithValue("name", book.getAuthor().getName());
+		book.setAuthor(savedAuthor);
+		
+		Book savedBook = bookRepository.save(book);
 
 		assertThat(savedBook).hasFieldOrPropertyWithValue("title", book.getTitle());
 		assertThat(savedBook).hasFieldOrPropertyWithValue("author", book.getAuthor());
+		assertThat(savedBook.getAuthor()).hasFieldOrPropertyWithValue("id", savedAuthor.getId());
 	}
 
 	@Test
-	public void should_delete_all_customer() {
+	public void should_delete_all_books() {
 		Book book1 = BookEntityTestUtils.createNewBook();
 
-		repository.save(book1);
+		bookRepository.save(book1);
 
 		Book book2 = BookEntityTestUtils.createNewBook();
 
-		repository.save(book2);
+		bookRepository.save(book2);
 
-		repository.deleteAll();
+		bookRepository.deleteAll();
 
-		assertThat(repository.findAll()).isEmpty();
+		assertThat(bookRepository.findAll()).isEmpty();
 	}
 
 	@Test
-	public void should_find_all_customers() {
+	public void should_find_all_books() {
+		long bookCount = bookRepository.count();
+		
+		log.debug("book count: " + bookCount);
+		
 		Book book1 = BookEntityTestUtils.createNewBook();
 
-		repository.save(book1);
+		bookRepository.save(book1);
 
 		Book book2 = BookEntityTestUtils.createNewBook();
 
-		repository.save(book2);
+		bookRepository.save(book2);
 		
 		Book book3 = BookEntityTestUtils.createNewBook();
 
-		repository.save(book3);
+		bookRepository.save(book3);
 
-		Iterable<Book> books = repository.findAll();
+		Iterable<Book> books = bookRepository.findAll();
 
-		assertThat(books).hasSize(3);
+		assertThat(books).hasSize((int)(bookCount + 3));
 	}
 
 	@Test
 	public void should_find_Book_by_id() {
 		Book book = BookEntityTestUtils.createNewBook();
 
-		Book savedBook = repository.save(book);
+		Book savedBook = bookRepository.save(book);
 
-		Book foundBook = repository.findOne(savedBook.getId());
+		Book foundBook = bookRepository.findOne(savedBook.getId());
 
 		assertThat(foundBook).isEqualTo(savedBook);
 	}
