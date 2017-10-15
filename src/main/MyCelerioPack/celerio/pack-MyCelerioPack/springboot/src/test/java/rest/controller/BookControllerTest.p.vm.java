@@ -106,6 +106,7 @@ public class BookControllerTest {
     		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
     		.content(JsonUtils.convertObjectToJsonBytes(bookwithoutId)))
 			.andDo(print()).andExpect(status().isCreated());
+    	
     }
 	
 	private Book createABook (boolean followRelations) throws Exception {
