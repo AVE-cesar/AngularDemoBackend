@@ -9,11 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasSize;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -27,7 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.jaxio.demo.Application;
 import com.jaxio.demo.jpa.model.Book;
 import com.jaxio.demo.rest.controller.BookController;
 import com.jaxio.demo.utils.BookEntityTestUtils;
@@ -63,13 +57,13 @@ public class BookControllerTest {
 			.andExpect(content().string(containsString("")));
 	}
 	
-    // ne marche pas à cause du champ price (son format et sa conversion dans Celerio) de la table Book
+    // does not work because of field "price" of table "Book" (its format and its conversion within Celerio)
 	@Test
 	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testFindAllByPage() throws Exception {
 		int size = 20;
 		for (int i = 0; i < 3 * size; i++) {
-			createABook();
+			createABook(true);
 		}
 				
 		int firstPage = 0;
@@ -90,14 +84,14 @@ public class BookControllerTest {
 	@Test
 	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testCreate() throws Exception {
-		createABook();
+		createABook(true);
 	}
 
     @Test
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
     public void testUpdate() throws Exception {
     	// real update
-    	Book book = createABook();
+    	Book book = createABook(true);
     	
     	this.mockMvc.perform(put("/api/books/")
     		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -105,7 +99,7 @@ public class BookControllerTest {
 			.andDo(print()).andExpect(status().isOk());
     	
     	// update becomes a creation because the ID is not set 
-    	Book bookwithoutId = createABook();
+    	Book bookwithoutId = createABook(true);
     	bookwithoutId.setId(null);
     	
     	this.mockMvc.perform(put("/api/books/")
@@ -114,8 +108,12 @@ public class BookControllerTest {
 			.andDo(print()).andExpect(status().isCreated());
     }
 	
-	private Book createABook () throws Exception {
+	private Book createABook (boolean followRelations) throws Exception {
 		Book book = BookEntityTestUtils.createNewBook();
+		
+		if (followRelations) {
+			book.setAuthor(null);
+		}
 		
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
 		this.mockMvc.perform(post("/api/books/")
@@ -124,7 +122,7 @@ public class BookControllerTest {
 			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-			// FIXME: marche plus
+			// FIXME: this commented line below does not work anymore ! should guess why !
 			//.andExpect(jsonPath("$.price", is(book.getPrice())));
 		
 		return book;
