@@ -18,6 +18,26 @@
 		<version>1.5.1.RELEASE</version>
 	</parent>
 
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>bertrand AVE</name>
+			<email>info.bertrand.ave@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/AVE-cesar/AngularDemoBackend.git</connection>
+		<developerConnection>scm:git:ssh://github.com:AVE-cesar/AngularDemoBackend.git</developerConnection>
+		<url>http://github.com/AVE-cesar/AngularDemoBackend/tree/master</url>
+	</scm>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -312,7 +332,7 @@
 								</goals>
 							</execution>
 						</executions>
-						
+
 						<dependencies>
 							<!-- add a dependency to my custom celerio extension -->
 							<dependency>
