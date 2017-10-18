@@ -1,0 +1,113 @@
+$output.resource("/static/assets/tpl/commons/createLogin.html")##
+
+<!-- Alerte success or error -->
+<div class="alert alert-success alert-dismissable fade in" style="display:none;" id="successAlert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Success!</strong> This entity has been successfully updated.
+</div>
+
+<div class="alert alert-danger alert-dismissable fade in" style="display:none;" id="errorAlert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Danger!</strong> This entity has NOT been updated ! Something goes wrong during this action.
+</div>
+
+<section class="forms-basic">
+  <div class="page-header">
+    <h1>
+      <i class="md md-input"></i>
+      Create account form
+    </h1>
+    <p class="lead">
+      
+    </p>
+  </div>
+
+<div class="row m-b-40">
+
+    <div class="col-md-3 col-md-push-9">
+      <h5>Mode</h5>
+      <p>mode: {{mode}}</p>
+    </div>
+    <div class="col-md-8 col-md-pull-3">
+      <div class="well">
+        <form class="form-horizontal">
+          <fieldset>
+            <legend>Main entity</legend>          
+            <span class="help-block m-b-20">Please fill out the following form below.</span>
+
+			
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>FirstName</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="firstName" ng-model="item.firstName" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>LastName</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="lastName" ng-model="item.lastName" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>Email</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="email" ng-model="item.email" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>Language</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="language" ng-model="item.language" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>Login</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="login" ng-model="item.login" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+							
+		<div class="form-group">
+				<label for="name" class="col-lg-2 control-label"><b>Password</b></label>
+				
+		<div class="col-lg-10">
+																
+									<input type="text" class="form-control" id="password" ng-model="item.password" required ng-disabled="mode == 'VIEW'">
+				            	</div> 
+            	</div>
+            						
+            
+			<!-- form buttons -->
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">            
+                <button type="submit" class="btn btn-primary" ng-click="createLogin(item)" ng-show="mode != 'VIEW'">Create</button>
+              </div>
+            </div>
+
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</section>

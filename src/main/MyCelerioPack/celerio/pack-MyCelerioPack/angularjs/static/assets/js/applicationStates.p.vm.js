@@ -267,13 +267,26 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 					templateUrl: "assets/tpl/commons/login.html",
 					controller : "LoginController"
 				},
-				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
+				"footerView": {templateUrl: "assets/tpl/commons/loginFooter.html"}
 				},
 			resolve: {
 				credential : function() {
 	  				return {"login": "admin", "password": "admin", "error": false};
 				}
 			}
+	});
+
+	/* to redirect users to the create account page */
+    ${dollar}stateProvider
+		.state('createLogin', {
+	  		url: "/createLogin",
+			views: {
+				"mainView": {
+					templateUrl: "assets/tpl/commons/createLogin.html",
+					controller: "CreateLoginController"
+				},
+				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
+				}
 	});
 
     /* to redirect users to the logout page */

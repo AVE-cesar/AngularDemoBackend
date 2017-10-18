@@ -178,10 +178,10 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
   <div class="page-header">
     <h1>
       <i class="md md-list"></i>
-      Linked entities (inverse relation)
+      Linked entities <small>(inverse relation)</small>
     </h1>
     <p class="lead">
-      Todo
+      The tables below list linked entites. You can navigate through entities.
     </p>
   </div>
 
@@ -189,14 +189,11 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	#foreach ($rel in $entityP.getRelations().list)
 		#if ($entity == $rel.getToEntity())
 			#if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many" || $rel.getKind() == "one-to-one")
-				-- on a une relation $rel.getKind() (MTO/OTO/MTM) vers notre entite $entity, il faudra faire une table HTML contenant la liste des $entityP.name lies avec des liens pour y descendre
-				-- il faudra un REST sur les $entityP.name pour lister les $entityP.name lies a $entity
-				-- Exemple: ${entityP.name}.findBy${entity}ID
   <div class="card">
 
     <div class="row">
       <div class="col-md-6">
-        <h3 class="table-title p-20">${entityP.name} table:: inverse relation to: ${rel}</h3>
+        <h3 class="table-title p-20">${entityP.name} entities <small>linked to this ${entity.model.type}</small></h3>
       </div>
       <div class="col-md-6">
         <div class="table-search">
@@ -207,7 +204,12 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 
     <div class="table-responsive white">
 
-      <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+    <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+	<tr>
+#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)	
+		<th>${attribute.varUp}</th>
+#end		
+	</tr>
 ## --------------- Inverse relation     
         <tr ng-repeat="row in find${entityP.model.type}By${entity}">
 #foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)
@@ -215,7 +217,11 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	## add a link on the first column
 		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${entityP.model.type}({id:row.id})">{{row.${attribute.var}}}</a></td>
 	#else
-		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var}}}</td>	
+		#if ($attribute.type == "Date")
+			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var} | date:"dd/MM/yyyy"}}</td>
+		#else
+			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var}}}</td>
+		#end  	
 	#end	  
 #end ## end foreach on attribute
         </tr>		        
