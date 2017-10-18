@@ -23,3 +23,16 @@ spring.jpa.properties.hibernate.format_sql=true
 logging.level.root=WARN
 # specific log level
 logging.level.com.jaxio.demo=INFO
+
+# connection info to a SMTP server in order to send email
+spring.mail.host=localhost
+spring.mail.port=25
+spring.mail.username= 
+spring.mail.password=
+
+spring.mail.thymeleaf.cache=false
+
+
+# properties that belongs to the application itself	
+application.async.corePoolSize=1
+application.mail.from=application@localhost.fr
