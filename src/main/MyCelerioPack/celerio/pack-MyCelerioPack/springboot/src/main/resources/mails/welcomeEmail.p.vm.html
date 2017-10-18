@@ -1,0 +1,15 @@
+$output.resource("mails\welcomeEmail.html")##
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.welcome.title}"></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+    Click <a href="http://localhost:8080/registration/${dollar}{id}">here</a> to validate your registration !<br/>
+    This link will expire in 30 minutes.
+    
+    Thanks for using our application !    
+    </body>
+</html>
