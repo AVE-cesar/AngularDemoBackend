@@ -61,8 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	/**
     	 * pages or URL excluded from security mechanism
     	 */
-        web.ignoring().antMatchers("/assets/**", "/bower_components/**", "/index.html", "/login.html",
-                "/partials/**", "/template/**", "/", "/error/**");
+        web.ignoring().antMatchers("/favicon.ico", "/assets/**", "/bower_components/**", "/index.html", "/login.html", "/createLogin", "/partials/**", "/template/**", "/", "/error/**", "/registration");
     }
 
     @Override
