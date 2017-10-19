@@ -20,11 +20,3 @@ app.controller('LoginController', function (${dollar}rootScope, ${dollar}scope, 
     };
     
 });
-
-/*
-app.factory('RegistrationService', function (${dollar}resource) {
-	return ${dollar}resource('createLogin', {}, {
-		'createLogin': { method: 'GET'}
-	});
-});
-*/
