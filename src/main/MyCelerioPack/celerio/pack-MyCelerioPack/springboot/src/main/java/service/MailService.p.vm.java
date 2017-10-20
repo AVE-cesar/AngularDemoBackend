@@ -65,14 +65,20 @@ public class MailService {
     @Async
     public void sendWelcomeEmail(String to, Locale locale, Integer id) {
         log.debug("Sending activation e-mail to '{}'", to);
-        
-        // add variables to template
-        Context context = new Context(locale);
-        context.setVariable("id", id);
 
-        String content = templateEngine.process("welcomeEmail", context);
+        String content = generateEmailContent(locale, id);
         String subject = messageSource.getMessage("email.welcome.title", null, locale);
         
         sendEmail(to, subject, content, false, true);
+    }
+    
+    protected String generateEmailContent(Locale locale, Integer id) {
+    		// add variables to template
+        Context context = new Context(locale);
+        context.setVariable("url", "http://localhost:8080/#!/confirmRegistration/"+id);
+        
+    		String content = templateEngine.process("welcomeEmail", context);
+    	
+    		return content;
     }
 }

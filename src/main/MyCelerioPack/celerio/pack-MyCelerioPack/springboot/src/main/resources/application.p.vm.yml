@@ -32,6 +32,9 @@ spring.mail.password=
 
 spring.mail.thymeleaf.cache=false
 
+server.address=localhost
+server.port=8080 
+server.contextPath=/
 
 # properties that belongs to the application itself	
 application.async.corePoolSize=1
