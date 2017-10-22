@@ -190,18 +190,8 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 					</tbody>
 				</table>
 			</div>
-			
-			<div class="row">
-				<div class="col-lg-12">
-					<div>
-						<ul class="pagination pagination-sm">
-							<li class="disabled"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to first page" ng-click="first()">|&laquo; First</a></li>
-							<li class="active"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to previous page" ng-click="prev()">&laquo; Previous</a></li>
-							<li><a href="#" data-toggle="tooltip" data-placement="top" title="Go to next page" ng-click="next()">Next &raquo;</a></li>
-							<li><a href="#" data-toggle="tooltip" data-placement="top" title="Go to last page" ng-click="last()">Last &raquo;|</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+
+			<!-- pagination -->			
+			<div ng-include="'assets/tpl/commons/pagination.html'"></div>
 			
 		</div> <!-- bs-docs-section -->

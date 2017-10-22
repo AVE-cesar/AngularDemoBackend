@@ -37,7 +37,7 @@ scope.settings = {
 
 // pagination variables
 scope.pagination = {};
-scope.totalElementsPerPage = 20;
+scope.totalElementsPerPage = 10;
 scope.busy = false;
 
 // saved search
@@ -119,28 +119,15 @@ scope.startSearch = function(item) {
 	hideForm(searchAside);
 };
 
-/** Gets first page */
-scope.first = function () {
-	log.info("call method first inside ${entity.model.type}Controller for page: 0");
-	scope.refreshByPage(0, scope.totalElementsPerPage, false);		
-}; 
-
-/** Gets previous page */
-scope.prev = function () {
-	log.info("call method prev inside ${entity.model.type}Controller for page: " + (scope.pagination.number - 1));
-	scope.refreshByPage(scope.pagination.number - 1, scope.totalElementsPerPage, false);		
-}; 
-
-/** Gets next page */
-scope.next = function () {
-	log.info("call method next inside ${entity.model.type}Controller for page: " + (scope.pagination.number + 1));
-	scope.refreshByPage(scope.pagination.number + 1, scope.totalElementsPerPage, false);		
-}; 
-
-/** Gets last page */
-scope.last = function () {
-	log.info("call method last inside ${entity.model.type}Controller for page: " + (scope.pagination.totalPages - 1));
-	scope.refreshByPage(scope.pagination.totalPages - 1, scope.totalElementsPerPage, false);		
+/** manage pagination */
+scope.setPage = function (page) {
+	if (page < 0 || page > (scope.pagination.totalPages - 1)) {
+        return;
+    }
+	
+	log.info("Switching to page: " + page);
+	// call the server to get the desired page
+	scope.refreshByPage(page, scope.totalElementsPerPage, false);
 };
 
 #foreach ($attribute in $entity.nonCpkAttributes.list)

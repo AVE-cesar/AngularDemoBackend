@@ -145,7 +145,7 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				},
 			resolve: {
 				credential : function() {
-	  				return {"login": "admin", "password": "admin", "error": false};
+	  				return {"username": "admin", "password": "admin", "error": false};
 				}
 			}
 	});

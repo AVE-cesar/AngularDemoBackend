@@ -205,11 +205,18 @@ $output.resource("/static/index.html")##
             <li  ng-show="authenticated" class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Entities<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="themes">
+#set( $firstRow = 0 )
 #foreach ($entity in $project.entities.list)
 #if (${entity.model.type.startsWith("App")})
                 <li><a ui-sref="${entity.model.var}">${entity.model.type}</a></li>
 #else
+	#if ($firstRow == 0)
+			#set( $firstRow = 1 )
+				<li class="divider"></li>
                 <li><a ui-sref="${entity.model.var}"><b>${entity.model.type}</b></a></li>
+    #else
+    				<li><a ui-sref="${entity.model.var}"><b>${entity.model.type}</b></a></li>
+    #end            
 #end
 #end
               </ul>
