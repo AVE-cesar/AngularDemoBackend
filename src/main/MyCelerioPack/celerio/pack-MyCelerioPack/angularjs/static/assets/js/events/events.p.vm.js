@@ -33,7 +33,7 @@ app.run(function (${dollar}rootScope, ${dollar}location, ${dollar}http, AuthShar
     ${dollar}rootScope.${dollar}on('event:auth-loginConfirmed', function (event, data) {
         console.log('login confirmed start ' + data);
         ${dollar}rootScope.loadingAccount = false;
-        var nextLocation = (${dollar}rootScope.requestedUrl ? ${dollar}rootScope.requestedUrl : "/form");
+        var nextLocation = (${dollar}rootScope.requestedUrl ? ${dollar}rootScope.requestedUrl : "/book");
         console.log('nextLocation: ' + nextLocation);
         
         var delay = (${dollar}location.path() === "/loading" ? 1500 : 0);

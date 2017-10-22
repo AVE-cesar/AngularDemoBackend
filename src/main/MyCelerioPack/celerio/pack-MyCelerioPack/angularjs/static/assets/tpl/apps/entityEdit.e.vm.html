@@ -79,7 +79,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
             	#end
 		#elseif ($attribute.type == "Date") 
 
-				<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag data-autoclose="1" bs-datepicker ng-disabled="mode == 'VIEW'">
+				<input type="date" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag ng-disabled="mode == 'VIEW'">
 		   	</div>
            	</div>
 	    #else  
@@ -87,6 +87,37 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	   #end     
 	#end
 #end			
+
+## manage foreign key attribute (complex attribute)
+
+## OneToOne attributes (displayed as combo)
+#foreach ($oneToOne in $entity.oneToOne.list)
+			<div class="form-group">
+			<label class="col-lg-2 control-label"><a ui-sref="edit${oneToOne.to.type}(#if ((${oneToOne.toEntity.hasSimplePk()})) {id:item.${oneToOne.to.var}.${oneToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${oneToOne.to.type}</a></label>
+			
+            <div class="col-lg-10">     	
+            <ui-select title="Choose an $oneToOne.to.var" allow-clear ng-model="item.$oneToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
+#foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)  
+	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
+                <ui-select-match placeholder="Choose an $oneToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
+     	#break           
+     #end
+#end                
+                <ui-select-choices repeat="itemA in ${oneToOne.to.type.substring(0,1).toLowerCase()}${oneToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
+#foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)
+                #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
+                  	<span ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></span>
+                  	#break
+                #end
+#end
+#foreach ($toPk in $oneToOne.getToEntity().getInPkAttributes().list)
+                  		<small ng-bind-html="itemA.$toPk.name | highlight: ${dollar}select.search"></small>
+#end                  	
+                </ui-select-choices>
+             </ui-select>
+             </div>
+	</div>
+#end
 
 ## ManyToOne attributes (displayed as combo); WARNING: this code is a copy of the one above for oneToOne relations
 #foreach ($manyToOne in $entity.manyToOne.list)
@@ -168,10 +199,53 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
       Linked entities
     </h1>
     <p class="lead">
-      Todo
+      The tables below list linked entites. You can navigate through entities.
     </p>
   </div>
+  
+## --------------- Many to many: to entity
+#foreach ($relation in $entity.manyToMany.list)
+  <div class="card">
 
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="table-title p-20">${relation.to.varUp}: {{item.${relation.to.var}s.length}} rows</h3>
+      </div>
+      <div class="col-md-6">
+        <div class="table-search">
+          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive white">
+
+      <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+      <tr>
+#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)	
+		<th>${attribute.varUp}</th>
+#end		
+		</tr>
+        <tr ng-repeat="item in item.${relation.to.var}s">
+#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)
+	##if (!$attribute.isInPk()  && !$attribute.isInFk())
+	#if ($velocityCount == 1)
+	## add a link on the first column
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${relation.to.varUp}({id:item.id})">{{item.${attribute.var}}}</a></td>
+	#else
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{item.${attribute.var}}}</td>	
+	#end	  
+	##end
+#end
+        </tr>
+      </table>
+
+    </div>
+
+  </div>
+#end
+  
+</section>
 
 <section class="tables-data">
 

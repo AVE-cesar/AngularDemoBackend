@@ -48,13 +48,11 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-				<label for="name" class="col-lg-2 control-label"><b>LastName</b></label>
-				
-		<div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="lastName" ng-model="item.lastName" required ng-disabled="mode == 'VIEW'">
-				            	</div> 
-            	</div>
+		<label for="name" class="col-lg-2 control-label"><b>LastName</b></label>
+		<div class="col-lg-10">		
+		<input type="text" class="form-control" id="lastName" ng-model="item.lastName" required maxlength="10" ng-disabled="mode == 'VIEW'">
+		</div> 
+        	</div>
             						
 							
 		<div class="form-group">
@@ -88,13 +86,15 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-				<label for="name" class="col-lg-2 control-label"><b>Password</b></label>
-				
+		<label for="name" class="col-lg-2 control-label"><b>Password</b></label>
 		<div class="col-lg-10">
-																
-									<input type="password" class="form-control" id="password" ng-model="item.password" required ng-disabled="mode == 'VIEW'">
-				            	</div> 
-            	</div>
+		<input type="password" class="form-control" id="password" ng-model="item.password" placeholder="Enter your password" required ng-disabled="mode == 'VIEW'">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+  		Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+		</small>
+		<div class="invalid-feedback">Please provide a valid password.</div>
+		</div> 
+        	</div>
             						
             
 			<!-- form buttons -->
