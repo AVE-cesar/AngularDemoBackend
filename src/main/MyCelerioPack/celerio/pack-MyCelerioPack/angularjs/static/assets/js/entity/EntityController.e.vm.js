@@ -261,7 +261,7 @@ scope.remove = function(b) {
 			} 
 
 			${entity.model.var}RestMassDeleteService.massDelete({id: ids}, function success(data) {
-				scope.refresh();
+				scope.refreshByPage(0, scope.totalElementsPerPage);
 				
 				window.showAlert = function(){
 				    var userALert = alertService({
@@ -286,7 +286,7 @@ scope.remove = function(b) {
 		} else {
 			// one item deletion mode
 			${entity.model.var}RestService.delete({id: b.id}, function success(data) {
-				scope.refresh();
+				scope.refreshByPage(0, scope.totalElementsPerPage);
 			}, function failure(err) {
 				alert('request failed');
 			});

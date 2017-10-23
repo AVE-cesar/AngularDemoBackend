@@ -96,7 +96,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			<label class="col-lg-2 control-label"><a ui-sref="edit${oneToOne.to.type}(#if ((${oneToOne.toEntity.hasSimplePk()})) {id:item.${oneToOne.to.var}.${oneToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${oneToOne.to.type}</a></label>
 			
             <div class="col-lg-10">     	
-            <ui-select title="Choose an $oneToOne.to.var" allow-clear ng-model="item.$oneToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
+            <ui-select title="Choose an $oneToOne.to.var" ng-model="item.$oneToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
 #foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)  
 	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
                 <ui-select-match placeholder="Choose an $oneToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
@@ -127,22 +127,22 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			<div class="col-lg-10">
 			<!-- div to associate the select and its delete button -->
           	<div class="input-group">
-			<ui-select title="Choose an $manyToOne.to.var" allow-clear ng-model="item.$manyToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
+			<ui-select title="Choose an $manyToOne.to.var" ng-model="item.$manyToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
 #foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)  
 	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
                 <ui-select-match placeholder="Choose an $manyToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
      	#break           
      #end
 #end                
-                <ui-select-choices repeat="itemA in ${manyToOne.to.type.substring(0,1).toLowerCase()}${manyToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
+                <ui-select-choices repeat="itemB in ${manyToOne.to.type.substring(0,1).toLowerCase()}${manyToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
 #foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)
                 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
-                  	<span ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></span>
+                  	<span ng-bind-html="itemB.$toAttribute.name | highlight: ${dollar}select.search"></span>
                   	#break
                 #end
 #end
 #foreach ($toPk in $manyToOne.getToEntity().getInPkAttributes().list)
-                  		<small ng-bind-html="itemA.$toPk.name | highlight: ${dollar}select.search"></small>
+                  		<small ng-bind-html="itemB.$toPk.name | highlight: ${dollar}select.search"></small>
 #end                  	
                 </ui-select-choices>
              </ui-select>

@@ -6,6 +6,8 @@ app.controller("${entity.model.type}CreateController", ["${dollar}scope", "${dol
 #if ($attribute.isInFk() || ($attribute.isInCpk() == true && $attribute.isSimpleFk() == true))
 	#if ($attribute.getXToOneRelation().isManyToOne())
 		"${attribute.getEntityIPointTo().name}RestService",
+	#elseif ($attribute.getXToOneRelation().isOneToOne())
+		"${attribute.getEntityIPointTo().name}RestService",	
 	#else
 		/* Type of relation [$attribute.getXToOneRelation()] not implemented yet !!!! */
 	#end 
@@ -17,6 +19,8 @@ app.controller("${entity.model.type}CreateController", ["${dollar}scope", "${dol
 	#if ($attribute.isInFk() || ($attribute.isInCpk() == true && $attribute.isSimpleFk() == true))
 		#if ($attribute.getXToOneRelation().isManyToOne())
 			$attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()$attribute.getEntityIPointTo().name.substring(1).toLowerCase()RestService,
+		#elseif ($attribute.getXToOneRelation().isOneToOne())
+			$attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()$attribute.getEntityIPointTo().name.substring(1).toLowerCase()RestService,		
 		#else
 			/* Type of relation [$attribute.getXToOneRelation()] not implemented yet !!!! */
 		#end 
@@ -35,7 +39,22 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 	log.info("receiving ${attribute.getEntityIPointTo().name} from server side");
 	scope.$attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()$attribute.getEntityIPointTo().name.substring(1).toLowerCase()s = result;
 	log.info("${attribute.getEntityIPointTo().name} post refresh: " + result.length);
+	
+	// sort values to facilitate research for the end user
+	try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("name"));
+	} catch (err) {}
 });
+		#elseif ($attribute.getXToOneRelation().isOneToOne())
+	// fill $attribute.getEntityIPointTo().name combo with data from server side
+	${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1).toLowerCase()}RestService.query({query: '*'}, function success(result){
+		log.info("receiving ${attribute.getEntityIPointTo().name} from server side");
+		scope.$attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()$attribute.getEntityIPointTo().name.substring(1)s = result;
+		log.info("${attribute.getEntityIPointTo().name} post refresh: " + result.length);
+	
+		// sort values to facilitate research for the end user
+		try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("name"));
+		} catch (err) {}		
+	});
 		#else
 			/* Type of relation [$attribute.getXToOneRelation()] not implemented yet !!!! */
 		#end 
