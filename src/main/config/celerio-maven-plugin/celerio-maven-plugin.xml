@@ -5,16 +5,37 @@
 	! Template is part of Open Source Project: https://github.com/jaxio/pack-backend-jpa -->
 <celerio xmlns="http://www.jaxio.com/schema/celerio" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://www.jaxio.com/schema/celerio.xsd">
-	
-	<!-- tables>
-		<table include="false" pattern="*_AUDIT"/>
-		<table include="true" pattern="*" />
-	</tables-->
-	
-	<!-- create an alias and a comment for an existing table-->
-	<!-- entityConfigs>
-		
-		<entityConfig tableName="BOOK" entityName="Book" comment="Books table">
-		</entityConfig>
-	</entityConfigs-->
+
+	<!-- tables> <table include="false" pattern="*_AUDIT"/> <table include="true" 
+		pattern="*" /> </tables -->
+
+	<!-- create an alias and a comment for an existing table -->
+	<!-- entityConfigs> <entityConfig tableName="BOOK" entityName="Book" comment="Books 
+		table"> </entityConfig> </entityConfigs -->
+
+	<!-- add some global configurations -->
+	<configuration>
+
+		<defaultManyToOneConfig>
+			<cascades>
+				<cascade type="ALL" />
+			</cascades>
+		</defaultManyToOneConfig>
+
+		<defaultOneToManyConfig>
+			<cascades>
+				<cascade type="ALL" />
+			</cascades>
+		</defaultOneToManyConfig>
+
+		<defaultOneToOneConfig>
+			<cascades>
+				<cascade type="ALL" />
+			</cascades>
+		</defaultOneToOneConfig>
+
+
+	</configuration>
+
+
 </celerio>

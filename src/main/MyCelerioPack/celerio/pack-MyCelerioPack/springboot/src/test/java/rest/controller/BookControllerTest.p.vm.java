@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
@@ -27,6 +28,7 @@ import com.jaxio.demo.rest.controller.BookController;
 import com.jaxio.demo.utils.BookEntityTestUtils;
 
 import com.jaxio.demo.utils.JsonUtils;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -51,9 +53,9 @@ public class BookControllerTest {
 	@Test
 	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testFindAll() throws Exception {
-		this.mockMvc.perform(get("/api/books/"))
-			.andDo(print())
-			.andExpect(status().isOk())
+		this.mockMvc.perform(get("/api/books/")) //
+			.andDo(print()) //
+			.andExpect(status().isOk()) //
 			.andExpect(content().string(containsString("")));
 	}
 	
@@ -63,16 +65,16 @@ public class BookControllerTest {
 	public void testFindAllByPage() throws Exception {
 		int size = 20;
 		for (int i = 0; i < 3 * size; i++) {
-			createABook(true);
+			createABook();
 		}
 				
 		int firstPage = 0;
 		// les pages commencent à zéro
-		this.mockMvc.perform(get("/api/books/bypage")
-			.param("page", Integer.toString(firstPage))
-			.param("sort", "title")
-			.param("size", Integer.toString(size)))
-			.andDo(print())
+		this.mockMvc.perform(get("/api/books/bypage") //
+			.param("page", Integer.toString(firstPage)) //
+			.param("sort", "title") //
+			.param("size", Integer.toString(size))) //
+			.andDo(print()) //
 			.andExpect(status().isOk());
 			// nombre d'elements en retour
 			//.andExpect(jsonPath("$.content", hasSize(size)))
@@ -84,47 +86,41 @@ public class BookControllerTest {
 	@Test
 	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testCreate() throws Exception {
-		createABook(true);
+		createABook();
 	}
 
     @Test
     @WithMockUser(username="admin",roles={"USER","ADMIN"})
     public void testUpdate() throws Exception {
     	// real update
-    	Book book = createABook(true);
+    	Book book = createABook();
     	
-    	this.mockMvc.perform(put("/api/books/")
-    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-    		.content(JsonUtils.convertObjectToJsonBytes(book)))
+    	this.mockMvc.perform(put("/api/books/") //
+    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE) //
+    		.content(JsonUtils.convertObjectToJsonBytes(book))) //
 			.andDo(print()).andExpect(status().isOk());
     	
     	// update becomes a creation because the ID is not set 
-    	Book bookwithoutId = createABook(true);
-    	bookwithoutId.setId(null);
+    	Book bookwithoutId = createABook();
     	
-    	this.mockMvc.perform(put("/api/books/")
-    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-    		.content(JsonUtils.convertObjectToJsonBytes(bookwithoutId)))
-			.andDo(print()).andExpect(status().isCreated());
+    	this.mockMvc.perform(put("/api/books/") //
+    		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE) //
+    		.content(JsonUtils.convertObjectToJsonBytes(bookwithoutId))) //
+			.andDo(print()).andExpect(status().isOk());
     	
     }
 	
-	private Book createABook (boolean followRelations) throws Exception {
+	private Book createABook () throws Exception {
 		Book book = BookEntityTestUtils.createNewBook();
 		
-		if (followRelations) {
-			book.setAuthor(null);
-		}
-		
 		// https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-write-clean-assertions-with-jsonpath/
-		this.mockMvc.perform(post("/api/books/")
-			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-			.content(JsonUtils.convertObjectToJsonBytes(book)))
-			.andDo(print())
-			.andExpect(status().isCreated())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-			// FIXME: this commented line below does not work anymore ! should guess why !
-			//.andExpect(jsonPath("$.price", is(book.getPrice())));
+		this.mockMvc.perform(post("/api/books/") //
+			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE) //
+			.content(JsonUtils.convertObjectToJsonBytes(book))) //
+			.andDo(print()) //
+			.andExpect(status().isCreated()) //
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)) //
+			.andExpect(jsonPath(".price").value(book.getPrice()));
 		
 		return book;
 	}

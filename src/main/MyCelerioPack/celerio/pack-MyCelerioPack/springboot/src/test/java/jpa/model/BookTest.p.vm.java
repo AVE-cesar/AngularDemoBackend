@@ -42,8 +42,10 @@ public class BookTest {
         book2.setTitle(book1.getTitle());
         book2.setDescription(book1.getDescription());
         book2.setPrice(book1.getPrice());
-        book2.setBarcodeid(book1.getBarcodeid());
         book2.setPublicationDate(book1.getPublicationDate());
+        
+        // One to one relation
+        book2.setBarcode(book1.getBarcode());
         
         // Many to one relation
         book2.setAuthor(book1.getAuthor());

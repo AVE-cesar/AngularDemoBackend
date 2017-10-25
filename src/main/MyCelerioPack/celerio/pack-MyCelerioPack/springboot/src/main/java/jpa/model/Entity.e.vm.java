@@ -744,10 +744,19 @@ $output.require("com.jaxio.jpa.querybyexample.LocaleHolder")##
         return #if ($entity.hasParent())super.toString() + #{end}MoreObjects.toStringHelper(this) //
 #foreach ($attribute in $entity.nonCpkAttributes.list)
 #if(!$attribute.isInFk() || $attribute.isSimplePk())
+	## avoid the password to be visible
 	#if(!$attribute.isPassword())
          .add("${attribute.var}", ${attribute.getter}()) //
     #end       
 #end
+#end
+## one to one relation
+#foreach ($relation in $entity.oneToOne.list)
+	.add("$relation.to.var", ${relation.to.getter}() != null ? ${relation.to.getter}().toString() : "null") //
+#end
+## --------------- Many to one
+#foreach ($relation in $entity.manyToOne.list)
+	.add("$relation.to.var", ${relation.to.getter}() != null ? ${relation.to.getter}().toString() : "null") //
 #end
             .toString();
     }
