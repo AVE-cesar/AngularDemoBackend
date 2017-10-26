@@ -28,7 +28,12 @@ $attribute.isNotNullable()
 	#end
 
 	$attribute
-	
+	--------------------------------------
+	comment: $attribute.getComment()
+	size: $attribute.getSize()
+	jpa: $attribute.getJpa()
+	spi: $attribute.getSpis().get("h2")
+	--------------------------------------
 	PARTIE JPA: $attribute.jpa
 	
 	##foreach ($annotation in $attribute.jpa.annotations)
