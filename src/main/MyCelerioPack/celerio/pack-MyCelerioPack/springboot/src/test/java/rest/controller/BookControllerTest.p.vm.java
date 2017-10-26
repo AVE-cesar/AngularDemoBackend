@@ -59,13 +59,14 @@ public class BookControllerTest {
 			.andExpect(content().string(containsString("")));
 	}
 	
-    // does not work because of field "price" of table "Book" (its format and its conversion within Celerio)
+	// does not work because of field "price" of table "Book" (its format and its conversion within Celerio)
 	@Test
 	@WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void testFindAllByPage() throws Exception {
 		int size = 20;
+		Book books[] = new Book[3*size];
 		for (int i = 0; i < 3 * size; i++) {
-			createABook();
+			books[i] = createABook();
 		}
 				
 		int firstPage = 0;
@@ -77,10 +78,11 @@ public class BookControllerTest {
 			.andDo(print()) //
 			.andExpect(status().isOk()) //
 			.andExpect(jsonPath("${dollar}.numberOfElements").value(size)) //
-	        // nombre d'elements en retour
-	        .andExpect(jsonPath("${dollar}.content", hasSize(size))); //
-			// pour checker un attribut du premier element
-			//.andExpect(jsonPath("$.content[0].description", is("a detailed description !")));
+			// total number of records
+			.andExpect(jsonPath("${dollar}.content", hasSize(size))); //
+			// to check an attribut value of the first record
+			// unfortunately: it is nto back in the expected order
+			//.andExpect(jsonPath("${dollar}.content[0].description").value(books[0].getDescription()));
 	}
 	
 	@Test
