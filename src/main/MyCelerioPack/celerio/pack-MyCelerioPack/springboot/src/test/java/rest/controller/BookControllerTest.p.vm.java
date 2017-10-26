@@ -1,6 +1,7 @@
 $output.javaTest("${configuration.rootPackage}.rest.controller", "BookControllerTest")##
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,7 +29,6 @@ import com.jaxio.demo.rest.controller.BookController;
 import com.jaxio.demo.utils.BookEntityTestUtils;
 
 import com.jaxio.demo.utils.JsonUtils;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -75,10 +75,10 @@ public class BookControllerTest {
 			.param("sort", "title") //
 			.param("size", Integer.toString(size))) //
 			.andDo(print()) //
-			.andExpect(status().isOk());
-			// nombre d'elements en retour
-			//.andExpect(jsonPath("$.content", hasSize(size)))
-			//.andExpect(jsonPath("$.numberOfElements", is(size)));
+			.andExpect(status().isOk()) //
+			.andExpect(jsonPath("${dollar}.numberOfElements").value(size)) //
+	        // nombre d'elements en retour
+	        .andExpect(jsonPath("${dollar}.content", hasSize(size))); //
 			// pour checker un attribut du premier element
 			//.andExpect(jsonPath("$.content[0].description", is("a detailed description !")));
 	}
