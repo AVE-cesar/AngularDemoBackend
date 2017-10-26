@@ -9,13 +9,8 @@
 	<!-- tables> <table include="false" pattern="*_AUDIT"/> <table include="true" 
 		pattern="*" /> </tables -->
 
-	<!-- create an alias and a comment for an existing table -->
-	<!-- entityConfigs> <entityConfig tableName="BOOK" entityName="Book" comment="Books 
-		table"> </entityConfig> </entityConfigs -->
-
 	<!-- add some global configurations -->
-	<configuration>
-
+	<configuration rootPackage="com.jaxio.demo" applicationName="MyLittleApp">
 		<defaultManyToOneConfig>
 			<cascades>
 				<cascade type="ALL" />
@@ -33,9 +28,16 @@
 				<cascade type="ALL" />
 			</cascades>
 		</defaultOneToOneConfig>
-
-
 	</configuration>
+
+	<!-- create an alias and a comment for an existing table -->
+	<entityConfigs>
+		<entityConfig tableName="APP_USER" entityName="AppUser" comment="Users table">
+			<columnConfigs>
+				<columnConfig columnName="PASSWORD" password="true"></columnConfig>
+			</columnConfigs>
+		</entityConfig>
+	</entityConfigs>
 
 
 </celerio>
