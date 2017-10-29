@@ -1,0 +1,125 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}EditRelations.html")##
+
+<section class="tables-data">
+
+  <div class="page-header">
+    <h1>
+      <i class="md md-list"></i>
+      Linked entities
+    </h1>
+    <p class="lead">
+      The tables below list linked entites. You can navigate through entities.
+    </p>
+  </div>
+  
+## --------------- Many to many: to entity
+#foreach ($relation in $entity.manyToMany.list)
+  <div class="card">
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="table-title p-20">${relation.to.varUp}: {{item.${relation.to.var}s.length}} rows</h3>
+      </div>
+      <div class="col-md-6">
+        <div class="table-search">
+          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive white">
+
+      <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+      <tr>
+#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)	
+		<th>${attribute.varUp}</th>
+#end		
+		</tr>
+        <tr ng-repeat="item in item.${relation.to.var}s">
+#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)
+	##if (!$attribute.isInPk()  && !$attribute.isInFk())
+	#if ($velocityCount == 1)
+	## add a link on the first column
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${relation.to.varUp}({id:item.id})">{{item.${attribute.var}}}</a></td>
+	#else
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{item.${attribute.var}}}</td>	
+	#end	  
+	##end
+#end
+        </tr>
+      </table>
+
+    </div>
+
+  </div>
+#end
+  
+</section>
+
+<section class="tables-data">
+
+  <div class="page-header">
+    <h1>
+      <i class="md md-list"></i>
+      Linked entities <small>(inverse relation)</small>
+    </h1>
+    <p class="lead">
+      The tables below list linked entites. You can navigate through entities.
+    </p>
+  </div>
+
+#foreach ($entityP in $project.getEntities().list)
+	#foreach ($rel in $entityP.getRelations().list)
+		#if ($entity == $rel.getToEntity())
+			#if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many" || $rel.getKind() == "one-to-one")
+  <div class="card">
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="table-title p-20">${entityP.name} entities <small>linked to this ${entity.model.type}</small></h3>
+      </div>
+      <div class="col-md-6">
+        <div class="table-search">
+          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive white">
+
+    <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
+	<tr>
+#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)	
+		<th>${attribute.varUp}</th>
+#end		
+	</tr>
+## --------------- Inverse relation     
+        <tr ng-repeat="row in find${entityP.model.type}By${entity}">
+#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)
+	#if ($velocityCount == 1)
+	## add a link on the first column
+		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${entityP.model.type}({id:row.id})">{{row.${attribute.var}}}</a></td>
+	#else
+		#if ($attribute.type == "Date")
+			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var} | date:"dd/MM/yyyy"}}</td>
+		#else
+			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var}}}</td>
+		#end  	
+	#end	  
+#end ## end foreach on attribute
+        </tr>		        
+      </table>
+
+    </div>
+
+  </div>		
+			#end
+		#end
+	#end ## end foreach relation
+#end ## end foreach entity
+
+	 	 	 	 	 				 	  
+</section>
+
+
+

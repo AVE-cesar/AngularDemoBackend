@@ -71,8 +71,13 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 				
 				#if ($attribute.type == "BigDecimal" || $attribute.type == "Integer" || $attribute.type == "BigInteger")
 					<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag ng-pattern="/^\d{0,18}(\.\d{1,2})?$/" ng-disabled="mode == 'VIEW'">
+				#elseif ($attribute.type == "Boolean")
+					## display as a checkbox
+					<div class="checkbox">
+						<input type="checkbox" ng-model="item.$attribute.var" ng-true-value="true" ng-false-value="false">
+					</div>
 				#else
-					<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" $requiredTag ng-disabled="mode == 'VIEW'">
+					<input type="text" class="form-control" id="$attribute.var" ng-model="item.$attribute.var" maxlength="$attribute.getSize()" $requiredTag ng-disabled="mode == 'VIEW'">
 				#end
             	</div> 
             	</div>
@@ -95,10 +100,12 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			<div class="form-group">
 			<label class="col-lg-2 control-label"><a ui-sref="edit${oneToOne.to.type}(#if ((${oneToOne.toEntity.hasSimplePk()})) {id:item.${oneToOne.to.var}.${oneToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${oneToOne.to.type}</a></label>
 			
-            <div class="col-lg-10">     	
+            <div class="col-lg-10">
+			<!-- div to associate the select and its delete button -->
+			<div class="input-group">
             <ui-select title="Choose an $oneToOne.to.var" ng-model="item.$oneToOne.to.var" theme="bootstrap" ng-disabled="mode == 'VIEW'">
-#foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)  
-	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())          
+#foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)
+	 #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
                 <ui-select-match placeholder="Choose an $oneToOne.to.var">{{${dollar}select.selected.$toAttribute.name}}</ui-select-match>
      	#break           
      #end
@@ -115,7 +122,14 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 #end                  	
                 </ui-select-choices>
              </ui-select>
-             </div>
+             
+			<span class="input-group-btn">
+				<button type="button" ng-click="addOneToOneItemAndGoBackHere()" class="btn btn-default" ng-disabled="mode == 'VIEW'">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</span>
+			</div>
+		</div>
 	</div>
 #end
 
@@ -192,125 +206,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 </section>
 
 <section class="tables-data">
-
-  <div class="page-header">
-    <h1>
-      <i class="md md-list"></i>
-      Linked entities
-    </h1>
-    <p class="lead">
-      The tables below list linked entites. You can navigate through entities.
-    </p>
-  </div>
-  
-## --------------- Many to many: to entity
-#foreach ($relation in $entity.manyToMany.list)
-  <div class="card">
-
-    <div class="row">
-      <div class="col-md-6">
-        <h3 class="table-title p-20">${relation.to.varUp}: {{item.${relation.to.var}s.length}} rows</h3>
-      </div>
-      <div class="col-md-6">
-        <div class="table-search">
-          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="table-responsive white">
-
-      <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
-      <tr>
-#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)	
-		<th>${attribute.varUp}</th>
-#end		
-		</tr>
-        <tr ng-repeat="item in item.${relation.to.var}s">
-#foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)
-	##if (!$attribute.isInPk()  && !$attribute.isInFk())
-	#if ($velocityCount == 1)
-	## add a link on the first column
-		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${relation.to.varUp}({id:item.id})">{{item.${attribute.var}}}</a></td>
-	#else
-		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{item.${attribute.var}}}</td>	
-	#end	  
-	##end
-#end
-        </tr>
-      </table>
-
-    </div>
-
-  </div>
-#end
-  
+	<div ng-include="'assets/tpl/apps/${entity.model.var}/${entity.model.var}EditRelations.html'">
+	</div>
+</div>		
 </section>
-
-<section class="tables-data">
-
-  <div class="page-header">
-    <h1>
-      <i class="md md-list"></i>
-      Linked entities <small>(inverse relation)</small>
-    </h1>
-    <p class="lead">
-      The tables below list linked entites. You can navigate through entities.
-    </p>
-  </div>
-
-#foreach ($entityP in $project.getEntities().list)
-	#foreach ($rel in $entityP.getRelations().list)
-		#if ($entity == $rel.getToEntity())
-			#if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many" || $rel.getKind() == "one-to-one")
-  <div class="card">
-
-    <div class="row">
-      <div class="col-md-6">
-        <h3 class="table-title p-20">${entityP.name} entities <small>linked to this ${entity.model.type}</small></h3>
-      </div>
-      <div class="col-md-6">
-        <div class="table-search">
-          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="table-responsive white">
-
-    <table ng-table="tableParams" template-pagination="assets/tpl/partials/data-table-pager.html" class="table table-full table-full-small">
-	<tr>
-#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)	
-		<th>${attribute.varUp}</th>
-#end		
-	</tr>
-## --------------- Inverse relation     
-        <tr ng-repeat="row in find${entityP.model.type}By${entity}">
-#foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)
-	#if ($velocityCount == 1)
-	## add a link on the first column
-		  <td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'"><a ui-sref="edit${entityP.model.type}({id:row.id})">{{row.${attribute.var}}}</a></td>
-	#else
-		#if ($attribute.type == "Date")
-			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var} | date:"dd/MM/yyyy"}}</td>
-		#else
-			<td data-title="'${attribute.name}'" filter="{ '${attribute.var}': 'text' }" sortable="'${attribute.var}'">{{row.${attribute.var}}}</td>
-		#end  	
-	#end	  
-#end ## end foreach on attribute
-        </tr>		        
-      </table>
-
-    </div>
-
-  </div>		
-			#end
-		#end
-	#end ## end foreach relation
-#end ## end foreach entity
-
-	 	 	 	 	 				 	  
-</section>
-
-
-
