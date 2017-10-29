@@ -12,7 +12,7 @@ public class ${entity.model.type}EntityTestUtils {
 	
 	public static ${entity.model.type} createNew${entity.model.type}() {
 		EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
-    		return enhancedRandom.nextObject(${entity.model.type}.class);
+		return enhancedRandom.nextObject(${entity.model.type}.class);
 	}
 	
 	public static ${entity.model.type} createNew${entity.model.type}($entity.primaryKey.type id) {

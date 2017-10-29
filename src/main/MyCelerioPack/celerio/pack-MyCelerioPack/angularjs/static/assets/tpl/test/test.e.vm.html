@@ -33,12 +33,20 @@ $attribute.isNotNullable()
 	size: $attribute.getSize()
 	jpa: $attribute.getJpa()
 	spi: $attribute.getSpis().get("h2")
+	type: $attribute.type
 	--------------------------------------
 	PARTIE JPA: $attribute.jpa
 	
 	##foreach ($annotation in $attribute.jpa.annotations)
 		
 	##end
+#end
+
+inverseRelation:
+
+#foreach ($invRelation in $entity.getInverseOneToOne().list)
+	-- oui inverse relation
+	$invRelation.getFromEntity()
 #end
 
 -- macro

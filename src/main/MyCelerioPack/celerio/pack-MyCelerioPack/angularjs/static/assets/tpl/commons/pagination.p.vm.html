@@ -1,0 +1,16 @@
+$output.resource("/static/assets/tpl/commons/pagination.html")##
+
+			{{pagination.number+1}}/{{pagination.totalPages}}
+			<!-- pagination -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div>
+						<ul class="pagination pagination-sm">
+							<li ng-class="{disabled: pagination.number === 0}"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to first page" ng-click="setPage(0)">|&laquo; First</a></li>
+							<li ng-class="{disabled: pagination.number === 0}"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to previous page" ng-click="setPage(pagination.number - 1)">&laquo; Previous</a></li>
+							<li ng-class="{disabled: pagination.number === (pagination.totalPages - 1)}"><a href="#" ng-click="setPage(pagination.number + 1)">Next &raquo;</a></li>
+							<li ng-class="{disabled: pagination.number === (pagination.totalPages - 1)}"><a href="#" data-toggle="tooltip" data-placement="top" title="Go to last page" ng-click="setPage(pagination.totalPages - 1)">Last &raquo;|</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>

@@ -25,13 +25,13 @@ CREATE TABLE BAR_CODE (
 );
 
 CREATE TABLE BOOK (
-    ID                          char(36) not null,
-    TITLE                       varchar(100) not null,
-    DESCRIPTION                 varchar(255) not null,
-    PUBLICATION_DATE            timestamp,
-    AUTHOR_ID                   int,
+	ID					char(36) not null,
+	TITLE				varchar(40) not null,
+	DESCRIPTION                 varchar(20) not null,
+	PUBLICATION_DATE            timestamp,
+	AUTHOR_ID                   int,
 --    PRICE                       double not null,
-    PRICE						int not null,
+	PRICE						int not null,
 --	previousBookId				char(36),  ce champ génère un pb, il ajoute un tag @FixedLength qu'on ne sait pas où trouver
 	BARCODEID					int,
 	
