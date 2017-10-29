@@ -148,6 +148,12 @@
 			<artifactId>random-beans</artifactId>
 			<version>3.7.0</version>
 		</dependency>
+		<!-- Random beans: tool to auto-fill Java POJOs with data (see https://github.com/benas/random-beans) -->
+		<dependency>
+			<groupId>io.github.benas</groupId>
+			<artifactId>random-beans-validation</artifactId>
+			<version>3.7.0</version>
+		</dependency>
 
 		<!-- Lang provides a host of helper utilities for the java.lang API, notably 
 			String manipulation methods, basic numerical methods, object reflection, 
