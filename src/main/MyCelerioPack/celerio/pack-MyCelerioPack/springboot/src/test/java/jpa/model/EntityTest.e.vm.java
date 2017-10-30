@@ -24,42 +24,43 @@ public class ${entity.model.type}Test {
 	
 	@Test
 	public void testEquals() {
-		${entity.model.type} book1 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
-		${entity.model.type} book2 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
+		${entity.model.type} ${entity.model.var}1 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
+		${entity.model.type} ${entity.model.var}2 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
 		
-		assertTrue(book1.equals(book1));
-		assertFalse(book1.equals(book2));
+		assertTrue(${entity.model.var}1.equals(${entity.model.var}1));
+		assertFalse(${entity.model.var}1.equals(${entity.model.var}2));
 
 	}
 
 	@Test
 	public void testHashCode() {
-		${entity.model.type} book1 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
-		${entity.model.type} book2 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
+		${entity.model.type} ${entity.model.var}1 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
+		${entity.model.type} ${entity.model.var}2 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
 		
-		book2.setId(book1.getId());
-		book2.setTitle(book1.getTitle());
-		book2.setDescription(book1.getDescription());
-		book2.setPrice(book1.getPrice());
-		book2.setPublicationDate(book1.getPublicationDate());
-		
+#foreach ($attribute in $entity.attributes.list)
+	#if (!$attribute.isInFk())
+		${entity.model.var}2.set${attribute.varUp}(${entity.model.var}1.get${attribute.varUp}());
+	#end
+#end	
+	
 		// One to one relation
-		book2.setBarcode(book1.getBarcode());
+#foreach ($relation in $entity.oneToOne.list)        
+${entity.model.var}2.set${relation.to.varUp}(${entity.model.var}1.get${relation.to.varUp}());
+#end	
 		
 		// Many to one relation
-		book2.setAuthor(book1.getAuthor());
+#foreach ($relation in $entity.manyToOne.list)
+${entity.model.var}2.set${relation.to.varUp}(${entity.model.var}1.get${relation.to.varUp}());
+#end
 		
-		assertTrue(book1.equals(book2));
-		assertTrue(book1.hashCode() == book2.hashCode());
+		assertTrue(${entity.model.var}1.equals(${entity.model.var}2));
+		assertTrue(${entity.model.var}1.hashCode() == ${entity.model.var}2.hashCode());
 		
 	}
 
 	@Test
 	public void testBeanValidation() {
 		${entity.model.type} book = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
-		// FIXME: il faut enlever la ligne suivante et trouver pourquoi cette méthode plante
-		//book.setPrice(new Double(1));
-		book.setPrice(Integer.valueOf(1));
 		
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
