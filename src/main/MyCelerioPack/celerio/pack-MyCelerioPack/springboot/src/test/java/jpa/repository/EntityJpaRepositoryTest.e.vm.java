@@ -11,7 +11,6 @@ $output.require("org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 $output.require("org.springframework.test.context.junit4.SpringRunner")##
 
 $output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
-$output.require("${configuration.rootPackage}.jpa.model.Author")##
 $output.require("${configuration.rootPackage}.jpa.repository.${entity.model.type}JpaRepository")##
 $output.require("${configuration.rootPackage}.jpa.repository.AuthorJpaRepository")##
 $output.require("${configuration.rootPackage}.utils.${entity.model.type}EntityTestUtils")##
@@ -24,14 +23,18 @@ public class ${entity.model.type}JpaRepositoryTest {
 	
 	@Autowired
 	private ${entity.model.type}JpaRepository ${entity.model.var}Repository;
-	
-	// One to one
+
+	// One to one relation
+#foreach ($relation in $entity.oneToOne.list)
 	@Autowired
-	private BarCodeJpaRepository barcodeRepository;
-	
-	// Many to one
+	private ${relation.to.type}JpaRepository ${relation.to.var}Repository;
+#end
+
+	// Many to one relation
+#foreach ($relation in $entity.ManyToOne.list)
 	@Autowired
-	private AuthorJpaRepository authorRepository;
+	private ${relation.to.type}JpaRepository ${relation.to.var}Repository;
+#end
 
 	@Test
 	public void testSave() {
@@ -50,10 +53,21 @@ public class ${entity.model.type}JpaRepositoryTest {
 		assertThat(${entity.model.var}2).isNotEqualTo(${entity.model.var});
 		
 		String value = "test";
-		${entity.model.var}1.setDescription(value);
+#set( $currentAttribute = "" )
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+	// $attribute.name
+	${entity.model.var}1.${attribute.setter}(value);
+	#set( $currentAttribute = $attribute.name )
+	#break
+#end
+#end
+
 		${entity.model.type} ${entity.model.var}3 = ${entity.model.var}Repository.save(${entity.model.var}1);
 		assertThat(${entity.model.var}3).hasFieldOrPropertyWithValue("id", ${entity.model.var}1.getId());
-		assertThat(${entity.model.var}3).hasFieldOrPropertyWithValue("description", value);
+#if (!$currentAttribute.equals(""))
+		assertThat(${entity.model.var}3).hasFieldOrPropertyWithValue("$currentAttribute", value);
+#end
 	}
 
 	@Test
@@ -71,23 +85,55 @@ public class ${entity.model.type}JpaRepositoryTest {
 	public void should_store_a_${entity.model.var}() {
 		${entity.model.type} ${entity.model.var} = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
 
-        assertThat(${entity.model.var}).hasFieldOrPropertyWithValue("author", ${entity.model.var}.getAuthor());
-        assertThat(${entity.model.var}).hasFieldOrPropertyWithValue("barcode", ${entity.model.var}.getBarcode());
+		// One to one relation
+#foreach ($relation in $entity.oneToOne.list)
+		assertThat(${entity.model.var}).hasFieldOrPropertyWithValue("${relation.to.var}", ${entity.model.var}.get${relation.to.varUp}());
+#end
+		// Many to one relation
+#foreach ($relation in $entity.manyToOne.list)
+		assertThat(${entity.model.var}).hasFieldOrPropertyWithValue("${relation.to.var}", ${entity.model.var}.get${relation.to.varUp}());
+#end
 
         // save the ${entity.model.var} and its linked entities into DB
         ${entity.model.type} saved${entity.model.type} = ${entity.model.var}Repository.save(${entity.model.var});
-        // the linked Author should find into the db
-        assertThat(authorRepository.findOne(saved${entity.model.type}.getAuthor().getId())).isNotNull();
-        // the linked BarCode should find into the db
-        assertThat(barcodeRepository.findOne(saved${entity.model.type}.getBarcode().getId())).isNotNull();
 
-        // copy generated id from saved${entity.model.type} to original one
-        ${entity.model.var}.getAuthor().setId(saved${entity.model.type}.getAuthor().getId());
-        ${entity.model.var}.getBarcode().setId(saved${entity.model.type}.getBarcode().getId());
-        
-        assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("title", ${entity.model.var}.getTitle());
-        assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("author", ${entity.model.var}.getAuthor());
-        assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("barcode", ${entity.model.var}.getBarcode());
+		// One to one relation
+#foreach ($relation in $entity.oneToOne.list)
+		// the linked ${relation.to.varUp} should find into the db
+		assertThat(${relation.to.var}Repository.findOne(saved${entity.model.type}.get${relation.to.varUp}().getId())).isNotNull();
+#end
+		// Many to one relation
+#foreach ($relation in $entity.manyToOne.list)
+		// the linked ${relation.to.varUp} should find into the db
+		assertThat(${relation.to.var}Repository.findOne(saved${entity.model.type}.get${relation.to.varUp}().getId())).isNotNull();
+#end
+
+		// One to one relation
+#foreach ($relation in $entity.oneToOne.list)
+		${entity.model.var}.get${relation.to.varUp}().setId(saved${entity.model.type}.get${relation.to.varUp}().getId());
+#end
+// Many to one relation
+#foreach ($relation in $entity.manyToOne.list)
+		// copy generated id from saved${entity.model.type} to original one
+		${entity.model.var}.get${relation.to.varUp}().setId(saved${entity.model.type}.get${relation.to.varUp}().getId());
+#end
+
+#foreach ($attribute in $entity.nonCpkAttributes.list)
+#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
+	// $attribute.name
+	assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("$attribute.name", ${entity.model.var}.${attribute.getter}());
+	#break
+#end
+#end
+
+		// One to one relation
+#foreach ($relation in $entity.oneToOne.list)        
+		assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("${relation.to.var}", ${entity.model.var}.get${relation.to.varUp}());
+#end
+//Many to one relation
+#foreach ($relation in $entity.manyToOne.list)
+		assertThat(saved${entity.model.type}).hasFieldOrPropertyWithValue("${relation.to.var}", ${entity.model.var}.get${relation.to.varUp}());
+#end
 	}
 
 	@Test
