@@ -36,8 +36,7 @@ $annotation
 #end
 #if($entity.isRoot())
 $output.require("java.io.Serializable")##
-$output.require("com.jaxio.jpa.querybyexample.Identifiable")##
-public#if ($output.isAbstract()) abstract#{end} class ${output.currentClass}${entity.spaceAndExtendsStatement} implements Identifiable<$entity.primaryKey.type>${entity.commaAndImplementedInterfaces}, Serializable {
+public#if ($output.isAbstract()) abstract#{end} class ${output.currentClass}${entity.spaceAndExtendsStatement} implements Serializable {
 #else
 $output.require("${configuration.rootPackage}.jpa.model.${entity.parent.model.type}")##
 public#if ($output.isAbstract()) abstract#{end} class $output.currentClass extends $entity.parent.model.type {
@@ -112,11 +111,6 @@ $output.require($entity.collectionType.implementationFullType)##
 $output.require("${configuration.rootPackage}.jpa.model.${manyToMany.to.type}")##
     private ${entity.collectionType.type}<$manyToMany.to.type> $manyToMany.to.vars = new ${entity.collectionType.implementationType}<>();
 #end
-
-    @Override
-    public String entityClassName() {
-        return ${entity.model.type}.class.getSimpleName();
-    }
 
 #if ($entity.isRoot() && $entity.primaryKey.isComposite())
 
@@ -215,9 +209,6 @@ $output.require("$entity.collectionType.implementationFullType")##
     // -- [${attribute.var}] ------------------------
 
 #if($attribute.hasComment())$attribute.javadoc#end
-#if ($attribute.isSimplePk())
-    @Override
-#end
 #foreach ($annotation in $attribute.custom.annotations)
     $annotation
 #end
@@ -252,30 +243,13 @@ $output.require("$entity.collectionType.implementationFullType")##
     }
 #if ($attribute.isSetterAccessibilityPublic())
 
-#if ($attribute.isSimplePk())
-    @Override
-#end
     public void ${attribute.setter}($attribute.type $attribute.var) {
         this.$attribute.var = $attribute.var;
-    }
-
-    public ${output.currentRootClass} ${attribute.with}($attribute.type $attribute.var) {
-        ${attribute.setter}($attribute.var);
-        return ${output.currentRootCast}this;
     }
 #else
 
     private void ${attribute.setter}($attribute.type $attribute.var) {
         this.$attribute.var = $attribute.var;
-    }
-#end
-#if($attribute.isSimplePk())
-
-    @Override
-    $output.dynamicAnnotation("javax.persistence.Transient")
-    $output.dynamicAnnotation("javax.xml.bind.annotation.XmlTransient")
-    public boolean ${attribute.has}() {
-        return $attribute.var != null#if ($attribute.isString() && !$attribute.isEnum()) && !${attribute.var}.isEmpty()#end;
     }
 #end
 #end
@@ -322,11 +296,6 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
 #end
 #end
 #end
-    }
-
-    public ${output.currentRootClass} ${relation.to.with}($relation.to.type $relation.to.var) {
-        ${relation.to.setter}($relation.to.var);
-        return ${output.currentRootCast}this;
     }
 #end
 ##---------------- One to one
@@ -377,12 +346,6 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
 #end
     }
 #end
-
-    public ${output.currentRootClass} ${relation.to.with}($relation.to.type $relation.to.var) {
-        ${relation.to.setter}($relation.to.var);
-        return ${output.currentRootCast}this;
-    }
-
 #end
 ##---------------- One to virtual one
 #foreach ($relation in $entity.oneToVirtualOne.list)
@@ -419,11 +382,6 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
                 ${relation.to.var}.${relation.from.setter}(${output.currentRootCast}this);
             }
         }
-    }
-
-    public ${output.currentRootClass} ${relation.to.with}($relation.to.type $relation.to.var) {
-        ${relation.to.setter}($relation.to.var);
-        return ${output.currentRootCast}this;
     }
 
     /**
@@ -624,18 +582,6 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
     }
 #end
 
-    /**
-     * Apply the default values.
-     */
-    public ${output.currentRootClass} withDefaults() {
-#if ($entity.hasParent())
-        super.withDefaults();
-#end
-#foreach ($attribute in $entity.pertinentDefaultValueAttributes.list)
-        ${attribute.setter}($attribute.javaDefaultValue);
-#end
-        return ${output.currentRootCast}this;
-    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -698,7 +644,7 @@ $output.require("org.hibernate.annotations.NotFoundAction")##
         return hashCode;
     }
 
-#elseif($entity.isRoot())    
+#elseif($entity.isRoot())
 $output.require("java.util.Objects")##
 
     @Override

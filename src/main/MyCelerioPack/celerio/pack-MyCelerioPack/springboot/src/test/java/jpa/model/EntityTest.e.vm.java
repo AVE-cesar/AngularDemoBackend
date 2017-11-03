@@ -22,6 +22,8 @@ public class ${entity.model.type}Test {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(${entity.model.type}Test.class);
 	
+	private static final int NB = 10;
+	
 	@Test
 	public void testEquals() {
 		${entity.model.type} ${entity.model.var}1 = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
@@ -60,18 +62,21 @@ ${entity.model.var}2.set${relation.to.varUp}(${entity.model.var}1.get${relation.
 
 	@Test
 	public void testBeanValidation() {
-		${entity.model.type} book = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
-		
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		Validator validator = factory.getValidator();
-		Set<ConstraintViolation<${entity.model.type}>> constraintViolations = validator.validate(book);
-		
-		if (constraintViolations.size() > 0 ) {
+		// we test 10 several automatic generations to be more accurate
+		for (int i = 0; i < NB; i++) {
+			${entity.model.type} book = ${entity.model.type}EntityTestUtils.createNew${entity.model.type}();
 			
-			for (ConstraintViolation<${entity.model.type}> constraints : constraintViolations) {
-				LOGGER.debug(constraints.getRootBeanClass().getSimpleName() + "." + constraints.getPropertyPath().toString() + " " + constraints.getMessage());
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<${entity.model.type}>> constraintViolations = validator.validate(book);
+			
+			if (constraintViolations.size() > 0 ) {
+				
+				for (ConstraintViolation<${entity.model.type}> constraints : constraintViolations) {
+					LOGGER.debug(constraints.getRootBeanClass().getSimpleName() + "." + constraints.getPropertyPath().toString() + " " + constraints.getMessage());
+				}
+				assertTrue(constraintViolations.size() == 0);
 			}
-			assertTrue(constraintViolations.size() == 0);
 		}
 	}
 }
