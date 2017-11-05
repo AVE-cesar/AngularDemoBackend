@@ -1,4 +1,4 @@
-$output.javaTest("${configuration.rootPackage}.service", "MailServiceTest")##
+$output.javaTest("${configuration.rootPackage}.service.admin", "MailServiceTest")##
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertNotNull;

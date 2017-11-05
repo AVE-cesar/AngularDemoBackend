@@ -51,39 +51,42 @@ $output.require("org.springframework.jdbc.core.BeanPropertyRowMapper")##
 $output.require("org.springframework.beans.factory.annotation.Autowired")##
 $output.require("org.springframework.data.domain.PageImpl")##
 $output.require("org.springframework.data.domain.PageRequest")##
+$output.require("${configuration.rootPackage}.service.${entity.model.type}Service")##
 
 
 @RestController
 @RequestMapping("/api/${entity.model.vars}")
 public class $output.currentClass{
 
-    private final Logger log=LoggerFactory.getLogger(${output.currentClass}.class);
+	private final Logger log=LoggerFactory.getLogger(${output.currentClass}.class);
 
-    @Autowired
-    private ${entity.model.type}JpaRepository ${entity.model.var}JpaRepository;
+	@Autowired
+	private ${entity.model.type}JpaRepository ${entity.model.var}JpaRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
 #if (($entity.hasSimplePk()))
 	@Autowired
-    private ${entity.model.type}ElasticsearchRepository ${entity.model.var}ElasticsearchRepository;
+	private ${entity.model.type}ElasticsearchRepository ${entity.model.var}ElasticsearchRepository;
 #end
-    /**
-     * Create a new $entity.model.type.
-     */
-    @RequestMapping(value = "/",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<$entity.model.type> create(@RequestBody $entity.model.type $entity.model.var) throws URISyntaxException {
-        log.debug("Create $entity.model.varUp : {}",$entity.model.var);
-        $entity.model.type result = ${entity.model.var}JpaRepository.save($entity.model.var);
-#if (($entity.hasSimplePk()))        
-        ${entity.model.var}ElasticsearchRepository.save(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(${entity.model.var}));
-#end        
-        return ResponseEntity.created(new URI("/api/${entity.model.vars}/"+result.getId()))
-            .body(result);
-    }
+
+	@Autowired
+	${entity.model.type}Service ${entity.model.var}Service;
+
+	/**
+	 * Create a new $entity.model.type.
+	 */
+	@RequestMapping(value = "/",
+		method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<$entity.model.type> create(@RequestBody $entity.model.type $entity.model.var) throws URISyntaxException {
+
+		${entity.model.type} result = ${entity.model.var}Service.create($entity.model.var);
+
+		return ResponseEntity.created(new URI("/api/${entity.model.vars}/"+result.getId()))
+			.body(result);
+	}
 
     /**
      * Update $entity.model.type.

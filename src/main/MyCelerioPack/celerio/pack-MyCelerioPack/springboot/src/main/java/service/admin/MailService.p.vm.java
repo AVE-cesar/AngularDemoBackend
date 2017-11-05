@@ -1,4 +1,4 @@
-$output.java("${configuration.rootPackage}.service","MailService")##
+$output.java("${configuration.rootPackage}.service.admin","MailService")##
 
 $output.require("org.apache.commons.lang.CharEncoding")##
 $output.require("org.slf4j.Logger")##
