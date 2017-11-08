@@ -27,6 +27,16 @@ public class ${entity.model.type}Service {
 	public ${entity.model.type} create(${entity.model.type} ${entity.model.var}) {
 		log.debug("Create ${entity.model.type} : {}", ${entity.model.var});
 
+		// to avoid the following error: detached entity passed to persist
+#foreach ($spkattribute in $entity.simplePkAttributes.list)
+#if ($spkattribute.type == "String")
+		${entity.model.var}.set${spkattribute.varUp}("-1");
+#else
+		${entity.model.var}.set${spkattribute.varUp}(-1);
+#end
+#end
+
+
 		${entity.model.type} result = ${entity.model.var}JpaRepository.save(${entity.model.var});
 #if (($entity.hasSimplePk()))
 		${entity.model.var}ElasticsearchRepository.save(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(${entity.model.var}));

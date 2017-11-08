@@ -213,3 +213,14 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	</div>
 </div>		
 </section>
+
+
+<script>
+#foreach ($attribute in $entity.notInPkAttributes.list)
+#if ($velocityCount == 1)
+
+// set focus into the first input field
+${dollar}('#$attribute.var').focus();
+#end
+#end
+</script>
