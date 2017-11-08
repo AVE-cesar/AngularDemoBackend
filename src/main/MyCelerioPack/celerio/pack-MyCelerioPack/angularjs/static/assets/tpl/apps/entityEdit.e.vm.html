@@ -19,6 +19,9 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
   <strong>Danger!</strong> This entity has NOT been updated ! Something goes wrong during this action.
 </div>
 
+<!-- loading spinner anchor-->
+<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" spinner-start-active="false"></span>
+
 <section class="forms-basic">
   <div class="page-header">
     <h1>
@@ -56,9 +59,9 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	
 		<div class="form-group">
 		#if ($requiredTag == "required")
-		<label for="name" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
+		<label for="$attribute.var" class="col-lg-2 control-label"><b>$attribute.varUp</b></label>
 		#else
-		<label for="name" class="col-lg-2 control-label">$attribute.varUp</label>
+		<label for="$attribute.var" class="col-lg-2 control-label">$attribute.varUp</label>
 		#end
 		
 		<div class="col-lg-10">
@@ -136,7 +139,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 ## ManyToOne attributes (displayed as combo); WARNING: this code is a copy of the one above for oneToOne relations
 #foreach ($manyToOne in $entity.manyToOne.list)
 			<div class="form-group">
-			<label for="name" class="col-lg-2 control-label"><a ui-sref="edit${manyToOne.to.type}(#if ((${manyToOne.toEntity.hasSimplePk()})) {id:item.${manyToOne.to.var}.${manyToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${manyToOne.to.type}</a></label>
+			<label class="col-lg-2 control-label"><a ui-sref="edit${manyToOne.to.type}(#if ((${manyToOne.toEntity.hasSimplePk()})) {id:item.${manyToOne.to.var}.${manyToOne.toEntity.getPrimaryKey().getAttribute().name}} #else <!-- FIXME --> #end)">${manyToOne.to.type}</a></label>
 			
 			<div class="col-lg-10">
 			<!-- div to associate the select and its delete button -->
