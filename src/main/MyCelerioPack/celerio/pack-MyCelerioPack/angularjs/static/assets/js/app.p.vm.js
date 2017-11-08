@@ -9,5 +9,6 @@ var app = angular.module("mainApp",
 		 "ui.select", /* for advanced combo box */
 		 "mgcrea.ngStrap", /* ces 3 derniéres libs pour mgcrea */
 		 "ngCsv", /* for downloading entites as CSV files, see https://github.com/asafdav/ng-csv */
-		 "http-auth-interceptor" /* permet de faciliter le login d'un user en angularjs */
+		 "http-auth-interceptor", /* permet de faciliter le login d'un user en angularjs */
+		 "angularSpinner" /* add a spinner to show to users when the app is working */
 ]);
