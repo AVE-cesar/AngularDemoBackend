@@ -2,7 +2,9 @@ $output.java("${configuration.rootPackage}.rest.controller.security", "Registrat
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jaxio.demo.jpa.model.AppUser;
+import com.jaxio.demo.jpa.model.AppAuthority;
 import com.jaxio.demo.jpa.repository.AppUserJpaRepository;
 import com.jaxio.demo.service.admin.MailService;
 
@@ -40,7 +43,20 @@ public class RegistrationController {
 		log.debug("CreateLogin for user : {}", appUser);
 
 		// step 1: create the users
+		
+		// must be disabled by default !
 		appUser.setEnabled(0);
+
+		// attach a role to the user
+		AppAuthority appAuthority = new AppAuthority();
+		// FIXME: use ENUM or Constant for ROLE
+		appAuthority.setId(1);
+		appAuthority.setName("user");
+		List<AppAuthority> appAuthorities = new ArrayList<AppAuthority>();
+		appAuthorities.add(appAuthority);
+		appUser.setAppAuthorities(appAuthorities);
+
+		// save the user into the database
 		AppUser result = appUserJpaRepository.save(appUser);
 
 		// step 2: send the email

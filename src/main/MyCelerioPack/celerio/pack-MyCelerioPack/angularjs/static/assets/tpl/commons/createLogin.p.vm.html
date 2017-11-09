@@ -38,7 +38,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
 			
 							
 		<div class="form-group">
-				<label for="name" class="col-lg-2 control-label"><b>FirstName</b></label>
+				<label for="firstName" class="col-lg-2 control-label"><b>FirstName</b></label>
 				
 		<div class="col-lg-10">
 																
@@ -48,7 +48,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-		<label for="name" class="col-lg-2 control-label"><b>LastName</b></label>
+		<label for="lastName" class="col-lg-2 control-label"><b>LastName</b></label>
 		<div class="col-lg-10">		
 		<input type="text" class="form-control" id="lastName" ng-model="item.lastName" required maxlength="10" ng-disabled="mode == 'VIEW'">
 		</div> 
@@ -56,7 +56,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-			<label for="name" class="col-lg-2 control-label"><b>Email</b></label>
+			<label for="email" class="col-lg-2 control-label"><b>Email</b></label>
 				
 			<div class="col-lg-10">
 			<input type="email" class="form-control" id="email" ng-model="item.email" required aria-describedby="emailHelp" placeholder="Enter email" ng-disabled="mode == 'VIEW'">
@@ -76,7 +76,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-				<label for="name" class="col-lg-2 control-label"><b>Login</b></label>
+				<label for="login" class="col-lg-2 control-label"><b>Login</b></label>
 				
 		<div class="col-lg-10">
 																
@@ -86,7 +86,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
             						
 							
 		<div class="form-group">
-		<label for="name" class="col-lg-2 control-label"><b>Password</b></label>
+		<label for="password" class="col-lg-2 control-label"><b>Password</b></label>
 		<div class="col-lg-10">
 		<input type="password" class="form-control" id="password" ng-model="item.password" placeholder="Enter your password" required ng-disabled="mode == 'VIEW'">
 		<small id="passwordHelpBlock" class="form-text text-muted">
@@ -111,3 +111,8 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
   </div>
   
 </section>
+
+<script>
+// set focus into the first input field
+${dollar}('#firstName').focus();
+</script>

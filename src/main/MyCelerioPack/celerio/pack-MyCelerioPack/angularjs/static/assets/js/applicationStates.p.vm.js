@@ -166,14 +166,22 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 	/* to redirect users to the registration page */
     ${dollar}stateProvider
 		.state('confirmRegistration', {
-	  		url: "/confirmRegistration",
-			views: {
-				"mainView": {
-					templateUrl: "assets/tpl/commons/confirmRegistration.html",
-					controller: "ConfirmRegistrationController"
-				},
-				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
-				}
+			url: "/confirmRegistration/{id}",
+				views: {
+					"mainView": {
+						templateUrl: "assets/tpl/commons/confirmRegistration.html",
+						controller: "ConfirmRegistrationController"
+					},
+					"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
+					},
+				resolve: {
+					item : ['${dollar}stateParams', 'RegistrationService', '${dollar}log', function(${dollar}stateParams, RegistrationService, log) {
+						log.info("User id: " + ${dollar}stateParams.id);
+						return RegistrationService.registration({id: ${dollar}stateParams.id}, function success(result) {}, function failure(result){
+							log.info("something goes wrong !");
+						}).${dollar}promise;
+					}]
+			}
 	});
 
     /* to redirect users to the logout page */
