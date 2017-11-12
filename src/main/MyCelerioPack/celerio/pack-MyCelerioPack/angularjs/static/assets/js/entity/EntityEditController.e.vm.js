@@ -13,7 +13,7 @@ app.controller("${entity.model.type}EditController", ["${dollar}scope", "${dolla
 	#end 
 #end
 #end
-		"${entity.model.type}RestInvRelationService", "${dollar}alert", "${dollar}timeout", "item", "mode", function(scope, window, aside, log, 
+		"${entity.model.type}RestInvRelationService", "${dollar}alert", "${dollar}timeout", "item", "mode", "usSpinnerService", function(scope, window, aside, log, 
 		${entity.model.var}RestService, 
 #foreach ($attribute in $entity.allAttributes.list)
 	#if ($attribute.isInFk() || ($attribute.isInCpk() == true && $attribute.isSimpleFk() == true))
@@ -26,7 +26,7 @@ app.controller("${entity.model.type}EditController", ["${dollar}scope", "${dolla
 		#end 
 	#end
 #end		
-		${entity.model.var}RestInvRelationService, alertService, timeoutService, item, mode) {
+		${entity.model.var}RestInvRelationService, alertService, timeoutService, item, mode, usSpinnerService) {
 	
 	log.info("inside ${entity.model.type}EditController, mode: " + mode);
 	log.info("inside ${entity.model.type}EditController, item: " + item);
@@ -91,6 +91,9 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 	
 	/** Creates or updates an item */
 	scope.saveItem = function() {
+		// activate the loading spinner
+		usSpinnerService.spin('spinner-1');
+		
 		log.info("Creating or updating an item");
 		
 		// defines the success behavior inside a method
@@ -100,6 +103,9 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 			${dollar}("#successAlert").fadeTo(2000, 500).slideUp(500, function(){
 				${dollar}("#successAlert").hide();
 			});
+			
+			// deactivate the loading spinner
+			usSpinnerService.stop('spinner-1');
 		};
 		
 		// defines the error behavior inside a method
@@ -108,6 +114,9 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 			${dollar}("#errorAlert").fadeTo(2000, 500).slideUp(500, function(){
 				${dollar}("#errorAlert").hide();
 			});
+			
+			// deactivate the loading spinner
+			usSpinnerService.stop('spinner-1');
 		};
 		
 		if (scope.item.id != null) {

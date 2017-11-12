@@ -33,6 +33,11 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
     </p>
   </div>
 
+#foreach ($manyToOne in $entity.manyToOne.list)
+<!-- modal for linked entities creation -->
+<div ng-include="'assets/tpl/apps/$manyToOne.to.var/modal.html'"></div>
+#end
+
 <div class="row m-b-40">
 
     <div class="col-md-3 col-md-push-9">
@@ -163,12 +168,17 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 #end                  	
                 </ui-select-choices>
              </ui-select>
-             
-                <span class="input-group-btn">
-              		<button type="button" ng-click="item.$manyToOne.to.var = undefined" class="btn btn-default" ng-disabled="mode == 'VIEW'">
-                		<span class="glyphicon glyphicon-trash"></span>
-              		</button>
-            		</span>
+
+				<span class="input-group-btn">
+					<!-- button to clear author selection -->
+					<button type="button" ng-click="item.$manyToOne.to.var = undefined" class="btn btn-default" ng-disabled="mode == 'VIEW'">
+					<span class="glyphicon glyphicon-trash"></span>
+					</button>
+					<!-- button to add a new $manyToOne.to.var entity -->
+					<button type="button" onClick="$('#maModal').modal('show');" class="btn btn-default" ng-disabled="mode == 'VIEW'">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+				</span>
              </div>
              </div>
 			</div>

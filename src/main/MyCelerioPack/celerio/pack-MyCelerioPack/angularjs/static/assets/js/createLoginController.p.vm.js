@@ -35,6 +35,16 @@ app.controller('CreateLoginController', function (${dollar}rootScope, ${dollar}s
 
 app.factory('RegistrationService', function (${dollar}resource) {
 	return ${dollar}resource('createLogin', {}, {
-		'createLogin': { method: 'POST'}
+		'createLogin': { method: 'POST'},
+		'registration': { 
+			method: 'GET',
+			url: 'registration/:id',
+			transformResponse: function (data) {
+				try {
+					data = angular.fromJson(data);
+				} catch (err) {}	
+				return data;
+			}
+		}
 	});
 });
