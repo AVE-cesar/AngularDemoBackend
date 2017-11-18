@@ -75,6 +75,7 @@ public class MailService {
     protected String generateEmailContent(Locale locale, Integer id) {
     		// add variables to template
         Context context = new Context(locale);
+        // FIXME: use a parameter
         context.setVariable("url", "http://localhost:8080/#!/confirmRegistration/"+id);
         
     		String content = templateEngine.process("welcomeEmail", context);

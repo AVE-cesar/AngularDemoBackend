@@ -41,6 +41,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException("User " + login + " was not found in the database");
         } else if (appUser.getEnabled() != 1) {
             throw new UserNotEnabledException("User " + login + " was not enabled");
+        } else {
+        		log.info("User {} exists.", appUser);
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();

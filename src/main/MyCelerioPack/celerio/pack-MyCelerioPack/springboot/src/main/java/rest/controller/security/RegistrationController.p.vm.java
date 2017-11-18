@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,8 +79,38 @@ public class RegistrationController {
 
 		AppUser fullyLoadedAppUser = appUserJpaRepository.findOne(id);
 
-		fullyLoadedAppUser.setEnabled(1);
+		if (fullyLoadedAppUser != null) {
+			fullyLoadedAppUser.setEnabled(1);
+		} else {
+			log.debug("The registration id {} doesn't exist !", id);
+			return ResponseEntity.status(404).body(null);
+		}
 
 		return ResponseEntity.ok().body(fullyLoadedAppUser);
+	}
+	
+	/**
+	 * Check if a login already exists or not.
+	 * Useful for a new user registration, to avoid duplicate login.
+	 * 
+	 * @return true if this login is available, false otherwise
+	 */
+	@RequestMapping(value = "/checkLoginAvailability/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> checkLoginAvailability(@PathVariable String login) {
+			boolean available = true;
+			log.debug("Checking login availability for: {}.", login);
+		
+			if (login != null) {
+				AppUser appUser = appUserJpaRepository.findByLoginIgnoreCase(login);
+				if (appUser != null) {
+					available = false;
+				}
+			} else {
+				available = false;
+			}
+			
+			log.debug("is login {} available ? {}.", login, available);
+			
+			return new ResponseEntity<>(available, new HttpHeaders(), HttpStatus.OK);
 	}
 }

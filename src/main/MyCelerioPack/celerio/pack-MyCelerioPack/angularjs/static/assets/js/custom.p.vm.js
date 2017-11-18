@@ -1,6 +1,60 @@
 $output.resource("static\assets\js", "custom.js")##
 
 /**
+ * Add a directive to check if a login exists or not every time a guest enters the login in the input field
+ * This directive makes a call to the server to do this check.
+ * 
+ * see https://www.codementor.io/vominhquoc/async-validator-in-angularjs-ovcr1p1jb
+ * 
+ * @param ${dollar}q
+ * @param ${dollar}http
+ *
+ * @returns
+ */
+app.directive('login', function(${dollar}q, ${dollar}http) {
+	return {
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			ngModel.${dollar}asyncValidators.login = function(modelValue, viewValue) {
+				return ${dollar}http.get('checkLoginAvailability/' + viewValue)
+					.then(
+					function(response) {
+						console.log("status: " + response.data);
+						if (!response.data) {
+							return ${dollar}q.reject(); 
+							/* Server will give me a  notify if it exist or not. */
+							/* I will throw a error If it exist with "reject" */
+							}
+						return true;
+					}
+				);
+			};
+		}
+	};
+});
+
+/**
+ * Add a directive to check if two password field are equals.
+ */
+app.directive('pwdCheck', [function () {
+	return {
+		require: 'ngModel',
+		link: function (scope, elem, attrs, ctrl) {
+			/* find the other input field */
+			var firstPassword = '#' + attrs.pwdCheck;
+			elem.add(firstPassword).on('keyup', function () {
+				scope.${dollar}apply(function () {
+					// get the second value and compare it with the first one
+					var v = elem.val()===${dollar}(firstPassword).val();
+					/* set the result for later use */
+					ctrl.${dollar}setValidity('pwdmatch', v);
+				});
+			});
+		}
+	}
+}]);
+
+/**
  * We override the Angular default filter for our ui-select component.
  * 
  * AngularJS default filter with the following expression:

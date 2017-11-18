@@ -60,10 +60,24 @@ $output.require("java.util.List")##
     AppParameter findByDomainAndKey(String domain, String key);	
 #end
 #if ($entity.model.type == "AppUser")
-    /**
-     * Find by login.
-     */
+	/**
+	 * Find by login.
+	 */
 	// Needed for authentication mechanism.
 	public AppUser findByLogin(String login);
+
+	/**
+	 * Find by login ignoring case.
+	 */
+	// Needed for registration mechanism.
+	public AppUser findByLoginIgnoreCase(String login);
+
+$output.require("java.util.List")##
+	/**
+	 * Find by attribute enabled.
+	 * @param enabled
+	 * @return
+	*/
+	public List<AppUser> findByEnabled(Integer enabled);
 #end
 }

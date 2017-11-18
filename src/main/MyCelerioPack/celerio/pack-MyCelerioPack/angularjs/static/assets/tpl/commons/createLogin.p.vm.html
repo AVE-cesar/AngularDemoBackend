@@ -15,7 +15,7 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
   <div class="page-header">
     <h1>
       <i class="md md-input"></i>
-      Create account form
+      Register for an account
     </h1>
     <p class="lead">
       
@@ -24,83 +24,96 @@ $output.resource("/static/assets/tpl/commons/createLogin.html")##
 
 <div class="row m-b-40">
 
-    <div class="col-md-3 col-md-push-9">
-      <h5>Mode</h5>
-      <p>mode: {{mode}}</p>
-    </div>
-    <div class="col-md-8 col-md-pull-3">
-      <div class="well">
-        <form class="form-horizontal">
-          <fieldset>
-            <legend>Main entity</legend>          
-            <span class="help-block m-b-20">Please fill out the following form below.</span>
+	<div class="col-md-3 col-md-push-9">
+	<h5>Mode</h5>
+	<p>mode: {{mode}}</p>
+	</div>
+	
+	<div class="col-md-8 col-md-pull-3">
+	<div class="well">
+		<!-- pass in the variable if our form is valid or invalid -->
+		<!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+		<form class="form-horizontal" name="registerForm" ng-submit="createLogin(registerForm.${dollar}valid, item)" novalidate>
+			<fieldset>
+			<legend>Account</legend>
+			<span class="help-block m-b-20">Please fill out the following form below.</span>
 
-			
-							
-		<div class="form-group">
+			<div class="form-group" ng-class="{ 'has-error' : registerForm.firstName.${dollar}invalid && !registerForm.firstName.${dollar}pristine }">
 				<label for="firstName" class="col-lg-2 control-label"><b>FirstName</b></label>
-				
-		<div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="firstName" ng-model="item.firstName" required ng-disabled="mode == 'VIEW'">
-				            	</div> 
-            	</div>
-            						
-							
-		<div class="form-group">
-		<label for="lastName" class="col-lg-2 control-label"><b>LastName</b></label>
-		<div class="col-lg-10">		
-		<input type="text" class="form-control" id="lastName" ng-model="item.lastName" required maxlength="10" ng-disabled="mode == 'VIEW'">
-		</div> 
-        	</div>
-            						
-							
-		<div class="form-group">
-			<label for="email" class="col-lg-2 control-label"><b>Email</b></label>
-				
-			<div class="col-lg-10">
-			<input type="email" class="form-control" id="email" ng-model="item.email" required aria-describedby="emailHelp" placeholder="Enter email" ng-disabled="mode == 'VIEW'">
-			<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-			</div> 
-		</div>
-            						
-							
-		<div class="form-group">
+
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="firstName" name="firstName" ng-model="item.firstName" required ng-maxlength="250" placeholder="Enter your firstname (max. 250 char)" ng-disabled="mode == 'VIEW'">
+					<small ng-show="registerForm.firstName.${dollar}invalid && !registerForm.firstName.${dollar}pristine" class="help-block">Your firstName is required.</small>
+				</div> 
+			</div>
+
+
+			<div class="form-group">
+				<label for="lastName" class="col-lg-2 control-label"><b>LastName</b></label>
+			
+				<div class="col-lg-10">		
+					<input type="text" class="form-control" id="lastName" name="lastName" ng-model="item.lastName" required ng-maxlength="10" placeholder="Enter your lastname (max. 10 char)" ng-disabled="mode == 'VIEW'">
+					<p ng-show="registerForm.lastName.${dollar}invalid && !registerForm.lastName.${dollar}pristine" class="help-block">Your lastName is required.</p>
+					<p ng-show="registerForm.lastName.${dollar}error.maxlength" class="help-block">Your lastName is too long.</p>
+				</div> 
+			</div>
+
+
+			<div class="form-group">
+				<label for="email" class="col-lg-2 control-label"><b>Email</b></label>
+					
+				<div class="col-lg-10">
+					<input type="email" class="form-control" id="email" ng-model="item.email" required aria-describedby="emailHelp" placeholder="Enter a valid email" ng-disabled="mode == 'VIEW'">
+					<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+				</div> 
+			</div>
+
+			<div class="form-group">
 				<label for="name" class="col-lg-2 control-label"><b>Language</b></label>
-				
-		<div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="language" ng-model="item.language" required ng-disabled="mode == 'VIEW'">
-				            	</div> 
-            	</div>
-            						
-							
-		<div class="form-group">
+	
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="language" name="language" ng-model="item.language" required placeholder="Enter your preferred language" ng-disabled="mode == 'VIEW'">
+					<p ng-show="registerForm.language.${dollar}invalid && !registerForm.language.${dollar}pristine" class="help-block">Your language is required.</p>
+				</div> 
+			</div>
+
+			<div class="form-group">
 				<label for="login" class="col-lg-2 control-label"><b>Login</b></label>
-				
-		<div class="col-lg-10">
-																
-									<input type="text" class="form-control" id="login" ng-model="item.login" required ng-disabled="mode == 'VIEW'">
-				            	</div> 
-            	</div>
-            						
-							
-		<div class="form-group">
-		<label for="password" class="col-lg-2 control-label"><b>Password</b></label>
-		<div class="col-lg-10">
-		<input type="password" class="form-control" id="password" ng-model="item.password" placeholder="Enter your password" required ng-disabled="mode == 'VIEW'">
-		<small id="passwordHelpBlock" class="form-text text-muted">
-  		Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-		</small>
-		<div class="invalid-feedback">Please provide a valid password.</div>
-		</div> 
-        	</div>
-            						
+					
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="login" name="login" ng-model="item.login" required ng-minlength="3" ng-maxlength="8" login placeholder="Enter your login (min. 3 char; max. 8 char)" ng-disabled="mode == 'VIEW'">
+					<p ng-show="registerForm.login.${dollar}error.minlength" class="help-block">Login is too short.</p>
+					<p ng-show="registerForm.login.${dollar}error.maxlength" class="help-block">Login is too long.</p>
+					<span ng-show="registerForm.login.${dollar}pending.login">Checking if this login is available...</span>
+					<span ng-show="registerForm.login.${dollar}error.login">This login is already taken!</span>
+				</div> 
+			</div>
+
+			<div class="form-group">
+				<label for="password" class="col-lg-2 control-label"><b>Password</b></label>
+
+				<div class="col-lg-10">
+					<input type="password" class="form-control" id="password" name="password" ng-model="item.password" placeholder="Enter your password" required ng-disabled="mode == 'VIEW'">
+					<small id="passwordHelpBlock" class="form-text text-muted">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.</small>
+				</div> 
+			</div>
+
+			<div class="form-group">
+				<label for="passwordCheck" class="col-lg-2 control-label"><b>Password</b></label>
+
+				<div class="col-lg-10">
+					<input type="password" class="form-control" id="passwordCheck" name="passwordCheck" ng-model="confirmPassword" placeholder="Confirm your password" pwd-check="password" required ng-disabled="mode == 'VIEW'">
+					<small id="passwordHelpBlock" class="form-text text-muted">Retype your password to validate it.</small>
+					<p ng-show="registerForm.passwordCheck.${dollar}touched && registerForm.passwordCheck.${dollar}invalid " class="help-block">Your password is required.</p>
+					<div ng-show="registerForm.passwordCheck.${dollar}error.pwdmatch" style="color:red">The 2 passwords MUST be equal.</div>
+				</div> 
+			</div>
+
             
 			<!-- form buttons -->
             <div class="form-group">
-              <div class="col-lg-10 col-lg-offset-2">            
-                <button type="submit" class="btn btn-primary" ng-click="createLogin(item)" ng-show="mode != 'VIEW'">Create</button>
+              <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" class="btn btn-primary" ng-disabled="registerForm.${dollar}invalid || registerForm.${dollar}pending" ng-show="mode != 'VIEW'">Create</button>
               </div>
             </div>
 
