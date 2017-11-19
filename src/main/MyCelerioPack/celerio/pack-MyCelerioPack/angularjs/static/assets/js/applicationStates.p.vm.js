@@ -123,19 +123,18 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				},
 				"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
 				}
-    });
+	});
 	
 
-    /*
-     * 
-     * Authentication part of the application: login, logout
-     * 
-     */
-    
-    /* to redirect users to the login page */
-    ${dollar}stateProvider
+	/*
+	 * 
+	 * Authentication part of the application: login, logout
+	 * 
+	 */
+	/* to redirect users to the login page */
+	${dollar}stateProvider
 		.state('login', {
-	  		url: "/login",
+			url: "/login",
 			views: {
 				"mainView": {
 					templateUrl: "assets/tpl/commons/login.html",
@@ -145,15 +144,15 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				},
 			resolve: {
 				credential : function() {
-	  				return {"username": "admin", "password": "admin", "error": false};
+					return {"username": "admin", "password": "admin", "error": false};
 				}
 			}
 	});
 
 	/* to redirect users to the create account page */
-    ${dollar}stateProvider
+	${dollar}stateProvider
 		.state('createLogin', {
-	  		url: "/createLogin",
+			url: "/createLogin",
 			views: {
 				"mainView": {
 					templateUrl: "assets/tpl/commons/createLogin.html",
@@ -163,8 +162,21 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				}
 	});
 	
+	/* When a user has lost its account */
+	${dollar}stateProvider
+		.state('forgotLogin', {
+		url: "/forgotLogin",
+		views: {
+			"mainView": {
+				templateUrl: "assets/tpl/commons/forgotLogin.html",
+				controller: "ForgotLoginController"
+			},
+			"footerView": {templateUrl: "assets/tpl/commons/emptyFooter.html"}
+			}
+		});	
+	
 	/* to redirect users to the registration page */
-    ${dollar}stateProvider
+	${dollar}stateProvider
 		.state('confirmRegistration', {
 			url: "/confirmRegistration/{id}",
 				views: {
@@ -184,10 +196,10 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 			}
 	});
 
-    /* to redirect users to the logout page */
-    ${dollar}stateProvider
+	/* to redirect users to the logout page */
+	${dollar}stateProvider
 		.state('logout', {
-	  		url: "/logout",
+			url: "/logout",
 			views: {
 				"mainView": {
 					templateUrl: "assets/tpl/commons/logout.html",

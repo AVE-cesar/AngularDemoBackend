@@ -28,6 +28,12 @@ $output.require("javax.transaction.Transactional")##
 $output.require("org.slf4j.LoggerFactory")##
 $output.require("org.slf4j.Logger")##
 
+$output.require("javax.persistence.EntityManager")##
+$output.require("javax.persistence.criteria.CriteriaBuilder")##
+$output.require("javax.persistence.criteria.CriteriaQuery")##
+$output.require("javax.persistence.criteria.Predicate")##
+$output.require("javax.persistence.criteria.Root")##
+
 $output.require("org.springframework.web.bind.annotation.*")##
 $output.require("org.springframework.http.MediaType")##
 $output.require("org.springframework.http.ResponseEntity")##
@@ -64,7 +70,8 @@ public class $output.currentClass{
 	private ${entity.model.type}JpaRepository ${entity.model.var}JpaRepository;
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private EntityManager entityManager;
+
 
 #if (($entity.hasSimplePk()))
 	@Autowired
@@ -250,7 +257,7 @@ public class $output.currentClass{
     public void indexAll${entity.model.varsUp}() {
     	log.debug("REST request to index all $entity.model.varsUp, START");
 #if (($entity.hasSimplePk()))
-    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing");${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p));});
+    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing {}", p);${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p));});
     	
     	PageRequest request = new PageRequest(0, 1000);
         try {
@@ -384,47 +391,53 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
 	}
 #end
 
-    /**
-     * Search $entity.model.vars.
-     */
-    @RequestMapping(value = "/search",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<$entity.model.type> search(@RequestBody $entity.model.type $entity.model.var, Pageable pageable) {
-        log.debug("Search $entity.model.vars, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
-        log.debug("$entity.model.var: %s",  $entity.model.var);
-        
-        long total = ${entity.model.var}JpaRepository.count();
-        
-        String sqlMainPart = "select * from (select $entity.extended.getAttributesListAsSqlColumn() from $entity.getTableName() where 1=1"; 
-        String sqlSecondaryPart = "";
-        
-        List<Object> values = new ArrayList<>();
-        
+	/**
+	 * Search $entity.model.vars.
+	 */
+	@RequestMapping(value = "/search",
+		method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE)
+	public Page<$entity.model.type> search(@RequestBody $entity.model.type $entity.model.var, Pageable pageable) {
+		log.debug("Search $entity.model.vars, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
+		log.debug("$entity.model.var: {}",  $entity.model.var);
+ 
+		String SQL_WILDCARD = "%";
+		CriteriaBuilder criteriaBuilderObj = entityManager.getCriteriaBuilder();
+		CriteriaQuery<$entity.model.type> queryObj = criteriaBuilderObj.createQuery(${entity.model.type}.class);
+		Root<${entity.model.type}> ${entity.model.var}Table = queryObj.from(${entity.model.type}.class);
+
+		List<Predicate> conditionsList = new ArrayList<Predicate>();
+		
+		// add a condition for all filled attributes
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk())
 		if (${entity.model.var}.get${attribute.varUp}() != null) {
 			#if ($attribute.isString())
-				sqlSecondaryPart += " and upper($attribute.var) like ? ";
-				values.add(${entity.model.var}.get${attribute.varUp}().toUpperCase() + "%");
+				
+				Predicate ${attribute.var}Predicate = criteriaBuilderObj.like(${entity.model.var}Table.get("${attribute.var}"), SQL_WILDCARD + ${entity.model.var}.get${attribute.varUp}() + SQL_WILDCARD);
+				conditionsList.add(${attribute.var}Predicate);
 			#else
-				sqlSecondaryPart += " and $attribute.var = ? ";
-				values.add(${entity.model.var}.get${attribute.varUp}());
+				Predicate ${attribute.var}Predicate = criteriaBuilderObj.equal(${entity.model.var}Table.get("${attribute.var}"), ${entity.model.var}.get${attribute.varUp}());
+				conditionsList.add(${attribute.var}Predicate);
 			#end			
 		}
 	#end
 #end
-        
-        sqlSecondaryPart += ") where rownum <= ?";
-        values.add(pageable.getPageSize());
-        
-        log.debug("SQL: %s %s", sqlMainPart, sqlSecondaryPart);
-        List<$entity.model.type> $entity.model.vars = jdbcTemplate.query(sqlMainPart + " " + sqlSecondaryPart, 
-        		values.toArray(), 
-        		new BeanPropertyRowMapper<$entity.model.type>(${entity.model.type}.class));
-        
-        return new PageImpl<>($entity.model.vars, pageable, total);
-    }
+
+		// add a condition for all ManyToOne filled attributes
+#foreach ($manyToOne in $entity.manyToOne.list)
+		if (${entity.model.var}.get${manyToOne.to.type}() != null) {
+			Predicate ${manyToOne.to.var}Predicate = criteriaBuilderObj.equal(${entity.model.var}Table.get("${manyToOne.to.var}"), ${entity.model.var}.get${manyToOne.to.type}().getId());
+			conditionsList.add(${manyToOne.to.var}Predicate);
+		}
+#end
+		
+		queryObj.where(conditionsList.toArray(new Predicate[] {}));
+		List<${entity.model.type}> resultList = entityManager.createQuery(queryObj).getResultList();
+		log.info("This query returns {} ${entity.model.var}(s).", resultList.size());
+
+		return new PageImpl<>(resultList, pageable, resultList.size());
+	}
 
 ## dedicated method for system entities
 #if ($entity.model.type == "AppParameter")

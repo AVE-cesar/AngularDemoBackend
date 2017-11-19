@@ -7,78 +7,24 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 	</ul>
 </div>
 
-<!-- ElasticSearch form -->	
-<div class="panel-group">
-<form class="form-floating" ng-submit="startElasticSearch(savedSearch)">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" href="#${entity.model.var}ElasticSearchForm">${entity.model.type} Elastic Search Form</a>
-      </h4>
+<!-- ElasticSearch form -->
+<div ng-include="'assets/tpl/apps/${entity.model.var}/${entity.model.var}ElasticSearch.html'"></div>
+
+
+<!-- classical search form -->
+<div ng-include="'assets/tpl/apps/${entity.model.var}/${entity.model.var}Search.html'"></div>
+
+
+
+<!-- https://scotch.io/tutorials/sort-and-filter-a-table-using-angular -->
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="material-icons sm-10">search</i></div>
+        <input type="text" class="form-control" placeholder="Search only in the first page of this table below" ng-model="searchFilter">
+      </div>      
     </div>
-    <div id="${entity.model.var}ElasticSearchForm" class="panel-collapse collapse">
-      <div class="panel-body">
-          <div class="form-group filled">
-            <label class="control-label">{{ 'QUERY' | translate }}</label>
-            <input type="text" class="form-control input-sm" ng-model="savedSearch.query" required>
-          </div>
-      </div> <!-- panel body end -->
-      <div class="panel-footer">
-      	<div class="form-group">
-      			<button type="submit" class="btn btn-sm btn-primary" >{{ 'ELASTIC_SEARCH' | translate }}</button>
-        </div>
-    </div> <!-- panel footer end -->
-  </div>
-</form>
-</div>
-</div>
-
-<!-- Entity search form -->
-<div class="panel-group">
-<form class="form-floating" ng-submit="startSearch(savedSearch)">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" href="#${entity.model.var}SearchForm">${entity.model.type} Search Form</a>
-	  </h4>
-    </div>
-    <div id="${entity.model.var}SearchForm" class="panel-collapse collapse">
-      <div class="panel-body">
-
-#foreach ($attribute in $entity.attributes.list)
-	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
-		#if ($attribute.type == "Date") 
-			  	<div class="form-group filled">
-			    	<label class="control-label">$attribute.varUp</label>
-	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var" data-autoclose="1" placeholder="{{ '$attribute.var' | translate }}" bs-datepicker>
-	            </div>
-	    #else  
-	    			<div class="form-group filled">
-			    	<label class="control-label">$attribute.varUp</label>
-	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var">
-	            </div> 
-	   #end     
-	#end
-#end		
-
-		</div> <!-- panel body end -->
-		<div class="panel-footer">
-				<!-- Form buttons: begin -->
-                  <div class="form-group">
-                      <button type="button" ng-click="clearSavedSearch()" class="btn btn-sm btn-default">{{ 'CLEAR' | translate }}</button>
-                      <button type="submit" class="btn btn-sm btn-primary">{{ 'SEARCH' | translate }}</button>
-                  </div>
-                  <!-- Form buttons: end -->
-                  
-         </div> <!-- panel footer end -->
-  </div>
-</form>
-</div>
-</div>
-
-
-
-
+  </form>
 
 
 
@@ -122,23 +68,31 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 							<th><input type="checkbox" class="relative" ng-model="selectAll" ng-click="checkAll()" /></th>
 
 #if (($entity.hasSimplePk()))
-		<th fsm-sort="$entity.getPrimaryKey().getAttribute().var">$entity.getPrimaryKey().getAttribute().varUp</th>
+		<th name="$entity.getPrimaryKey().getAttribute().var">
+		<a href="#" ng-click="sortType = '$entity.getPrimaryKey().getAttribute().var'">$entity.getPrimaryKey().getAttribute().varUp
+		<span ng-show="sortType == '$entity.getPrimaryKey().getAttribute().var'" class="fa fa-caret-down"></span>
+		</a>
+		</th>
 #else
 		<th>Id composite</th>
 #end			
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
-		  <th fsm-sort="$attribute.var" ng-show="configValue.${attribute.var}">$attribute.varUp</th>
+		<th name="$attribute.var" ng-show="configValue.${attribute.var}">
+		<a href="#" ng-click="sortType = '$attribute.var'">$attribute.varUp
+		<span ng-show="sortType == '$attribute.var'" class="fa fa-caret-down"></span>
+		</a>
+		</th>
 	#end
 #end
 
 ## --------------- One to one: header in the table
 #foreach ($relation in $entity.oneToOne.list)
-		  <th fsm-sort="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
+		  <th name="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
 #end
 ## --------------- Many to one
 #foreach ($relation in $entity.manyToOne.list)
-		  <th fsm-sort="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
+		  <th name="${relation.to.var}.$relation.toEntity.getNotInPkAttributes().getFirst().getName()">$relation.to.varUp</th>
 #end
           <th class="text-right">Actions</th>
         </tr>
@@ -149,7 +103,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
             <td colspan="100" align="center"><a ng-click="searchItem()">{{ 'NO_DATA' | translate }}</a></td>
           </tr>        
         
-          <tr ng-repeat="(key, item) in data" ng-click="item.selected=!item.selected"  ng-dblclick="editItem(item)">
+          <tr ng-repeat="(key, item) in data | orderBy:sortType:sortReverse | filter:searchFilter" ng-click="item.selected=!item.selected"  ng-dblclick="editItem(item)">
             <td><input type="checkbox" class="relative" ng-model="item.selected" ng-click="${dollar}event.stopPropagation()" /></td>
 
 #if (($entity.hasSimplePk()))

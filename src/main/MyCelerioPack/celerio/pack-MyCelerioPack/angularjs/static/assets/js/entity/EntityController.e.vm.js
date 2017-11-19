@@ -40,6 +40,11 @@ scope.pagination = {};
 scope.totalElementsPerPage = 10;
 scope.busy = false;
 
+/* table sort options */
+scope.sortType = 'id'; /* set the default sort type */
+scope.sortReverse = false; /* set the default sort order */
+scope.searchFilter = '';
+
 // saved search
 scope.savedSearch = {};
 
@@ -52,15 +57,7 @@ scope.data = [];
 /** Refresh the result grid via a REST call, gets only the first page */
 scope.refresh = function () {
 	log.info("call method refresh inside ${entity.model.type}Controller");
-	${entity.model.var}RestService.query({page: 0, size: scope.totalElementsPerPage}, function(result) {
-		log.info("receiving info from server side");
-		
-		log.info("result: " + result);
-		scope.data = result.content;
-		log.info("data post refresh:" + scope.data.length);
-	});
-	
-	scope.selectAll = false;
+	scope.refreshByPage(0, scope.totalElementsPerPage);
 };
 
 /** Gets data page per page */
@@ -95,7 +92,7 @@ scope.refreshByPage = function (page, size, addMode) {
 
 /** Executes the search with criteria on the server side */
 scope.startSearch = function(item) {
-	log.info("startSearch, criteria: " + scope.item);
+	log.info("startSearch, criteria: " + scope.savedSearch);
 
 	// call search on the server side and refresh the grid
 	${entity.model.var}RestService.search(item, function success(result){
@@ -172,7 +169,7 @@ scope.searchItem = function() {
 /** Executes the Elastic search on the server side */
 scope.startElasticSearch = function(item) {
 	// get criteria
-	var query = scope.item.query;
+	var query = scope.savedSearch.query;
 	log.info("startElasticSearch: " + query);
 	
 	scope.data = [];
@@ -185,9 +182,6 @@ scope.startElasticSearch = function(item) {
 		scope.data = result;
 		log.info("data post refresh:" + result);
 	});
-	
-	// close the search aside
-	hideForm(searchAside);
 };
 
 /** Loads only one item with its ID */

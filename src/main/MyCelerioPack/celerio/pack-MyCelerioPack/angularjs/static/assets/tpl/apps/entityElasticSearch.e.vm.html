@@ -1,0 +1,27 @@
+$output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}ElasticSearch.html")##
+
+<div class="panel-group">
+<form class="form-floating" ng-submit="startElasticSearch(savedSearch)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#${entity.model.var}ElasticSearchForm">${entity.model.type} Elastic Search Form</a>
+      </h4>
+    </div>
+    <div id="${entity.model.var}ElasticSearchForm" class="panel-collapse collapse">
+      <div class="panel-body">
+          <div class="form-group filled">
+            <label class="control-label">{{ 'QUERY' | translate }}</label>
+            <input type="text" class="form-control input-sm" ng-model="savedSearch.query" required placeholder="Index all ${entity.model.var} entities before querying">
+            <small id="emailHelp" class="form-text text-muted">Example: descr OR 45</small>
+          </div>
+      </div> <!-- panel body end -->
+      <div class="panel-footer">
+      	<div class="form-group">
+      			<button type="submit" class="btn btn-sm btn-primary" >{{ 'ELASTIC_SEARCH' | translate }}</button>
+        </div>
+    </div> <!-- panel footer end -->
+  </div>
+</form>
+</div>
+</div>
