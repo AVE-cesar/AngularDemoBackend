@@ -11,23 +11,49 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
     </div>
     <div id="${entity.model.var}SearchForm" class="panel-collapse collapse">
       <div class="panel-body">
-
+## simple attributes
 #foreach ($attribute in $entity.attributes.list)
 	#if (!$attribute.isInFk() && !$attribute.isInCpk() && !$attribute.isInPk())
 		#if ($attribute.type == "Date") 
 			  	<div class="form-group filled">
 			    	<label class="control-label">$attribute.varUp</label>
-	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var" data-autoclose="1" placeholder="{{ '$attribute.var' | translate }}" bs-datepicker>
+	                <input type="date" class="form-control input-sm" ng-model="savedSearch.$attribute.var" data-autoclose="1" placeholder="{{ '$attribute.var' | translate }}">
 	            </div>
 	    #else  
 	    			<div class="form-group filled">
 			    	<label class="control-label">$attribute.varUp</label>
-	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var">
+	                <input type="text" class="form-control input-sm" ng-model="savedSearch.$attribute.var" placeholder="Enter a/an $attribute.varUp">
 	            </div> 
 	   #end     
 	#end
 #end		
 
+
+## ManyToOne attributes
+#foreach ($manyToOne in $entity.manyToOne.list)
+				<!-- ${manyToOne.to.type} entity -->
+				<div class="form-group filled">
+					<label class="control-label">${manyToOne.to.type}</label>
+					
+					<!-- div to associate the select and its delete button -->
+					<div class="input-group">
+						<ui-select title="Choose a/an ${manyToOne.to.var}" ng-model="savedSearch.${manyToOne.to.var}" theme="bootstrap" ng-disabled="mode == 'VIEW'">
+							<ui-select-match placeholder="Choose a/an ${manyToOne.to.var}">{{${dollar}select.selected.name}}</ui-select-match>
+								<ui-select-choices repeat="itemB in ${manyToOne.to.var}s | filter: ${dollar}select.search">
+									<span ng-bind-html="itemB.name | highlight: ${dollar}select.search"></span>
+									<small ng-bind-html="itemB.id | highlight: ${dollar}select.search"></small>
+								</ui-select-choices>
+						</ui-select>
+						
+						<span class="input-group-btn">
+							<!-- button to clear ${manyToOne.to.var} selection -->
+							<button type="button" ng-click="savedSearch.${manyToOne.to.var} = undefined" class="btn btn-default" ng-disabled="mode == 'VIEW'">
+							<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+#end
 		</div> <!-- panel body end -->
 		<div class="panel-footer">
 				<!-- Form buttons: begin -->
