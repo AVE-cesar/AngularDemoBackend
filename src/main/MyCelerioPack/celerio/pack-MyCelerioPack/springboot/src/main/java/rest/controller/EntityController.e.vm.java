@@ -62,7 +62,9 @@ $output.require("${configuration.rootPackage}.service.${entity.model.type}Servic
 @RequestMapping("/api/${entity.model.vars}")
 public class $output.currentClass{
 
-	private final Logger log=LoggerFactory.getLogger(${output.currentClass}.class);
+	private final Logger log = LoggerFactory.getLogger(${output.currentClass}.class);
+	
+	private static final int NB_BLOCK_INDEXATION = 1000;
 
 	@Autowired
 	private EntityManager entityManager;
@@ -118,7 +120,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<$entity.model.type> findAllByPage(Pageable pageable) {
         log.debug("Find all by page $entity.model.varsUp, page: " + pageable.getPageNumber() + ", size: " + pageable.getPageSize());
-        Page<${entity.model.type}> page = ${entity.model.var}Service.findAll(pageable);
+        Page<${entity.model.type}> page = ${entity.model.var}Service.findAllByPage(pageable);
         log.debug("There are " + page.getTotalElements() + " $entity.model.vars.");
         return page;
     }
@@ -134,7 +136,7 @@ public class $output.currentClass{
     public ResponseEntity<$entity.model.type> findById(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) {
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
-        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}Service.findOne($entity.primaryKey.var);
+        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}Service.findById($entity.primaryKey.var);
 #foreach ($relation in $entity.manyToMany.list)
 	#if ($velocityCount == 1)
         // force object loading from database because of lazy loading settings
@@ -160,7 +162,7 @@ public class $output.currentClass{
     	$entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($entity.extended.getCpkAttributesListConstructorStyle());
         log.debug("Find by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
         
-        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}Service.findOne($entity.primaryKey.var);
+        $entity.model.type fullyLoaded${entity.model.type} = ${entity.model.var}Service.findById($entity.primaryKey.var);
 #foreach ($relation in $entity.manyToMany.list)
 	#if ($velocityCount == 1)
         // force object loading from database because of lazy loading settings
@@ -198,10 +200,7 @@ public class $output.currentClass{
     public ResponseEntity<Void> delete($entity.extended.getCpkAttributesListRestStyle()) {
 	    $entity.primaryKey.type $entity.primaryKey.var = new ${entity.primaryKey.type}($entity.extended.getCpkAttributesListConstructorStyle());
         log.debug("Delete by id $entity.model.varsUp : {}.", $entity.primaryKey.var);
-        ${entity.model.var}JpaRepository.delete($entity.primaryKey.var); 
-#if (($entity.hasSimplePk()))         
-        ${entity.model.var}ElasticsearchRepository.delete($entity.primaryKey.var);
-#end        
+        ${entity.model.var}Service.delete($entity.primaryKey.var); 
         return ResponseEntity.ok().build();
     }
 #end
@@ -214,8 +213,7 @@ public class $output.currentClass{
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable $entity.primaryKey.type[] id) {
         log.debug("Delete by id $entity.model.varsUp : {}.", (Object[])id);
-        Stream.of(id).forEach(item -> {${entity.model.var}JpaRepository.delete(item); #if (($entity.hasSimplePk()))${entity.model.var}ElasticsearchRepository.delete(item);#end}); 
-        
+        ${entity.model.var}Service.delete(id);
         return ResponseEntity.ok().build();
     }
 #else
@@ -239,24 +237,7 @@ public class $output.currentClass{
     public void indexAll${entity.model.varsUp}() {
     	log.debug("REST request to index all $entity.model.varsUp, START");
 #if (($entity.hasSimplePk()))
-    	${entity.model.var}JpaRepository.findAll().forEach(p -> {log.debug("indexing {}", p);${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p));});
-    	
-    	PageRequest request = new PageRequest(0, 1000);
-        try {
-        	Page<$entity.model.type> page = findAllByPage(request);
-        	page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p)));
-                         
-             while (page.hasNext()) {
-                    request = new PageRequest(request.getPageNumber() + 1, 1000);
-                    
-                    log.debug("we are indexing page: " + (request.getPageNumber() + 1));
-                    
-                    page = findAllByPage(request);
-                    page.forEach(p -> ${entity.model.var}ElasticsearchRepository.index(${entity.model.type}EntityUtils.convertToElasticsearch${entity.model.type}(p)));
-              }
-        } catch (Exception e) {
-        	log.error("", e);
-        }
+	${entity.model.var}Service.indexAll${entity.model.varsUp}();
 
         log.debug("REST request to index all $entity.model.varsUp, EXIT");
 #end    	
@@ -270,9 +251,7 @@ public class $output.currentClass{
         produces = MediaType.APPLICATION_JSON_VALUE)
     public List<${configuration.rootPackage}.elasticsearch.model.${entity.model.type}> search${entity.model.type}s(@PathVariable String query) {
 #if (($entity.hasSimplePk()))     	
-        return StreamSupport
-            .stream(${entity.model.var}ElasticsearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return ${entity.model.var}Service.search${entity.model.type}s(query);
 #else
 		return null;
 #end
@@ -287,7 +266,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> count() {
         log.debug("Count $entity.model.vars");
-        long count = ${entity.model.var}JpaRepository.count();
+        long count = ${entity.model.var}Service.count();
         
         return new ResponseEntity<>(count, new HttpHeaders(), HttpStatus.OK);
     }
@@ -301,7 +280,7 @@ public class $output.currentClass{
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> exists(@PathVariable $entity.primaryKey.type $entity.primaryKey.var) {
     	log.debug("Check $entity.model.var existence via its id: {}.", id);
-    	Boolean exists = ${entity.model.var}JpaRepository.exists(id);
+    	Boolean exists = ${entity.model.var}Service.exists(id);
         
         return new ResponseEntity<>(exists, new HttpHeaders(), HttpStatus.OK);
     }
@@ -367,7 +346,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         
         ${manyToOne.to.type} ${manyToOne.toEntity.model.var} = new ${manyToOne.to.type}();
         ${manyToOne.toEntity.model.var}.setId(id);
-        List<$entity.model.type> $entity.model.vars = ${entity.model.var}JpaRepository.findBy${manyToOne.to.varUp}(${manyToOne.toEntity.model.var});
+        List<$entity.model.type> $entity.model.vars = ${entity.model.var}Service.findBy${manyToOne.to.varUp}(${manyToOne.toEntity.model.var});
         
         return new ResponseEntity<List<$entity.model.type>>($entity.model.vars, new HttpHeaders(), HttpStatus.OK);
 	}
@@ -432,7 +411,7 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
     public ResponseEntity<AppParameter> findById(@PathVariable String domain, @PathVariable String key) {
         log.debug("Find by domain and key AppParameters : %s %s", domain, key);
         
-        AppParameter appParameter = appParameterJpaRepository.findByDomainAndKey(domain, key);
+        AppParameter appParameter = appParameterService.findByDomainAndKey(domain, key);
         
         return new ResponseEntity<>(appParameter, HttpStatus.OK);
     }

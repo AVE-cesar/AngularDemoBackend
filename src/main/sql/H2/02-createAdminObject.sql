@@ -6,15 +6,23 @@ CREATE TABLE APP_USER (
 	FIRST_NAME			varchar(250) not null,
 	LAST_NAME			varchar(250) not null,
 	EMAIL				varchar(250) not null,
-	LANGUAGE			varchar(10) not null,
+	LANGUAGE				varchar(10) not null,
 	LOGIN				varchar(250) not null,
-	PASSWORD			varchar(50) not null,
+	PASSWORD				varchar(12) not null,
 	ENABLED				int not null,
+	LAST_LOGIN_DATE		timestamp,
+	NB_ATTEMPTS			int,
+	LOCKED				int not null,
+	--REGISTRATION_DATE		timestamp not null,
 	
 	primary key (ID)
 );
+-- add unicity contraint on the login
+-- WARNING: Celerio will use this unique constraint to 
+--ALTER TABLE APP_USER ADD CONSTRAINT UNIQUE_APP_USER_LOGIN UNIQUE(LOGIN);
+
 -- add admin user
-INSERT INTO APP_USER  VALUES (-1, 'admin', 'admin', 'admin@admin.com', 'FR', 'admin', 'admin', 1);
+INSERT INTO APP_USER VALUES (-1, 'admin', 'admin', 'admin@admin.com', 'FR', 'admin', 'admin', 1, null, 0, 0/*, sysdate*/);
 
 CREATE TABLE APP_AUTHORITY (
 	ID					int not null  IDENTITY,

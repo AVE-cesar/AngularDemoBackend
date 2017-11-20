@@ -34,26 +34,26 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 
 ## EDIT state for each entity    	
 #foreach ($entity in $project.entities.list)
-    /* to go in Edit mode on a ${entity.model.var} entity */
+	/* to go in Edit mode on a ${entity.model.var} entity */
 	${dollar}stateProvider
 		.state('edit${entity.name}', {
 			url: "/${entity.name.toLowerCase()}/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()",
 			views: {
 				"mainView": {
-	    				templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Edit.html",
+					templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Edit.html",
 					controller: "${entity.name}EditController"
 				},
 				"footerView": {templateUrl: "assets/tpl/commons/footer.html"}
 			},
 			resolve: {
 				mode : function() {
-      				return "EDIT";
-    			},
+					return "EDIT";
+			},
 				item : ['${dollar}stateParams', '${entity.name}RestService', '${dollar}log', function(${dollar}stateParams, ${entity.name}RestService, log) {
 					return ${entity.name}RestService.get($entity.extended.getCpkAttributesListJsonStyleStateParams(), function success(result) {}, function failure(result){
 						log.info("something goes wrong !");
 						}).${dollar}promise;
-                    }]
+					}]
 				}
 	});
 #end
@@ -66,20 +66,20 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 			url: "/${entity.name.toLowerCase()}/view/$entity.extended.getCpkAttributesListWithCommaAndCurlyBracket()",
 			views: {
 				"mainView": {
-	    				templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Edit.html",
+					templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Edit.html",
 					controller: "${entity.name}EditController"
 				},
 			"footerView": {templateUrl: "assets/tpl/commons/footer.html"}
 				},	
 			resolve: {
 				mode : function() {
-      				return "VIEW";
-    			},
+					return "VIEW";
+			},
 				item : ['${dollar}stateParams', '${entity.name}RestService', '${dollar}log', function(${dollar}stateParams, ${entity.name}RestService, log) {
 					return ${entity.name}RestService.get($entity.extended.getCpkAttributesListJsonStyleStateParams(), function success(result) {}, function failure(result){
 						log.info("something goes wrong !");
 						}).${dollar}promise;
-                    }]
+					}]
 				}
 	});
 #end
@@ -99,8 +99,8 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 				},
 			resolve: {
 				mode : function() {
-      				return "CREATE";
-    			}
+					return "CREATE";
+			}
 			}
 		});
 #end
@@ -110,19 +110,24 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 	${dollar}stateProvider
 		.state('config${entity.name}', {
 			url: "/${entity.model.var}Config",
-	    	templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Config.html",
-			controller: "${entity.name}ConfigController",
+			views: {
+				"mainView": {
+					templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}Config.html",
+					controller: "${entity.name}ConfigController"
+					},
+				"footerView": {templateUrl: "assets/tpl/commons/footer.html"}
+				},
 			resolve: {
 				config : ['${dollar}stateParams', 'AppParameterRestService', '${dollar}log', function(${dollar}stateParams, appParameterRestService, log) {
 					return appParameterRestService.getParameter({domain: 'SCREEN_CONFIG', key: '${entity.name}'}).${dollar}promise.then (function (result) {
-					 	if (!result.value) {
-                   			// no data has been found inside the dabatase, we need to create a fresh one
+						if (!result.value) {
+							// no data has been found inside the dabatase, we need to create a fresh one
 							return appParameterRestService.create({"domain": "SCREEN_CONFIG", "key": "${entity.name}", "value": "$entity.extended.getAttributesListJsonStyle()"});
 						} else {
 							return result;
 						}
 						});
-                    }]
+					}]
 				}
 	});
 #end

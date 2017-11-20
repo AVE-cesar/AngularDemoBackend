@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jaxio.demo.jpa.model.AppUser;
 import com.jaxio.demo.jpa.model.AppAuthority;
-import com.jaxio.demo.jpa.repository.AppUserJpaRepository;
+import com.jaxio.demo.service.AppUserService;
 import com.jaxio.demo.service.admin.MailService;
 
 @RestController
@@ -32,7 +32,7 @@ public class RegistrationController {
 	private final Logger log = LoggerFactory.getLogger(RegistrationController.class);
 	
 	@Autowired
-	private AppUserJpaRepository appUserJpaRepository;
+	private AppUserService appUserService;
 
 	@Autowired
 	private MailService mailService;
@@ -59,7 +59,7 @@ public class RegistrationController {
 		appUser.setAppAuthorities(appAuthorities);
 
 		// save the user into the database
-		AppUser result = appUserJpaRepository.save(appUser);
+		AppUser result = appUserService.create(appUser);
 
 		// step 2: send the email
 		Locale locale_US = new Locale("en", "US");
@@ -77,7 +77,7 @@ public class RegistrationController {
 	public ResponseEntity<AppUser> registration(@PathVariable Integer id) {
 		log.debug("Registration for id: {}.", id);
 
-		AppUser fullyLoadedAppUser = appUserJpaRepository.findOne(id);
+		AppUser fullyLoadedAppUser = appUserService.findById(id);
 
 		if (fullyLoadedAppUser != null) {
 			fullyLoadedAppUser.setEnabled(1);
@@ -101,7 +101,7 @@ public class RegistrationController {
 			log.debug("Checking login availability for: {}.", login);
 		
 			if (login != null) {
-				AppUser appUser = appUserJpaRepository.findByLoginIgnoreCase(login);
+				AppUser appUser = appUserService.findByLoginIgnoreCase(login);
 				if (appUser != null) {
 					available = false;
 				}

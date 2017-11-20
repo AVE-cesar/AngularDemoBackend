@@ -10,8 +10,8 @@ $output.require("org.springframework.web.bind.annotation.ResponseBody")##
 
 $output.require("${configuration.rootPackage}.jpa.model.AppToken")##
 $output.require("${configuration.rootPackage}.jpa.model.AppUser")##
-$output.require("${configuration.rootPackage}.jpa.repository.AppTokenJpaRepository")##
-$output.require("${configuration.rootPackage}.jpa.repository.AppUserJpaRepository")##
+$output.require("${configuration.rootPackage}.service.AppTokenService")##
+$output.require("${configuration.rootPackage}.service.AppUserService")##
 $output.require("${configuration.rootPackage}.security.SecurityUtils")##
 
 $output.require("org.springframework.web.bind.annotation.RequestMapping")##
@@ -21,16 +21,16 @@ $output.require("org.springframework.web.bind.annotation.RestController")##
 public class SecurityController {
 
 	@Autowired
-    private AppUserJpaRepository appUserJpaRepository;
+    private AppUserService appUserService;
 
 
     @Autowired
-    private AppTokenJpaRepository appTokenJpaRepository;
+    private AppTokenService appTokenService;
 
     @RequestMapping(value = "/security/account", method = RequestMethod.GET)
     public @ResponseBody
     AppUser getUserAccount()  {
-    		AppUser appUser = appUserJpaRepository.findByLogin(SecurityUtils.getCurrentLogin());
+    		AppUser appUser = appUserService.findByLogin(SecurityUtils.getCurrentLogin());
     		appUser.setPassword(null);
         return appUser;
     }
@@ -40,7 +40,7 @@ public class SecurityController {
     @RequestMapping(value = "/security/tokens", method = RequestMethod.GET)
     public @ResponseBody
     List<AppToken> getTokens () {
-        List<AppToken> tokens = appTokenJpaRepository.findAll();
+        List<AppToken> tokens = appTokenService.findAll();
         for(AppToken t:tokens) {
             t.setId(null);
             t.setTokenValue(null);

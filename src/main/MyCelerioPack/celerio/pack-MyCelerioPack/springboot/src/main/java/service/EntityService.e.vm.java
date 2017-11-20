@@ -367,18 +367,84 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
 		return new PageImpl<>(resultList, pageable, resultList.size());
 	}
 
+	## --------------- One to One
+	#foreach ($oneToOne in $entity.oneToOne.list)
+	$output.require("java.util.List")##
+	$output.require("${configuration.rootPackage}.jpa.model.$oneToOne.to.type")##
+		/**
+		 * Find by $oneToOne.to.varUp (One To One relation).
+		 */
+		public List<$entity.model.type> findBy${oneToOne.to.varUp}($oneToOne.to.type $oneToOne.to.var) {
+			return ${entity.model.var}JpaRepository.findBy${oneToOne.to.varUp}($oneToOne.to.var);
+		}
+		
+	#end	
+	
+	## --------------- Many to One
+	#foreach ($manyToOne in $entity.manyToOne.list)
+	$output.require("java.util.List")##
+	$output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
+		/**
+		 * Find by $manyToOne.to.varUp (Many To One relation).
+		 */
+		@Transactional
+		public List<$entity.model.type> findBy${manyToOne.to.varUp}($manyToOne.to.type $manyToOne.to.var){
+			return ${entity.model.var}JpaRepository.findBy${manyToOne.to.varUp}($manyToOne.to.var);
+		}
+		
+	#end
+
 ## dedicated method for system entities
 #if ($entity.model.type == "AppParameter")
     /**
-     * Find by domain and key a AppParameter.
+     * Find by domain and key.
      */
+	// FIXME this code is hard coded !
 	@Transactional
-    public AppParameter findById(String domain, String key) {
-        log.debug("Find by domain and key AppParameters : %s %s", domain, key);
-        
-        AppParameter appParameter = appParameterJpaRepository.findByDomainAndKey(domain, key);
-        
-        return appParameter;
-    }
+	public AppParameter findByDomainAndKey(String domain, String key) {
+		return ${entity.model.var}JpaRepository.findByDomainAndKey(domain, key);
+	}
+	
+	/**
+	 * Find by domain and key a AppParameter.
+	 */
+	@Transactional
+	public AppParameter findById(String domain, String key) {
+		log.debug("Find by domain and key AppParameters : %s %s", domain, key);
+	
+		AppParameter appParameter = ${entity.model.var}JpaRepository.findByDomainAndKey(domain, key);
+	
+		return appParameter;
+	}
+#end
+#if ($entity.model.type == "AppUser")
+	/**
+	 * Find by login.
+	 */
+	// Needed for authentication mechanism.
+	@Transactional
+	public AppUser findByLogin(String login) {
+		return ${entity.model.var}JpaRepository.findByLogin(login);
+	}
+
+	/**
+	 * Find by login ignoring case.
+	 */
+	// Needed for registration mechanism.
+	@Transactional
+	public AppUser findByLoginIgnoreCase(String login) {
+		return ${entity.model.var}JpaRepository.findByLoginIgnoreCase(login);
+	}
+
+$output.require("java.util.List")##
+	/**
+	 * Find by attribute enabled.
+	 * @param enabled
+	 * @return
+	*/
+	@Transactional
+	public List<AppUser> findByEnabled(Integer enabled){
+		return ${entity.model.var}JpaRepository.findByEnabled(enabled);
+	}
 #end
 }

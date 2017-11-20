@@ -38,11 +38,11 @@ CREATE TABLE BOOK (
 	-- Many to one relation
 	constraint book_fk_1 foreign key (AUTHOR_ID) references AUTHOR,
 	-- One to one relation
-	constraint book_fk_3 foreign key (BARCODEID) references BAR_CODE(ID),
+--	constraint book_fk_3 foreign key (BARCODEID) references BAR_CODE(ID),
 	
     primary key (ID)
 );
-ALTER TABLE BOOK ADD CONSTRAINT BAR_CODE_UNIQUE UNIQUE(BARCODEID);
+--ALTER TABLE BOOK ADD CONSTRAINT BAR_CODE_UNIQUE UNIQUE(BARCODEID);
 
 -- store where to buy books
 CREATE TABLE STORE (

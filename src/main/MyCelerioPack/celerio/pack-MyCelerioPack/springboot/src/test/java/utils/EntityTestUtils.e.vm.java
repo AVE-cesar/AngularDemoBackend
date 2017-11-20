@@ -1,5 +1,13 @@
 $output.javaTest("${configuration.rootPackage}.utils", "${entity.model.type}EntityTestUtils")##
 
+$output.require("java.nio.charset.Charset")##
+
+$output.require("com.jaxio.demo.jpa.model.AppToken")##
+
+$output.require("io.github.benas.randombeans.FieldDefinitionBuilder")##
+$output.require("io.github.benas.randombeans.randomizers.text.StringRandomizer")##
+$output.require("io.github.benas.randombeans.randomizers.text.EmailRandomizer")##
+
 $output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 $output.require("io.github.benas.randombeans.EnhancedRandomBuilder")##
 $output.require("io.github.benas.randombeans.api.EnhancedRandom")##
@@ -11,7 +19,18 @@ public class ${entity.model.type}EntityTestUtils {
 	}
 	
 	public static ${entity.model.type} createNew${entity.model.type}() {
-		EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+		EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+			.charset(Charset.forName("UTF-8"))
+#foreach ($attribute in $entity.attributes.list)
+	#if ($attribute.isNotNullable() == true)
+		#if ($attribute.isEmail() == true)
+			.randomize(FieldDefinitionBuilder.field().named("$attribute.name").ofType(${attribute.type}.class).inClass(${entity.model.type}.class).get(), new EmailRandomizer())
+		#else
+			.randomize(FieldDefinitionBuilder.field().named("$attribute.name").ofType(${attribute.type}.class).inClass(${entity.model.type}.class).get(), new StringRandomizer(Charset.forName("UTF-8"), 1, 50, 1))
+		#end
+	#end
+#end
+				.build();
 		return enhancedRandom.nextObject(${entity.model.type}.class);
 	}
 	

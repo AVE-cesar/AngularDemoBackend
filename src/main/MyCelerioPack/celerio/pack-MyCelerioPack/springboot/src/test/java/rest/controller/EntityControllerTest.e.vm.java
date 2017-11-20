@@ -73,7 +73,7 @@ public class ${entity.model.type}ControllerTest {
 		// les pages commencent à zéro
 		this.mockMvc.perform(get("/api/${entity.model.var}s/bypage") //
 			.param("page", Integer.toString(firstPage)) //
-			.param("sort", "title") //
+			.param("sort", "${entity.attributes.first.name}") //
 			.param("size", Integer.toString(size))) //
 			.andDo(print()) //
 			.andExpect(status().isOk()) //
