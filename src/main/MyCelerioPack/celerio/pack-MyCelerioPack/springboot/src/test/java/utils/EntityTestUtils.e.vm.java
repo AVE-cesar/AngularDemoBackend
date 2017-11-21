@@ -6,7 +6,7 @@ $output.require("com.jaxio.demo.jpa.model.AppToken")##
 
 $output.require("io.github.benas.randombeans.FieldDefinitionBuilder")##
 $output.require("io.github.benas.randombeans.randomizers.text.StringRandomizer")##
-$output.require("io.github.benas.randombeans.randomizers.text.EmailRandomizer")##
+$output.require("io.github.benas.randombeans.randomizers.EmailRandomizer")##
 
 $output.require("${configuration.rootPackage}.jpa.model.${entity.model.type}")##
 $output.require("io.github.benas.randombeans.EnhancedRandomBuilder")##
