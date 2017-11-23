@@ -18,16 +18,12 @@ public class Application {
 	
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
-        Environment env = app.run(args).getEnvironment();
+		Environment env = app.run(args).getEnvironment();
 
-        String host = env.getProperty("server.address");
-        String contextPath = env.getProperty("server.contextPath");
-        String serverPort = env.getProperty("server.port");
+		String host = env.getProperty("server.address");
+		String contextPath = env.getProperty("server.contextPath");
+		String serverPort = env.getProperty("server.port");
 
-        log.info("\n\nAccess URLs:\n----------------------------------------\n\t" 
-        		+ "Local: \t\thttp://"  
-        		+ host + ":" 
-        		+ serverPort + contextPath
-                + "\n\n");
+		log.info("\n\nAccess URLs:\n----------------------------------------\n\tLocal: \t\thttp://{}:{}{}\n\n", host, serverPort, contextPath);
 	}
 }
