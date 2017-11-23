@@ -38,6 +38,13 @@
 		<url>http://github.com/AVE-cesar/AngularDemoBackend/tree/master</url>
 	</scm>
 
+	<distributionManagement>
+		<snapshotRepository>
+		<id>ossrh</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -177,13 +184,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		
-		<!-- add a dependency to my custom celerio extension -->
-		<dependency>
-			<groupId>com.github.AVE-cesar</groupId>
-			<artifactId>CelerioCustomSPI</artifactId>
-			<version>1.1.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -234,6 +234,33 @@
 					</execution>
 				</executions>
 			</plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-gpg-plugin</artifactId>
+      <version>1.5</version>
+      <executions>
+        <execution>
+          <id>sign-artifacts</id>
+          <phase>verify</phase>
+          <goals>
+            <goal>sign</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    
+    <plugin>
+  <groupId>org.sonatype.plugins</groupId>
+  <artifactId>nexus-staging-maven-plugin</artifactId>
+  <version>1.6.7</version>
+  <extensions>true</extensions>
+  <configuration>
+     <serverId>ossrh</serverId>
+     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+  </configuration>
+</plugin>
 
 			<!-- for code coverage -->
 			<plugin>
