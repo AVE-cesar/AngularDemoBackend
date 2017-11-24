@@ -1,5 +1,7 @@
 $output.resource("application.properties")##
 
+logging.level.=INFO
+
 #elasticsearch.clustername = mkyong-cluster
 #elasticsearch.host = localhost
 #elasticsearch.port = 9300
@@ -14,27 +16,39 @@ spring.data.elasticsearch.properties.transport.tcp.connect_timeout=120s
 
 spring.jpa.hibernate.ddl-auto=create-drop
 
+spring.jpa.properties.hibernate.globally_quoted_identifiers=true
+
 spring.jpa.show_sql=true
 spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.properties.hibernate.use_sql_comments=true
 spring.jpa.properties.hibernate.format_sql=true
 
+ 
 # root log level
-logging.level.root=WARN
+logging.level.root=INFO
 # specific log level
-logging.level.com.jaxio.demo=INFO
+logging.level.com.jaxio.demo=DEBUG
+
+
+# primary datasource
+# jdbcUrl=jdbc:h2:/Users/avebertrand/git/AngularDemoBackend/target/db/AngularDemoBackend;MVCC=TRUE;FILE_LOCK=NO;IGNORECASE=TRUE
+#spring.datasource.driver-class-name=@jdbc.driver@
+#spring.datasource.url=@jdbc.url@
+#spring.datasource.username=@jdbc.user@
+#spring.datasource.password=@jdbc.password@
+
+server.address=localhost
+server.port=8080
+server.contextPath=/
 
 # connection info to a SMTP server in order to send email
 spring.mail.host=localhost
-spring.mail.port=25
-spring.mail.username= 
+spring.mail.port=2025
+spring.mail.username=bertrand.ave@gmail.com
 spring.mail.password=
 
 spring.mail.thymeleaf.cache=false
 
-server.address=localhost
-server.port=8080 
-server.contextPath=/
 
 # properties that belongs to the application itself	
 application.async.corePoolSize=1
