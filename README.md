@@ -38,11 +38,16 @@ The generated application relies on:
 
     bower install
 
+Note: this command will download powerful Javascript librairies into **src/main/resources/static/bower_components**.
+
 ## Step 2: reverse the sample SQL schema and generate the source code
     
 From this folder run from:
 
     mvn -Pdb,metadata,gen
+    
+Note: This command will create the sample H2 database, analyze it and then generate all sources into **src/main/generated-java** and **src/test/generated-java**.
+     
     
 ## Step 3: Run the app
 
@@ -51,6 +56,8 @@ From this folder run from:
 ## Step 4: access the app and play
 
     http://localhost:8080/
+
+Note: use the account **admin** (password: **admin**) to log in
 
 ## Extra tip: delete generated code
 
