@@ -50,7 +50,7 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 	log.info("${attribute.getEntityIPointTo().name} post refresh: " + result.length);
 	
 	// sort values to facilitate research for the end user
-	try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("name"));
+	try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("$entity.extended.getFirstNoneKeyAttribute()"));
 	} catch (err) {}
 });
 		#elseif ($attribute.getXToOneRelation().isOneToOne())

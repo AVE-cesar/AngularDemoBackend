@@ -119,12 +119,8 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
      #end
 #end                
                 <ui-select-choices repeat="itemA in ${oneToOne.to.type.substring(0,1).toLowerCase()}${oneToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
-#foreach ($toAttribute in $oneToOne.getToEntity().getAttributes().list)
-                #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
-                  	<span ng-bind-html="itemA.$toAttribute.name | highlight: ${dollar}select.search"></span>
-                  	#break
-                #end
-#end
+                  	<span ng-bind-html="itemA.$oneToOne.getToEntity().extended.getFirstNoneKeyAttribute() | highlight: ${dollar}select.search"></span>
+
 #foreach ($toPk in $oneToOne.getToEntity().getInPkAttributes().list)
                   		<small ng-bind-html="itemA.$toPk.name | highlight: ${dollar}select.search"></small>
 #end                  	
@@ -157,12 +153,8 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
      #end
 #end                
                 <ui-select-choices repeat="itemB in ${manyToOne.to.type.substring(0,1).toLowerCase()}${manyToOne.to.type.substring(1)}s | filter: ${dollar}select.search">
-#foreach ($toAttribute in $manyToOne.getToEntity().getAttributes().list)
-                #if (!$toAttribute.isInPk()  && !$toAttribute.isInFk())
-                  	<span ng-bind-html="itemB.$toAttribute.name | highlight: ${dollar}select.search"></span>
-                  	#break
-                #end
-#end
+                  	<span ng-bind-html="itemB.$manyToOne.getToEntity().extended.getFirstNoneKeyAttribute() | highlight: ${dollar}select.search"></span>
+
 #foreach ($toPk in $manyToOne.getToEntity().getInPkAttributes().list)
                   		<small ng-bind-html="itemB.$toPk.name | highlight: ${dollar}select.search"></small>
 #end                  	
