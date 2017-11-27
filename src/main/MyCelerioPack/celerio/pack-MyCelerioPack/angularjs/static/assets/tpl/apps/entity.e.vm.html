@@ -43,7 +43,11 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			</div> <!-- row -->
 		
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-1">
+				<input type="text" class="form-control" ng-model="totalElementsPerPage" ng-change="refresh()">
+				</div>
+				<div class="col-lg-7">
+				elements per page
 				</div>
 				<div class="col-lg-4">
 					<button type="button" class="btn btn-link btn-round btn-xs" data-toggle="tooltip" data-placement="top" title="Add a new ${entity.model.type}" data-original-title="Add a new ${entity.model.type}" ui-sref="create${entity.model.type}()"><i class="material-icons md-18">note_add</i></button>
