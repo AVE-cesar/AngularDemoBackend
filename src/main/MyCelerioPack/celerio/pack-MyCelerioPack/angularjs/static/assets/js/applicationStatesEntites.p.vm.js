@@ -27,7 +27,8 @@ app.config(function(${dollar}stateProvider, ${dollar}urlRouterProvider) {
 			views: {    
 				"mainView": {templateUrl: "assets/tpl/apps/${entity.model.var}/${entity.model.var}.html",
 					controller: "${entity.name}Controller"},
-				"footerView": {templateUrl: "assets/tpl/commons/footer.html"}
+				"footerView": {templateUrl: "assets/tpl/commons/footer.html",
+					controller: "FooterController"}
 				}
             });	  
 #end    	
