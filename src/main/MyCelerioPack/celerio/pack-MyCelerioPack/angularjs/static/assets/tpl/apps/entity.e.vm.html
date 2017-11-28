@@ -1,5 +1,7 @@
 $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var}.html")##
 
+<div id="mytop"></div>
+
 <div class="row">
 	<!-- Breadcrumb -->
 	<ul class="breadcrumb">
@@ -34,12 +36,19 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 		<div class="bs-docs-section">
 		
 			<div class="row">
+				<div class="col-lg-10">
+				</div>
+				<div class="col-lg-2">
+					<a href ng-click="scrollDown()">Go to bottom</a>
+				</div>
+			</div> <!-- row -->
+			
+			<div class="row">
 				<div class="col-lg-12">
 					<div class="page-header">
 						<h4 id="tables">{{data.length}} of {{pagination.totalElements}} {{settings.plural}} available</h4>
 					</div>
 				</div>
-		
 			</div> <!-- row -->
 		
 			<div class="row">
@@ -153,3 +162,5 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 			<div ng-include="'assets/tpl/commons/pagination.html'"></div>
 			
 		</div> <!-- bs-docs-section -->
+
+<div id="mybottom"></div>

@@ -12,6 +12,7 @@ $output.require("${configuration.rootPackage}.jpa.model.AppAuthority")##
 $output.require("${configuration.rootPackage}.jpa.model.AppUser")##
 $output.require("${configuration.rootPackage}.jpa.repository.AppUserJpaRepository")##
 $output.require("${configuration.rootPackage}.security.exception.UserNotEnabledException")##
+$output.require("${configuration.rootPackage}.security.exception.UserLockedException")##
 
 $output.require("java.util.ArrayList")##
 $output.require("java.util.Collection")##
@@ -41,6 +42,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException("User " + login + " was not found in the database");
         } else if (appUser.getEnabled() != 1) {
             throw new UserNotEnabledException("User " + login + " was not enabled");
+        } else if (appUser.getLocked() == 1) {
+    			throw new UserLockedException("User " + login + " is locked");
         } else {
         		log.info("User {} exists.", appUser);
         }

@@ -40,6 +40,12 @@ app.controller("${entity.model.type}EditController", ["${dollar}scope", "${dolla
 	scope.mode = mode;
 	scope.item = item;
 
+/* Many to Many relations */
+## --------------- Many to many: to entity
+#foreach ($relation in $entity.manyToMany.list)
+	scope.${relation.to.var}sSearchFilter = '';
+#end
+
 #foreach ($attribute in $entity.allAttributes.list)
 	#if ($attribute.isInFk() || ($attribute.isInCpk() == true && $attribute.isSimpleFk() == true))
 		#if ($attribute.getXToOneRelation().isManyToOne())
@@ -50,7 +56,7 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 	log.info("${attribute.getEntityIPointTo().name} post refresh: " + result.length);
 	
 	// sort values to facilitate research for the end user
-	try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("$entity.extended.getFirstNoneKeyAttribute()"));
+	try {scope.${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.getEntityIPointTo().name.substring(1)}s.sort(dynamicSort("$attribute.getEntityIPointTo().extended.getFirstNoneKeyAttribute()"));
 	} catch (err) {}
 });
 		#elseif ($attribute.getXToOneRelation().isOneToOne())
@@ -69,12 +75,14 @@ ${attribute.getEntityIPointTo().name.substring(0,1).toLowerCase()}${attribute.ge
 		#end 
 	#end
 #end		
-	
+
+/* inverse relations */	
 ## --------------- Inverse relation
 #foreach ($entityP in $project.getEntities().list)
 #foreach ($rel in $entityP.getRelations().list)
 #if ($entity == $rel.getToEntity())
 #if ($rel.getKind() == "many-to-one" || $rel.getKind() == "many-to-many" || $rel.getKind() == "one-to-one")
+scope.${entityP.model.var}sSearchFilter = '';
 	${entity.model.var}RestInvRelationService.find${entityP.model.type}By${entity}({id: item.id}, function(result) {
 	    scope.find${entityP.model.type}By${entity} = result;
 	    log.info("inv. relation, ${entityP.model.type} data post refresh: " + scope.find${entityP.model.type}By${entity}.length);

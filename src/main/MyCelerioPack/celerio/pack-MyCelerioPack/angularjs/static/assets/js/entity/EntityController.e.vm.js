@@ -12,7 +12,7 @@ app.controller("${entity.model.type}Controller", ["${dollar}scope", "${dollar}wi
 		#end 
 	#end
 #end		
-		"${dollar}alert", "${dollar}timeout", "config", function(scope, window, c, log, 
+		"${dollar}alert", "${dollar}timeout", "${dollar}location", "${dollar}anchorScroll", "config", function(scope, window, c, log, 
 		${entity.model.var}RestService, ${entity.model.var}RestSearchService, ${entity.model.var}RestIndexService, 
 		${entity.model.var}RestMassDeleteService, 
 #foreach ($attribute in $entity.nonCpkAttributes.list)
@@ -24,7 +24,7 @@ app.controller("${entity.model.type}Controller", ["${dollar}scope", "${dollar}wi
 		#end 
 	#end
 #end				 
-		alertService, timeoutService, config) {
+		alertService, timeoutService, location, anchorScroll, config) {
 
 log.info("inside ${entity.model.type}Controller, config.value: " + config.value);
 scope.configValue = angular.fromJson(config.value);
@@ -299,6 +299,17 @@ scope.getCSVData = function() {
 /** Indexes all items on the server side */
 scope.index = function() {
 	${entity.model.var}RestIndexService.index();
+};
+
+var scrollTo = function (id) {
+    location.hash(id);
+    anchorScroll();
+};
+scope.scrollDown = function () {
+        scrollTo('mybottom');
+};
+scope.scrollUp = function () {
+    scrollTo('mytop');
 };
 
 /** Opens an aside */

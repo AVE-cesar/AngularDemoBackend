@@ -1,5 +1,16 @@
 $output.resource("static\assets\js", "custom.js")##
 
+/* displays all defined controllers */
+/* DEBUG purpose only; can be safely deleted */
+angular.element(document).ready(function(){
+	var values = app._invokeQueue;
+	angular.forEach(values, function(value, key) {
+		if(value[0] == '${dollar}controllerProvider'){
+			console.log(value[2][0]);
+		}
+	});
+});
+
 /**
  * Add a directive to check if a login exists or not every time a guest enters the login in the input field
  * This directive makes a call to the server to do this check.

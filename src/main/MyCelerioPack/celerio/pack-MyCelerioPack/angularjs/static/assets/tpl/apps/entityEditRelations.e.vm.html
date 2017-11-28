@@ -22,7 +22,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
       </div>
       <div class="col-md-6">
         <div class="table-search">
-          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+          <input type="text" ng-model="${relation.to.var}sSearchFilter" class="form-control" placeholder="Search data"/>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 		<th>${attribute.varUp}</th>
 #end		
 		</tr>
-        <tr ng-repeat="item in item.${relation.to.var}s">
+        <tr ng-repeat="item in item.${relation.to.var}s | filter:${relation.to.var}sSearchFilter">
 #foreach ($attribute in $relation.toEntity.nonCpkAttributes.list)
 	##if (!$attribute.isInPk()  && !$attribute.isInFk())
 	#if ($velocityCount == 1)
@@ -80,7 +80,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
       </div>
       <div class="col-md-6">
         <div class="table-search">
-          <input type="text" ng-model="tableParams.filter()['search']" class="form-control" placeholder="Search data"/>
+          <input type="text" ng-model="${rel.to.var}sSearchFilter" class="form-control" placeholder="Search data"/>
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@ $output.resource("/static/assets/tpl/apps/${entity.model.var}/${entity.model.var
 #end		
 	</tr>
 ## --------------- Inverse relation     
-        <tr ng-repeat="row in find${entityP.model.type}By${entity}">
+        <tr ng-repeat="row in find${entityP.model.type}By${entity} | filter:${rel.to.var}sSearchFilter">
 #foreach ($attribute in $project.getEntityByName("${entityP.model.type}").attributes.list)
 	#if ($velocityCount == 1)
 	## add a link on the first column

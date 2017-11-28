@@ -76,6 +76,7 @@ app.run(function (${dollar}rootScope, ${dollar}location, ${dollar}http, AuthShar
     });
 
     // Get already authenticated user account
+    console.log('Already authenticated user ?');
     AuthSharedService.getAccount();
 
 

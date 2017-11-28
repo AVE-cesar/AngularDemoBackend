@@ -23,6 +23,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	// FIXME Use the service level
     @Autowired
     private AppUserJpaRepository appUserJpaRepository;
     

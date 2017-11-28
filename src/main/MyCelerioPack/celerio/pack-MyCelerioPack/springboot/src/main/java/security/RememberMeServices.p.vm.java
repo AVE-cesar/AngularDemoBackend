@@ -50,9 +50,11 @@ public class RememberMeServices extends
 
     private final Logger log = LoggerFactory.getLogger(RememberMeServices.class);
 
+    // FIXME use the service level
     @Autowired
     private AppUserJpaRepository appUserJpaRepository;
     
+    // FIXME use the service level
     @Autowired
     private AppTokenJpaRepository appTokenJpaRepository;
     
@@ -102,6 +104,10 @@ public class RememberMeServices extends
 
         log.debug("Creating new persistent login for user {}", login);
         AppUser appUser = appUserJpaRepository.findByLogin(login);
+        // update the last login date for this user
+        appUser.setLastLoginDate(new Date());
+        appUserJpaRepository.save(appUser);
+        
         AppToken appToken = new AppToken();
         appToken.setId(generateSeriesData());
         appToken.setUserLogin(appUser.getLogin());
