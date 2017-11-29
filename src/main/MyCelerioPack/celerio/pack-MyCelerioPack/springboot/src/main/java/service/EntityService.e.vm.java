@@ -57,9 +57,9 @@ public class ${entity.model.type}Service {
 		// to avoid the following error: detached entity passed to persist
 #foreach ($spkattribute in $entity.simplePkAttributes.list)
 #if ($spkattribute.type == "String")
-		${entity.model.var}.set${spkattribute.varUp}("-1");
+		${entity.model.var}.set${spkattribute.varUp}(null);
 #else
-		${entity.model.var}.set${spkattribute.varUp}(-1);
+		${entity.model.var}.set${spkattribute.varUp}(null);
 #end
 #end
 
@@ -306,7 +306,6 @@ $output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
      * @param id id of the linked entity.
      * @return list of $entity.model.type
      * @throws URISyntaxException
-     * $MethodsHistoryMap.size()
      */
 $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.type}")}
 	@Transactional
@@ -316,6 +315,29 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         ${manyToOne.to.type} ${manyToOne.toEntity.model.var} = new ${manyToOne.to.type}();
         ${manyToOne.toEntity.model.var}.setId(id);
         List<$entity.model.type> $entity.model.vars = ${entity.model.var}JpaRepository.findBy${manyToOne.to.varUp}(${manyToOne.toEntity.model.var});
+        
+        return $entity.model.vars;
+	}
+#end
+
+## --------------- Many to Many
+#foreach ($manyToMany in $entity.manyToMany.list)
+$output.require("${configuration.rootPackage}.jpa.model.$manyToMany.to.type")##
+    /**
+     * Finder to fill relation between this entity and ${manyToMany.to.varUp}.
+     * 
+     * @param id id of the linked entity.
+     * @return list of $entity.model.type
+     * @throws URISyntaxException
+     */
+$!{MethodsHistoryMap.put("findBy${manyToMany.to.type}", "findBy${manyToMany.to.type}")}
+	@Transactional
+    public List<$entity.model.type> findBy${manyToMany.to.varsUp} ($manyToMany.toEntity.primaryKey.type $manyToMany.toEntity.primaryKey.var) {
+        log.debug("Find $entity.model.varsUp by ${manyToMany.to.type} id : {}.", id);
+        
+        ${manyToMany.to.type} ${manyToMany.toEntity.model.var} = new ${manyToMany.to.type}();
+        ${manyToMany.toEntity.model.var}.setId(id);
+        List<$entity.model.type> $entity.model.vars = ${entity.model.var}JpaRepository.findBy${manyToMany.to.varsUp}(${manyToMany.toEntity.model.var});
         
         return $entity.model.vars;
 	}
@@ -390,6 +412,20 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
 		@Transactional
 		public List<$entity.model.type> findBy${manyToOne.to.varUp}($manyToOne.to.type $manyToOne.to.var){
 			return ${entity.model.var}JpaRepository.findBy${manyToOne.to.varUp}($manyToOne.to.var);
+		}
+		
+	#end
+	
+	## --------------- Many to Many
+	#foreach ($manyToMany in $entity.manyToMany.list)
+	$output.require("java.util.List")##
+	$output.require("${configuration.rootPackage}.jpa.model.$manyToMany.to.type")##
+		/**
+		 * Find by $manyToMany.to.varUp (Many To Many relation).
+		 */
+		@Transactional
+		public List<$entity.model.type> findBy${manyToMany.to.varsUp}($manyToMany.to.type $manyToMany.to.var){
+			return ${entity.model.var}JpaRepository.findBy${manyToMany.to.varsUp}($manyToMany.to.var);
 		}
 		
 	#end

@@ -43,6 +43,17 @@ $output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
 	
 #end
 
+## --------------- Many to Many
+#foreach ($manyToMany in $entity.manyToMany.list)
+$output.require("java.util.List")##
+$output.require("${configuration.rootPackage}.jpa.model.$manyToMany.to.type")##
+	/**
+	 * Find by $manyToMany.to.varsUp (Many To Many relation).
+	 */
+	List<$entity.model.type> findBy${manyToMany.to.varsUp}($manyToMany.to.type $manyToMany.to.var);
+	
+#end
+
 #if ($entity.model.type == "Book")
 $output.require("org.springframework.data.repository.query.Param")##
 $output.require("java.math.BigDecimal")##

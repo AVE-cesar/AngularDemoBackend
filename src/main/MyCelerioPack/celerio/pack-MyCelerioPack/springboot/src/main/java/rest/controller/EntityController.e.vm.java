@@ -335,7 +335,6 @@ $output.require("${configuration.rootPackage}.jpa.model.$manyToOne.to.type")##
      * @param id id of the linked entity.
      * @return list of $entity.model.type
      * @throws URISyntaxException
-     * $MethodsHistoryMap.size()
      */
     @RequestMapping(value = "/findBy${manyToOne.to.type}/{id}",
             method = RequestMethod.GET,
@@ -350,6 +349,32 @@ $!{MethodsHistoryMap.put("findBy${manyToOne.to.type}", "findBy${manyToOne.to.typ
         
         return new ResponseEntity<List<$entity.model.type>>($entity.model.vars, new HttpHeaders(), HttpStatus.OK);
 	}
+#end
+
+
+## --------------- Many to many
+#foreach ($manyToMany in $entity.manyToMany.list)
+$output.require("${configuration.rootPackage}.jpa.model.$manyToMany.to.type")##
+/**
+ * Finder to fill relation between this entity and ${manyToMany.to.varUp}.
+ * 
+ * @param id id of the linked entity.
+ * @return list of $entity.model.type
+ * @throws URISyntaxException
+ */
+@RequestMapping(value = "/findBy${manyToMany.to.type}/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+$!{MethodsHistoryMap.put("findBy${manyToMany.to.type}", "findBy${manyToMany.to.type}")}
+public ResponseEntity<List<$entity.model.type>> findBy${manyToMany.to.type}(@PathVariable $manyToMany.toEntity.primaryKey.type $manyToMany.toEntity.primaryKey.var) throws URISyntaxException {
+    log.debug("Find $entity.model.varsUp by ${manyToMany.to.type} id : {}.", id);
+    
+    ${manyToMany.to.type} ${manyToMany.toEntity.model.var} = new ${manyToMany.to.type}();
+    ${manyToMany.toEntity.model.var}.setId(id);
+    List<$entity.model.type> $entity.model.vars = ${entity.model.var}Service.findBy${manyToMany.to.varsUp}(${manyToMany.toEntity.model.var});
+    
+    return new ResponseEntity<List<$entity.model.type>>($entity.model.vars, new HttpHeaders(), HttpStatus.OK);
+}
 #end
 
 	/**
