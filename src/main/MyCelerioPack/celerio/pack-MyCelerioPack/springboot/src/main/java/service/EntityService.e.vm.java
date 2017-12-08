@@ -57,9 +57,9 @@ public class ${entity.model.type}Service {
 		// to avoid the following error: detached entity passed to persist
 #foreach ($spkattribute in $entity.simplePkAttributes.list)
 #if ($spkattribute.type == "String")
-		${entity.model.var}.set${spkattribute.varUp}(null);
+		${entity.model.var}.set${spkattribute.varUp}("null");
 #else
-		${entity.model.var}.set${spkattribute.varUp}(null);
+		${entity.model.var}.set${spkattribute.varUp}(0);
 #end
 #end
 
@@ -376,8 +376,8 @@ $!{MethodsHistoryMap.put("findBy${manyToMany.to.type}", "findBy${manyToMany.to.t
 
 		// add a condition for all ManyToOne filled attributes
 #foreach ($manyToOne in $entity.manyToOne.list)
-		if (${entity.model.var}.get${manyToOne.to.type}() != null) {
-			Predicate ${manyToOne.to.var}Predicate = criteriaBuilderObj.equal(${entity.model.var}Table.get("${manyToOne.to.var}"), ${entity.model.var}.get${manyToOne.to.type}().getId());
+		if (${entity.model.var}.${manyToOne.to.getter}() != null) {
+			Predicate ${manyToOne.to.var}Predicate = criteriaBuilderObj.equal(${entity.model.var}Table.get("${manyToOne.to.var}"), ${entity.model.var}.${manyToOne.to.getter}().getId());
 			conditionsList.add(${manyToOne.to.var}Predicate);
 		}
 #end
